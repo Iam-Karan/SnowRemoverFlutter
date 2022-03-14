@@ -4,6 +4,7 @@ import 'package:snow_remover/UiScreen/bottom_navigator.dart';
 import 'package:snow_remover/UiScreen/launch_screen.dart';
 import 'package:snow_remover/UiScreen/orders_screen.dart';
 import 'package:snow_remover/UiScreen/service_screen.dart';
+import 'UiScreen/ThemeColor.dart';
 import 'constant.dart' as constant;
 
 void main() {
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         '/order_screen': (context) => const OrderScreen(),
       },
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: createMaterialColor(Color(0xFF34A8DB)),
         colorScheme:
             const ColorScheme.light().copyWith(primary: constant.primaryColor),
       ),
