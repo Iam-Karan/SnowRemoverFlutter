@@ -4,10 +4,12 @@ import 'package:snow_remover/UiScreen/bottom_navigator.dart';
 import 'package:snow_remover/UiScreen/launch_screen.dart';
 import 'package:snow_remover/UiScreen/orders_screen.dart';
 import 'package:snow_remover/UiScreen/service_screen.dart';
-import 'UiScreen/ThemeColor.dart';
-import 'constant.dart' as constant;
-
-void main() {
+import 'Colors/ThemeColor.dart';
+import 'Colors/constant.dart' as constant;
+import 'package:firebase_core/firebase_core.dart';
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

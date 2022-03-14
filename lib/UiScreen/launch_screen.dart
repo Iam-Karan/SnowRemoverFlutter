@@ -1,5 +1,5 @@
  import 'package:flutter/material.dart';
-import 'package:snow_remover/constant.dart';
+import 'package:snow_remover/Colors/constant.dart';
 
 class LaunchScreen extends StatefulWidget {
   const LaunchScreen({Key? key}) : super(key: key);
