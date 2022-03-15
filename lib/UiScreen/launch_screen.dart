@@ -45,6 +45,6 @@ class _LaunchScreenState extends State<LaunchScreen> {
 
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 1500), () {});
-    Navigator.pushReplacementNamed(context, '/bottom_nav');
+    Navigator.pushReplacementNamed(context, '@SignIn');
   }
 }

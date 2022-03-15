@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snow_remover/UiScreen/SignIn.dart';
 import 'package:snow_remover/UiScreen/aboutus_screen.dart';
 import 'package:snow_remover/UiScreen/bottom_navigator.dart';
 import 'package:snow_remover/UiScreen/launch_screen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/bottom_nav': (context) => const BottomNav(),
         '/service_screen': (context) => const ServiceScreen(),
         '/order_screen': (context) => const OrderScreen(),
+        '@SignIn': (context) => const signIn(),
       },
       theme: ThemeData(
         primarySwatch: createMaterialColor(Color(0xFF34A8DB)),
