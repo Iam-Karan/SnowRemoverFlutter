@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:snow_remover/UiScreen/SignUp.dart';
+import 'package:snow_remover/UiScreen/sign_Up.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-final TextEditingController emailController = new TextEditingController();
-final TextEditingController passwordController = new TextEditingController();
+import '../toast_message/ios_Style.dart';
+
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
 final _formKey = GlobalKey<FormState>();
 
-class signIn extends StatelessWidget {
-  const signIn({Key? key}) : super(key: key);
+class SignIn extends StatefulWidget {
+  const SignIn({Key? key}) : super(key: key);
+
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+// string for displaying the error Message
+String? errorMessage;
+
+class _SignInState extends State<SignIn> {
+  // firebase
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -18,26 +33,25 @@ class signIn extends StatelessWidget {
           child: Container(
             width: MediaQuery.of(context).size.width * 1,
             height: MediaQuery.of(context).size.height * 1,
-            decoration: new BoxDecoration(color: Color(0xFF34A8DB)),
-            child: new Column(
+            decoration: const BoxDecoration(color: Color(0xFF34A8DB)),
+            child: Column(
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.08,
                 ),
                 Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
                   children: [
                     Positioned(
                       bottom: -90,
                       child: Container(
                           alignment: Alignment.center,
-                          child: new Image.asset(
-                              "assets/images/Rectangle 35.png")),
+                          child: Image.asset("assets/images/Rectangle 35.png")),
                     ),
                     Positioned(
                       child: Container(
                         alignment: Alignment.center,
-                        child: new Text(
+                        child: const Text(
                           "Sign In",
                           style: TextStyle(
                               fontSize: 70,
@@ -51,25 +65,28 @@ class signIn extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.18,
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   // height: MediaQuery.of(context).size.height * 0.10,
                   child: TextFormField(
-                    decoration: new InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      prefixIcon: Icon(Icons.mail),
-                      labelStyle: TextStyle(fontSize: 18),
+                      prefixIcon: const Icon(Icons.mail),
+                      labelStyle: const TextStyle(fontSize: 18),
                       labelText: "Email",
-                      counterStyle: TextStyle(fontSize: 60),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      counterStyle: const TextStyle(fontSize: 60),
                       fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(15.0),
-                        borderSide: new BorderSide(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(),
                       ),
                     ),
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
-                    style: new TextStyle(color: Colors.black),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return ("Please Enter Your Email");
@@ -89,28 +106,29 @@ class signIn extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.02,
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   //height: MediaQuery.of(context).size.height * 0.10,
                   child: TextFormField(
-                    decoration: new InputDecoration(
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
                       //contentPadding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
                       filled: true,
-                      prefixIcon: Icon(Icons.vpn_key),
-                      labelStyle: TextStyle(fontSize: 18),
+                      prefixIcon: const Icon(Icons.vpn_key),
+                      labelStyle: const TextStyle(fontSize: 18),
                       labelText: "Password",
-                      counterStyle: TextStyle(fontSize: 60),
+                      counterStyle: const TextStyle(fontSize: 60),
                       fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(15.0),
-                        borderSide: new BorderSide(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(),
                       ),
                     ),
                     controller: passwordController,
                     keyboardType: TextInputType.visiblePassword,
-                    style: new TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                     validator: (value) {
-                      RegExp regex = new RegExp(r'^.{6,}$');
+                      RegExp regex = RegExp(r'^.{6,}$');
                       if (value!.isEmpty) {
                         return ("Please Enter Your Password");
                       }
@@ -131,7 +149,7 @@ class signIn extends StatelessWidget {
                 ElevatedButton(
                   child: Text('SIGN IN',
                       style: GoogleFonts.commissioner(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w700))),
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(250, 50),
@@ -142,21 +160,16 @@ class signIn extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                    }
-                    ;
+                    signIn(emailController.text, passwordController.text);
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
                   child: Text('SIGN IN WITH',
                       style: GoogleFonts.commissioner(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w700))),
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(300, 50),
@@ -167,20 +180,24 @@ class signIn extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    print('Pressed');
+                    /* showSimpleNotification(
+                          Text("this is a message from simple notification"),
+                          background: Colors.green);
+
+                      */
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
-                Divider(
+                const Divider(
                   height: 2,
                   thickness: 3,
                   color: Colors.white,
                   endIndent: 30,
                   indent: 30,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 4,
                 ),
                 TextButton(
@@ -188,9 +205,9 @@ class signIn extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => signUp(key: UniqueKey())));
+                            builder: (context) => SignUp(key: UniqueKey())));
                   },
-                  child: Text(
+                  child: const Text(
                     "Create a new account",
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
@@ -201,5 +218,48 @@ class signIn extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void signIn(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((uid) => {
+                  showOverlay((context, t) {
+                    return Opacity(
+                      opacity: t,
+                      child: const IosStyleToast(label: "Login successfully"),
+                    );
+                  }),
+                });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "invalid-email":
+            errorMessage = "Your email address appears to be malformed.";
+
+            break;
+          case "wrong-password":
+            errorMessage = "Your password is wrong.";
+            break;
+          case "user-not-found":
+            errorMessage = "User with this email doesn't exist.";
+            break;
+          case "user-disabled":
+            errorMessage = "User with this email has been disabled.";
+            break;
+          case "too-many-requests":
+            errorMessage = "Too many requests";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          default:
+            errorMessage = "An undefined Error happened.";
+        }
+        toast(errorMessage!);
+        print(error.code);
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
  import 'package:flutter/material.dart';
-import 'package:snow_remover/Colors/constant.dart';
+import 'package:snow_remover/constant.dart';
 
 class LaunchScreen extends StatefulWidget {
   const LaunchScreen({Key? key}) : super(key: key);
@@ -45,6 +45,6 @@ class _LaunchScreenState extends State<LaunchScreen> {
 
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 1500), () {});
-    Navigator.pushReplacementNamed(context, '@SignIn');
+    Navigator.pushReplacementNamed(context, '/SignIn');
   }
 }
