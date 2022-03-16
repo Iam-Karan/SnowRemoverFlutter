@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           '/service_screen': (context) => const ServiceScreen(),
           '/order_screen': (context) => const OrderScreen(),
           '/SignIn': (context) => const SignIn(),
-          '/SignUp': (context) => SignUp(),
+          '/SignUp': (context) => const SignUp(),
         },
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF34A8DB)),

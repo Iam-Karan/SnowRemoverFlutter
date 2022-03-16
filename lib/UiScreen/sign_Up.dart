@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../Authentication/first_time_sign_in.dart';
-import '../toast_message/ios_Style.dart';
+import 'package:snow_remover/components/toast_message/ios_Style.dart';
 import 'sign_In.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
