@@ -3,8 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:snow_remover/UiScreen/sign_Up.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../toast_message/ios_Style.dart';
+import 'package:snow_remover/components/toast_message/ios_Style.dart';
 
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
@@ -225,14 +224,15 @@ class _SignInState extends State<SignIn> {
       try {
         await _auth
             .signInWithEmailAndPassword(email: email, password: password)
-            .then((uid) => {
-                  showOverlay((context, t) {
-                    return Opacity(
-                      opacity: t,
-                      child: const IosStyleToast(label: "Login successfully"),
-                    );
-                  }),
-                });
+            .then((uid) {
+          showOverlay((context, t) {
+            return Opacity(
+              opacity: t,
+              child: const IosStyleToast(label: "Login successfully"),
+            );
+          });
+          Navigator.pushReplacementNamed(context, '/bottom_nav');
+        });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
           case "invalid-email":

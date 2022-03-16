@@ -7,7 +7,7 @@ class IosStyleToast extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTextStyle(
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Container(
@@ -23,7 +23,7 @@ class IosStyleToast extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(
+                    const Icon(
                       Icons.check,
                       color: Colors.white,
                     ),

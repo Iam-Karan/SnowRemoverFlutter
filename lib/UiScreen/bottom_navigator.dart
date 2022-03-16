@@ -38,27 +38,26 @@ class _BottomNavState extends State<BottomNav> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Colors.black,
+            backgroundColor: constant.primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Service',
-            backgroundColor: constant.darkBlueColor,
+            backgroundColor: constant.primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.menu),
             label: 'Orders',
-            backgroundColor: Colors.black,
+            backgroundColor: constant.primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_vert),
             label: '',
-            backgroundColor: constant.darkBlueColor,
+            backgroundColor: constant.primaryColor,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor:
-            _selectedIndex % 2 == 0 ? Colors.blue[800] : Colors.white,
+        selectedItemColor: Colors.white,
         onTap: _onItemTapped,
       ),
     );
