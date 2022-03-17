@@ -151,21 +151,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   SliverPadding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 18),
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 20,
                               childAspectRatio: 1),
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
                           return Card(
-                              color: Colors.grey[Random().nextInt(9) * 100],
+                              color: Colors.blue,
                               child: Container(
                                 alignment: Alignment.center,
                                 child: ProductCard(
+                                  brand: myProducts[index].brand,
                                   cardImage: myProducts[index].imageURL,
                                   heading: myProducts[index].name,
                                   id: myProducts[index].id,
