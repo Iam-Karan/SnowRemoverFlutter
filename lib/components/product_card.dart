@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snow_remover/utility.dart' as utility;
+import 'package:snow_remover/constant.dart' as constant;
 
 class ProductCard extends StatelessWidget {
   final String heading;
@@ -8,6 +9,7 @@ class ProductCard extends StatelessWidget {
   final String supportingText;
   final String id;
   final String price;
+  final String brand;
 
   const ProductCard(
       {Key? key,
@@ -16,11 +18,14 @@ class ProductCard extends StatelessWidget {
       required this.cardImage,
       required this.supportingText,
       required this.id,
-      required this.price})
+      required this.price,
+      required this.brand})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return FutureBuilder<String>(
       builder: ((BuildContext context, AsyncSnapshot<String> snapshot) {
         switch (snapshot.connectionState) {
@@ -42,16 +47,42 @@ class ProductCard extends StatelessWidget {
                 elevation: 4.0,
                 child: Column(
                   children: [
-                    ListTile(
-                      title: Text(heading, maxLines: 1),
-                      trailing: const Icon(Icons.favorite_outline),
-                    ),
-                    SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: Ink.image(
-                        image: NetworkImage(imageUrl!),
-                        fit: BoxFit.cover,
+                    // SizedBox(
+                    //   height: screenHeight * 0.20,
+                    //   width: screenWidth * 0.20,
+                    //   child: Image(
+                    //     image: NetworkImage(imageUrl!),
+                    //   ),
+                    // ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.18,
+                      alignment: Alignment.bottomLeft,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 6,
+                            child: Image(
+                              image: NetworkImage(imageUrl!),
+                              width: MediaQuery.of(context).size.height * 0.35,
+                              height: MediaQuery.of(context).size.height * 0.15,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              brand + "   \$" + price,
+                              maxLines: 1,
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ],
