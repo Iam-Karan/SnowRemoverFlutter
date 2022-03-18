@@ -8,7 +8,7 @@ class ProductCard extends StatelessWidget {
   final String cardImage;
   final String supportingText;
   final String id;
-  final String price;
+  final double price;
   final String brand;
 
   const ProductCard(
@@ -42,7 +42,6 @@ class ProductCard extends StatelessWidget {
               );
             } else {
               String? imageUrl = snapshot.data;
-              print("this is the image url" + imageUrl.toString());
               return Card(
                 elevation: 4.0,
                 child: Column(
@@ -73,7 +72,7 @@ class ProductCard extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              brand + "   \$" + price,
+                              brand + "   \$" + price.toString(),
                               maxLines: 1,
                               textAlign: TextAlign.start,
                               style: const TextStyle(
