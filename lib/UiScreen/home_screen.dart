@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool showFilter = false;
   String dropdownValue = 'Available';
+  String searchValue = "";
   Future<List<ProductModel>> fetchProductsFromDatabase() async {
     try {
       Map<String, dynamic> singleElem;
@@ -47,6 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void keyboardDebounce(String value) async {
+    await Future.delayed(Duration(milliseconds: 1500), () {
+      setState(() {
+        searchValue = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ProductModel>>(
@@ -67,7 +76,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.bold),
               );
             } else {
-              List<ProductModel> myProducts = snapshot.data ?? [];
+              List<ProductModel> myProducts = [];
+              if (searchValue.isNotEmpty) {
+                snapshot.data?.map((e) {
+                  if (e.name.contains(searchValue)) {
+                    myProducts.add(e);
+                  }
+                });
+              } else {
+                myProducts = snapshot.data ?? [];
+              }
               return CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -99,6 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Center(
                             child: TextField(
                               textAlign: TextAlign.center,
+                              onChanged: (query) {
+                                keyboardDebounce(query);
+                              },
                               decoration: InputDecoration(
                                 contentPadding:
                                     const EdgeInsets.fromLTRB(50, 0, 0, 0),
@@ -157,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              mainAxisSpacing: 20,
+                              mainAxisSpacing: 20, 
                               crossAxisSpacing: 20,
                               childAspectRatio: 1),
                       delegate: SliverChildBuilderDelegate(
