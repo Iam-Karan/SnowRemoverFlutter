@@ -7,6 +7,7 @@ import 'package:snow_remover/UiScreen/launch_screen.dart';
 import 'package:snow_remover/UiScreen/orders_screen.dart';
 import 'package:snow_remover/UiScreen/service_screen.dart';
 import 'package:snow_remover/UiScreen/sign_Up.dart';
+import 'package:snow_remover/UiScreen/user_profile.dart';
 import 'Colors/ThemeColor.dart';
 import 'constant.dart' as constant;
 import 'package:firebase_core/firebase_core.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
           '/order_screen': (context) => const OrderScreen(),
           '/SignIn': (context) => const SignIn(),
           '/SignUp': (context) => const SignUp(),
+          '/UserProfile' : (context) => const UserProfile(),
         },
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF34A8DB)),
