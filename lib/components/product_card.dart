@@ -43,6 +43,9 @@ class ProductCard extends StatelessWidget {
             } else {
               String? imageUrl = snapshot.data;
               return Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(13),
+                ),
                 elevation: 5,
                // child: Column(
                //   children: [
