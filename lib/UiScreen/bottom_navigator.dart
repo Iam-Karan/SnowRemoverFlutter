@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snow_remover/UiScreen/home_screen.dart';
+import 'package:snow_remover/UiScreen/home_screen_redo.dart';
 import 'package:snow_remover/UiScreen/orders_screen.dart';
 import 'aboutus_screen.dart';
 import 'service_screen.dart';
@@ -15,7 +16,8 @@ class BottomNav extends StatefulWidget {
 class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
+    // HomeScreen(),
+    HomeScreenTwo(),
     ServiceScreen(),
     OrderScreen(),
     AboutUs(),
