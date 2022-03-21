@@ -13,10 +13,13 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
       backgroundColor: Color(0xFF34A8DB),
       appBar: AppBar(
-        leading: const Icon(
-          Icons.arrow_back_ios,
-          color: Color(0xFF34A8DB),
-          size: 30.0,
+        leading:  GestureDetector(
+          onTap: (){Navigator.pushReplacementNamed(context, '/bottom_nav');},
+          child:const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 30.0,
+          ),
         ),
         title: const Text("User Profile"),
         actions: const [
@@ -124,7 +127,7 @@ class _UserProfileState extends State<UserProfile> {
                                 )),
                           ],
                         )),
-                     Expanded(
+                    Expanded(
                         child: Row(
                           children:  [
                             const Expanded(
@@ -142,7 +145,48 @@ class _UserProfileState extends State<UserProfile> {
                                 decoration: InputDecoration(
                                   filled: true,
                                   labelStyle: const TextStyle(fontSize: 18),
-                                  labelText: "Password",
+                                  labelText: "Old Password",
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  counterStyle: const TextStyle(fontSize: 60),
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: const BorderSide(),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.visiblePassword,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return ("Please Enter Your Password");
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {},
+                              ),),
+                          ],
+                        )),
+                     Expanded(
+                        child: Row(
+                          children:  [
+                            const Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24.0),
+                                )),
+                            Expanded(
+                              flex: 2,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelStyle: const TextStyle(fontSize: 18),
+                                  labelText: "New Password",
                                   floatingLabelBehavior: FloatingLabelBehavior.never,
                                   counterStyle: const TextStyle(fontSize: 60),
                                   fillColor: Colors.white,
