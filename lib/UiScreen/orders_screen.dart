@@ -13,29 +13,21 @@ class _OrderScreenState extends State<OrderScreen> {
   final _auth = FirebaseAuth.instance;
   String uid = "";
   String name = "Hi, user";
-  @protected
-  @mustCallSuper
+  late Future futureAlbum;
+
+  @override
   void initState() {
-    fetchUser();
+    super.initState();
+    futureAlbum = fetchUser();
   }
 
-  fetchUser() async {
-
-    await Future.delayed(Duration(milliseconds: 1500), () {
-      setState(() {
-        final firebaseUser =  FirebaseAuth.instance.currentUser!;
-         FirebaseFirestore.instance
-            .collection('users')
-            .doc(firebaseUser.uid)
-            .get()
-            .then((ds) {
-          name = ds.data()!["firstName"];
-          uid = firebaseUser.uid;
-        }).catchError((e) {
-          print(e);
-        });
-      });
-    });
+  Future fetchUser() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    uid = firebaseUser.uid;
+    if(!uid.isEmpty){
+      DocumentSnapshot ds = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+      name = ds.get('firstName');
+    }
 
   }
 
@@ -50,27 +42,55 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: GotoScreen,
-          child: const Icon(
-            Icons.account_circle,
-            color: Colors.white,
-            size: 30.0,
-          ),
-        ),
-        title: Text(name),
-        actions: [
-          GestureDetector(
-            onTap: () {},
-            child: const Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-              size: 30.0,
+      appBar: AppBar(elevation: 0, title: Text("Shop tools")),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 70.0,
+            color: Color(0xFF34A8DB),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: GotoScreen,
+                      child: const Icon(
+                        Icons.account_circle,
+                        color: Colors.white,
+                        size: 30.0,
+                      ),
+                    )),
+                Expanded(
+                    flex: 8,
+                    child: FutureBuilder(
+                      future: futureAlbum,
+                      builder: (context, snapshot) {
+                        return Text(
+                          name,
+                          style: const TextStyle(
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        );
+                      },
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: const Icon(
+                        Icons.shopping_cart,
+                        color: Colors.white,
+                        size: 30.0,
+                      ),
+                    ))
+              ],
             ),
           )
         ],
-        elevation: 0,
       ),
     );
   }
