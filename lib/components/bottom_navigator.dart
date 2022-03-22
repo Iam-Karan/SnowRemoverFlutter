@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:snow_remover/UiScreen/home_screen.dart';
 import 'package:snow_remover/UiScreen/home_screen_redo.dart';
 import 'package:snow_remover/UiScreen/orders_screen.dart';
-import 'aboutus_screen.dart';
-import 'service_screen.dart';
+import '../UiScreen/aboutus_screen.dart';
+import '../UiScreen/service_screen.dart';
 import 'package:snow_remover/constant.dart' as constant;
 
 class BottomNav extends StatefulWidget {
