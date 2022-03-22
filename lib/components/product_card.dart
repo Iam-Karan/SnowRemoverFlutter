@@ -43,9 +43,12 @@ class ProductCard extends StatelessWidget {
             } else {
               String? imageUrl = snapshot.data;
               return Card(
-                elevation: 4.0,
-                child: Column(
-                  children: [
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                elevation: 5,
+               // child: Column(
+               //   children: [
                     // SizedBox(
                     //   height: screenHeight * 0.20,
                     //   width: screenWidth * 0.20,
@@ -53,7 +56,7 @@ class ProductCard extends StatelessWidget {
                     //     image: NetworkImage(imageUrl!),
                     //   ),
                     // ),
-                    Container(
+                  child:  Container(
                       width: MediaQuery.of(context).size.width * 0.35,
                       height: MediaQuery.of(context).size.height * 0.18,
                       alignment: Alignment.bottomLeft,
@@ -69,10 +72,12 @@ class ProductCard extends StatelessWidget {
                               height: MediaQuery.of(context).size.height * 0.15,
                             ),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              brand + "   \$" + price.toString(),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+
+                            Text(
+                              brand ,
                               maxLines: 1,
                               textAlign: TextAlign.start,
                               style: const TextStyle(
@@ -80,12 +85,22 @@ class ProductCard extends StatelessWidget {
                                 fontSize: 14.0,
                               ),
                             ),
+                            Text(
+                              "   \$" + price.toString(),
+                              maxLines: 1,
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                            ]
                           )
                         ],
                       ),
                     ),
-                  ],
-                ),
+                //  ],
+              //  ),
               );
             }
         }

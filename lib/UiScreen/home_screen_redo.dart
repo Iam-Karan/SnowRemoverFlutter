@@ -78,40 +78,43 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Shop tools"),
-        bottom: AppBar(
-            title: Column(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              width: double.infinity,
-              height: 40,
-              child: Center(
-                child: TextField(
-                  controller: controller,
-                  textAlign: TextAlign.center,
-                  onChanged: _onSearchChanged,
-                  // onChanged: (query) {
-                  //   setState(() {
-                  //     searchValue = query;
-                  //   });
-                  // },
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+          title: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Text("Shop tools"),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(55.0),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    width: double.infinity,
+                    height: 40,
+                    child: Center(
+                      child: TextField(
+                        controller: controller,
+                        textAlign: TextAlign.center,
+                        onChanged: _onSearchChanged,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(50, 0, 0, 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          hintText: "Search for tools",
+                          prefixIcon: const Icon(Icons.search),
+                        ),
+                      ),
                     ),
-                    hintText: "Search for tools",
-                    prefixIcon: const Icon(Icons.search),
                   ),
-                ),
+                ],
               ),
             ),
-          ],
-        )),
-      ),
+          )),
       body: Column(children: [
         Padding(
           padding: const EdgeInsets.all(10),
@@ -128,13 +131,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                     elevation: 16,
                     style: const TextStyle(color: Colors.black),
                     onChanged: _onDropDownChanged,
-                    // (String? newValue) {
-                    //   print(newValue);
-                    //   setState(() {
-                    //     dropdownValue = newValue!;
-                    //   });
-                    //   print("newValue after set state" + dropdownValue);
-                    // }
                     items: constant.filterOptions
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(

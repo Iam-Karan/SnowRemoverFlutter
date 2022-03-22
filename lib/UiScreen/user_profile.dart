@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../components/toast_message/ios_Style.dart';
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
 
@@ -8,22 +11,53 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+
+  String uid = "";
+  String name= "";
+  String email = "";
+  Future<DocumentSnapshot> getUserData() async{
+    final firebaseUser =  FirebaseAuth.instance.currentUser!;
+     uid = firebaseUser.uid;
+     DocumentSnapshot ds = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+     name = ds.get('firstName');
+     email = ds.get('email');
+     print(name+''+email);
+     return ds;
+  }
+
+  void SignOut(){
+    FirebaseAuth.instance.signOut();
+    showOverlay((context, t) {
+      return Opacity(
+        opacity: t,
+        child: const IosStyleToast(label: "Logout successfully"),
+      );
+    });
+    Navigator.pushReplacementNamed(context, '/bottom_nav');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF34A8DB),
       appBar: AppBar(
-        leading: const Icon(
-          Icons.arrow_back_ios,
-          color: Color(0xFF34A8DB),
-          size: 30.0,
-        ),
-        title: const Text("User Profile"),
-        actions: const [
-          Icon(
-            Icons.logout_rounded,
+        leading:  GestureDetector(
+          onTap: (){Navigator.pushReplacementNamed(context, '/bottom_nav');},
+          child:const Icon(
+            Icons.arrow_back_ios,
             color: Colors.white,
             size: 30.0,
+          ),
+        ),
+        title: const Text("User Profile"),
+        actions: [
+          GestureDetector(
+            onTap: (){SignOut();},
+            child: const Icon(
+              Icons.logout_rounded,
+              color: Colors.white,
+              size: 30.0,
+            ),
           )
         ],
         elevation: 0,
@@ -58,155 +92,202 @@ class _UserProfileState extends State<UserProfile> {
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Expanded(
-                        child: Row(
-                          children:   [
-                            const Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Name",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24.0),
-                                )),
-                            Expanded(
-                              flex: 2,
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  labelStyle: const TextStyle(fontSize: 18),
-                                  labelText: "Name",
-                                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                                  counterStyle: const TextStyle(fontSize: 60),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: const BorderSide(),
+                child: FutureBuilder(
+                  future: getUserData(),
+                  builder: (context, snapshot) {
+                     return Column(
+                        children: [
+                          Expanded(
+                              child: Row(
+                                children:   [
+                                  const Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Name",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24.0),
+                                      )),
+                                  Expanded(
+                                    flex: 2,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        labelStyle: const TextStyle(fontSize: 18),
+                                        labelText: "Name",
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        counterStyle: const TextStyle(fontSize: 60),
+                                        fillColor: Colors.white,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(15.0),
+                                          borderSide: const BorderSide(),
+                                        ),
+                                      ),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return ("Please Enter Your Name");
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {},
+                                    ),
                                   ),
-                                ),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return ("Please Enter Your Name");
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value) {},
-                              ),
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        child: Row(
-                          children: const [
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Email",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24.0),
-                                )),
-                            Expanded(
-                                flex: 2,
-                                child: Text(
-                                  "Example@email.com",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24.0),
-                                )),
-                          ],
-                        )),
-                     Expanded(
-                        child: Row(
-                          children:  [
-                            const Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "Password",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24.0),
-                                )),
-                            Expanded(
-                              flex: 2,
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  labelStyle: const TextStyle(fontSize: 18),
-                                  labelText: "Password",
-                                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                                  counterStyle: const TextStyle(fontSize: 60),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: const BorderSide(),
-                                  ),
-                                ),
-                                keyboardType: TextInputType.visiblePassword,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return ("Please Enter Your Password");
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value) {},
-                              ),),
-                          ],
-                        )),
-                    Expanded(
-                        child: Row(
-                          children:  [
-                            const Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24.0),
-                                )),
-                            Expanded(
-                              flex: 2,
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  labelStyle: const TextStyle(fontSize: 18),
-                                  labelText: "Confirm Passwords",
-                                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                                  counterStyle: const TextStyle(fontSize: 60),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: const BorderSide(),
-                                  ),
-                                ),
-                                keyboardType: TextInputType.visiblePassword,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return ("Please Enter Your Confirm Password");
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value) {},
-                              ),),
-                          ],
-                        ))
-                  ],
+                                ],
+                              )),
+                          Expanded(
+                              child: Row(
+                                children:  [
+                                  const Expanded(
+                                      flex: 1,
+                                      child:  Text(
+                                        "email",
+                                        style:  TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24.0),
+                                      )),
+                                  Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        email,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24.0),
+                                      )),
+                                ],
+                              )),
+                          Expanded(
+                              child: Row(
+                                children:  [
+                                  const Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "Password",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24.0),
+                                      )),
+                                  Expanded(
+                                    flex: 2,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        labelStyle: const TextStyle(fontSize: 18),
+                                        labelText: "Old Password",
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        counterStyle: const TextStyle(fontSize: 60),
+                                        fillColor: Colors.white,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(15.0),
+                                          borderSide: const BorderSide(),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.visiblePassword,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return ("Please Enter Your Password");
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {},
+                                    ),),
+                                ],
+                              )),
+                          Expanded(
+                              child: Row(
+                                children:  [
+                                  const Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24.0),
+                                      )),
+                                  Expanded(
+                                    flex: 2,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        labelStyle: const TextStyle(fontSize: 18),
+                                        labelText: "New Password",
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        counterStyle: const TextStyle(fontSize: 60),
+                                        fillColor: Colors.white,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(15.0),
+                                          borderSide: const BorderSide(),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.visiblePassword,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return ("Please Enter Your Password");
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {},
+                                    ),),
+                                ],
+                              )),
+                          Expanded(
+                              child: Row(
+                                children:  [
+                                  const Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24.0),
+                                      )),
+                                  Expanded(
+                                    flex: 2,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        labelStyle: const TextStyle(fontSize: 18),
+                                        labelText: "Confirm Passwords",
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        counterStyle: const TextStyle(fontSize: 60),
+                                        fillColor: Colors.white,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(15.0),
+                                          borderSide: const BorderSide(),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.visiblePassword,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return ("Please Enter Your Confirm Password");
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {},
+                                    ),),
+                                ],
+                              ))
+                        ],
+                      );
+
+                  },
                 ),
               ),
             ),
