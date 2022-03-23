@@ -4,6 +4,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../components/toast_message/ios_Style.dart';
 
+
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
 
@@ -15,6 +16,7 @@ class _UserProfileState extends State<UserProfile> {
   String uid = "";
   String name = "user";
   String email = "";
+
 
   late TextEditingController nameEditingController = TextEditingController();
   late TextEditingController oldPasswordEditingController = TextEditingController();
@@ -46,6 +48,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         backgroundColor: Color(0xFF34A8DB),
         appBar: AppBar(
@@ -86,7 +89,7 @@ class _UserProfileState extends State<UserProfile> {
                     height: 10.0,
                   ),
                   Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -106,7 +109,7 @@ class _UserProfileState extends State<UserProfile> {
                     height: 20.0,
                   ),
                   Expanded(
-                    flex: 3,
+                    flex: 6,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FutureBuilder(
@@ -124,8 +127,7 @@ class _UserProfileState extends State<UserProfile> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 24.0),
-                                      )),
+                                            fontSize: 20),)),
                                   Expanded(
                                     flex: 2,
                                     child: TextFormField(
@@ -139,7 +141,7 @@ class _UserProfileState extends State<UserProfile> {
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                         counterStyle:
-                                            const TextStyle(fontSize: 60),
+                                            const TextStyle(fontSize: 20),
                                         fillColor: Colors.white,
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -173,7 +175,7 @@ class _UserProfileState extends State<UserProfile> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 24.0),
+                                            fontSize: 20.0),
                                       )),
                                   Expanded(
                                       flex: 2,
@@ -182,7 +184,7 @@ class _UserProfileState extends State<UserProfile> {
                                         style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 24.0),
+                                            fontSize: 20.00),
                                       )),
                                 ],
                               )),
@@ -196,7 +198,7 @@ class _UserProfileState extends State<UserProfile> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 24.0),
+                                            fontSize: 20.0),
                                       )),
                                   Expanded(
                                     flex: 2,
@@ -205,12 +207,12 @@ class _UserProfileState extends State<UserProfile> {
                                       decoration: InputDecoration(
                                         filled: true,
                                         labelStyle:
-                                            const TextStyle(fontSize: 18),
+                                            const TextStyle(fontSize: 20),
                                         labelText: "Old Password",
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                         counterStyle:
-                                            const TextStyle(fontSize: 60),
+                                            const TextStyle(fontSize: 20),
                                         fillColor: Colors.white,
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -228,6 +230,9 @@ class _UserProfileState extends State<UserProfile> {
                                   ),
                                 ],
                               )),
+                              const SizedBox(
+                                height: 2.0,
+                              ),
                               Expanded(
                                   child: Row(
                                 children: [
@@ -238,7 +243,7 @@ class _UserProfileState extends State<UserProfile> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 24.0),
+                                            fontSize: 20.0),
                                       )),
                                   Expanded(
                                     flex: 2,
@@ -247,12 +252,12 @@ class _UserProfileState extends State<UserProfile> {
                                       decoration: InputDecoration(
                                         filled: true,
                                         labelStyle:
-                                            const TextStyle(fontSize: 18),
+                                            const TextStyle(fontSize: 20),
                                         labelText: "New Password",
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                         counterStyle:
-                                            const TextStyle(fontSize: 60),
+                                            const TextStyle(fontSize: 20),
                                         fillColor: Colors.white,
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -270,6 +275,9 @@ class _UserProfileState extends State<UserProfile> {
                                   ),
                                 ],
                               )),
+                              const SizedBox(
+                                height: 2.0,
+                              ),
                               Expanded(
                                   child: Row(
                                 children: [
@@ -280,7 +288,7 @@ class _UserProfileState extends State<UserProfile> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 24.0),
+                                            fontSize: 20.0),
                                       )),
                                   Expanded(
                                     flex: 2,
@@ -290,12 +298,12 @@ class _UserProfileState extends State<UserProfile> {
                                       decoration: InputDecoration(
                                         filled: true,
                                         labelStyle:
-                                            const TextStyle(fontSize: 18),
+                                            const TextStyle(fontSize: 20),
                                         labelText: "Confirm Passwords",
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                         counterStyle:
-                                            const TextStyle(fontSize: 60),
+                                            const TextStyle(fontSize: 20),
                                         fillColor: Colors.white,
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -320,14 +328,13 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: MaterialButton(
-                            height: 60.0,
                             minWidth: double.infinity,
                             color: Colors.deepOrange,
                             onPressed: () {
