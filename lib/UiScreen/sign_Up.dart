@@ -25,9 +25,295 @@ class _SignUpState extends State<SignUp> {
   // firebase
   final _auth = FirebaseAuth.instance;
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var screenHeight = MediaQuery.of(context).size.height;
+    return screenHeight < 550 ? Scaffold(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Container(
+            height: MediaQuery.of(context).size.height * 1,
+            width: MediaQuery.of(context).size.width * 1,
+            decoration: const BoxDecoration(color: Color(0xFF34A8DB)),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned(
+                      right: -35,
+                      bottom: -100,
+                      child: Container(
+                          alignment: Alignment.center,
+                          child: Image.asset("assets/images/Rectangle 35.png")),
+                    ),
+                    Positioned(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                              fontSize: 50,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.12,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                 // height: MediaQuery.of(context).size.height * 0.08,
+                  child: TextFormField(
+
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 10),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
+                      filled: true,
+                      labelStyle: const TextStyle(fontSize: 18),
+                      labelText: "Name",
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(),
+                      ),
+                    ),
+                    controller: nameEditingController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: Colors.black,fontSize: 10),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return ("Please Enter Your Name");
+                      }
+                      // reg expression for email validation
+                      if (!RegExp("^[a-zA-Z0-9+_.-]+.[a-z]").hasMatch(value)) {
+                        return ("Invaid email");
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      nameEditingController.text = value!;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                 // height: MediaQuery.of(context).size.height * 0.08,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 10),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                      filled: true,
+                      prefixIcon: const Icon(Icons.mail),
+                      labelStyle: const TextStyle(fontSize: 18),
+                      labelText: "Email",
+                      counterStyle: const TextStyle(fontSize: 60),
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(),
+                      ),
+                    ),
+                    controller: emailEditingController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: Colors.black),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return ("Please Enter Your Email");
+                      }
+                      // reg expression for email validation
+                      if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                          .hasMatch(value)) {
+                        return ("Invaid email");
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      emailEditingController.text = value!;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                //  height: MediaQuery.of(context).size.height * 0.08,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 10),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                      filled: true,
+                      prefixIcon: const Icon(Icons.vpn_key),
+                      labelStyle: const TextStyle(fontSize: 18),
+                      labelText: "Password",
+
+                      counterStyle: const TextStyle(fontSize: 60),
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(),
+                      ),
+                    ),
+                    controller: passwordEditingController,
+                   obscureText: true,
+                    style: const TextStyle(color: Colors.black,fontSize: 12),
+                    validator: (value) {
+                      RegExp regex = RegExp(r'^.{6,}$');
+                      if (value!.isEmpty) {
+                        return ("Please Enter Your Password");
+                      }
+                      // reg expression for email validation
+                      if (!regex.hasMatch(value)) {
+                        return ("Must be larger then 6");
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      passwordEditingController.text = value!;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                 // height: MediaQuery.of(context).size.height * 0.08,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 10),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                      filled: true,
+
+                      prefixIcon: const Icon(Icons.vpn_key),
+                      labelStyle: const TextStyle(fontSize: 18),
+                      labelText: "Confirm Password",
+                      counterStyle: const TextStyle(fontSize: 60),
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(),
+                      ),
+                    ),
+                    controller: confirmPasswordEditingController,
+                    obscureText: true,
+                    style: const TextStyle(color: Colors.black),
+                    validator: (value) {
+                      RegExp regex = RegExp(r'^.{6,}$');
+                      if (value!.isEmpty) {
+                        return ("Please Enter Your Password");
+                      }
+                      // reg expression for email validation
+                      if (!regex.hasMatch(value)) {
+                        return ("Must be larger then 6");
+                      }
+                      if (confirmPasswordEditingController.text !=
+                          passwordEditingController.text) {
+                        return "Password don't match";
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      passwordEditingController.text = value!;
+                    },
+                  ),
+                ),
+              //  SizedBox(
+            //      height: MediaQuery.of(context).size.height * 0.0,
+             //   ),
+                ElevatedButton(
+                  child: Text('SIGN UP',
+                      style: GoogleFonts.commissioner(
+                          textStyle: const TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w700))),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 5,
+                    fixedSize: const Size(250, 25),
+                    onPrimary: Colors.white,
+                    primary: Colors.red,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                  onPressed: () {
+                    signUp(
+                        emailEditingController.text,
+                        passwordEditingController.text,
+                        nameEditingController.text);
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+            /*    ElevatedButton(
+                  child: Text('SIGN UP WITH',
+                      style: GoogleFonts.commissioner(
+                          textStyle: const TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w700))),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 5,
+                    fixedSize: const Size(300, 45),
+                    onPrimary: Colors.white,
+                    primary: Colors.purple,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                  onPressed: () {},
+                ), */
+             //  SizedBox(
+             //     height: MediaQuery.of(context).size.height * 0.01,
+             //   ),
+                const Divider(
+                  height: 2,
+                  thickness: 3,
+                  color: Colors.white,
+                  endIndent: 30,
+                  indent: 30,
+                ),
+            //    SizedBox(
+              //    height: MediaQuery.of(context).size.height * 0.01,
+           //     ),
+                SizedBox(
+                  height: screenHeight * 0.06,
+                  child: TextButton(
+
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignIn(key: UniqueKey())));
+                    },
+                    child: const Text(
+                      "Already have a account Sign In ",
+                      style: TextStyle(fontSize: 15, color: Colors.white),textHeightBehavior: TextHeightBehavior(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    )
+        : Scaffold(
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -68,11 +354,12 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.10,
+                //  height: MediaQuery.of(context).size.height * 0.10,
                   child: TextFormField(
                     decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 10),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //contentPadding: const EdgeInsets.symmetric(vertical: 19.0, horizontal: 10.0),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 19.0, horizontal: 10.0),
                       filled: true,
                       labelStyle: const TextStyle(fontSize: 18),
                       labelText: "Name",
@@ -105,11 +392,12 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.10,
+                //  height: MediaQuery.of(context).size.height * 0.10,
                   child: TextFormField(
                     decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 10),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //contentPadding: const EdgeInsets.symmetric(vertical: 19.0, horizontal: 10.0),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 19.0, horizontal: 10.0),
                       filled: true,
                       prefixIcon: const Icon(Icons.mail),
                       labelStyle: const TextStyle(fontSize: 18),
@@ -145,11 +433,12 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.10,
+                 // height: MediaQuery.of(context).size.height * 0.10,
                   child: TextFormField(
                     decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 10),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //contentPadding: const EdgeInsets.symmetric(vertical: 19.0, horizontal: 10.0),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 19.0, horizontal: 10.0),
                       filled: true,
                       prefixIcon: const Icon(Icons.vpn_key),
                       labelStyle: const TextStyle(fontSize: 18),
@@ -186,11 +475,12 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.10,
+                 // height: MediaQuery.of(context).size.height * 0.10,
                   child: TextFormField(
                     decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 10),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //contentPadding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 10.0),
+                      contentPadding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 10.0),
                       filled: true,
                       prefixIcon: const Icon(Icons.vpn_key),
                       labelStyle: const TextStyle(fontSize: 18),
@@ -252,7 +542,7 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
-                ElevatedButton(
+                /*    ElevatedButton(
                   child: Text('SIGN UP WITH',
                       style: GoogleFonts.commissioner(
                           textStyle: const TextStyle(
@@ -267,7 +557,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   onPressed: () {},
-                ),
+                ), */
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.01,
                 ),
