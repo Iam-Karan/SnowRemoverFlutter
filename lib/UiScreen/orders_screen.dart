@@ -10,7 +10,6 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  final _auth = FirebaseAuth.instance;
   String uid = "";
   String name = "Hi, user";
   late Future futureAlbum;
@@ -24,14 +23,14 @@ class _OrderScreenState extends State<OrderScreen> {
   Future fetchUser() async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
     uid = firebaseUser.uid;
-    if(!uid.isEmpty){
+    if(uid.isNotEmpty){
       DocumentSnapshot ds = await FirebaseFirestore.instance.collection("users").doc(uid).get();
       name = ds.get('firstName');
     }
 
   }
 
-  void GotoScreen() {
+  void goToScreen() {
     if (uid.isEmpty) {
       Navigator.pushReplacementNamed(context, '/SignIn');
     } else {
@@ -42,55 +41,62 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(elevation: 0, title: Text("Shop tools")),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 70.0,
-            color: Color(0xFF34A8DB),
-            child: Row(
+      body: Container(
+        color: const Color(0xFF34A8DB),
+        child: SafeArea(
+          child: Container(
+            color: Colors.white,
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: GotoScreen,
-                      child: const Icon(
-                        Icons.account_circle,
-                        color: Colors.white,
-                        size: 30.0,
-                      ),
-                    )),
-                Expanded(
-                    flex: 8,
-                    child: FutureBuilder(
-                      future: futureAlbum,
-                      builder: (context, snapshot) {
-                        return Text(
-                          name,
-                          style: const TextStyle(
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        );
-                      },
-                    )),
-                Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: const Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                        size: 30.0,
-                      ),
-                    ))
+                Container(
+                  width: double.infinity,
+                  height: 70.0,
+                  color: const Color(0xFF34A8DB),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: goToScreen,
+                            child: const Icon(
+                              Icons.account_circle,
+                              color: Colors.white,
+                              size: 30.0,
+                            ),
+                          )),
+                      Expanded(
+                          flex: 8,
+                          child: FutureBuilder(
+                            future: futureAlbum,
+                            builder: (context, snapshot) {
+                              return Text(
+                                name,
+                                style: const TextStyle(
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              );
+                            },
+                          )),
+                      Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: const Icon(
+                              Icons.shopping_cart,
+                              color: Colors.white,
+                              size: 30.0,
+                            ),
+                          ))
+                    ],
+                  ),
+                )
               ],
             ),
           )
-        ],
+        ),
       ),
     );
   }
