@@ -19,27 +19,30 @@ class _LaunchScreenState extends State<LaunchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 200.0,
-                height: 200.0,
-                child: const Image(
-                  image: AssetImage('assets/images/SnowRemoverLogo.png'),
+      body: Container(
+        color: primaryColor,
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SizedBox(
+                  width: 200.0,
+                  height: 200.0,
+                  child: Image(
+                    image: AssetImage('assets/images/SnowRemoverLogo.png'),
+                  ),
                 ),
-              ),
-              const Text(
-                "Snow Remover",
-                style: TextStyle(
-                    fontSize: 48.0,
-                    color: secondaryColor,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
+                Text(
+                  "Snow Remover",
+                  style: TextStyle(
+                      fontSize: 36.0,
+                      color: secondaryColor,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          )
         ),
       ),
     );
