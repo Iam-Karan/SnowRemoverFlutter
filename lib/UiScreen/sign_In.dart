@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +7,8 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:snow_remover/components/toast_message/ios_Style.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
+
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
 final _formKey = GlobalKey<FormState>();
@@ -25,11 +28,62 @@ class _SignInState extends State<SignIn> {
   final _auth = FirebaseAuth.instance;
 
   Map? userData;
+
+
+  var loading = false;
+
+  void logInWithFacebook() async {
+    setState(() {
+      loading = true;
+    });
+    try {
+      final facebookLogResult = await FacebookAuth.instance.login();
+      final userData = await FacebookAuth.instance.getUserData();
+      final facebookAuthCredential = FacebookAuthProvider.credential(facebookLogResult.accessToken!.token);
+      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      await FirebaseFirestore.instance.collection("users").add({
+        'email': userData['email'],
+        'Firstname': userData['name'],
+        'uid': userData['uid']
+      });
+      Navigator.pushNamed(context, '/bottom_nav');
+    }on FirebaseAuthException catch (e){
+      var title = '';
+      switch(e.code){
+        case 'account-exist-with-different-credential':
+          title = "this account with linked with different sign in provider";
+          break;
+        case 'invalid-credential':
+          title= "unKnown error has occered";
+          break;
+        case 'user-disabled':
+          title = "user account is disabled";
+          break;
+      }
+      showOverlay((context, t) {
+        return Opacity(
+          opacity: t,
+          child:  IosStyleToast(label: title),
+        );
+      });
+    }finally {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
-
-    var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    var screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -66,10 +120,16 @@ class _SignInState extends State<SignIn> {
                 ],
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.18,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.18,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.8,
                 // height: MediaQuery.of(context).size.height * 0.10,
                 child: TextFormField(
                   decoration: InputDecoration(
@@ -107,10 +167,16 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.02,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.8,
                 //height: MediaQuery.of(context).size.height * 0.10,
                 child: TextFormField(
                   decoration: InputDecoration(
@@ -147,7 +213,10 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.04,
               ),
               ElevatedButton(
                 child: Text('SIGN IN',
@@ -188,14 +257,20 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                   icon: Icon(Icons.facebook),
-                  onPressed: () async{
+                  onPressed: () async {
                     FirebaseAuth.instance
                         .authStateChanges()
                         .listen((User? user) {
                       if (user == null) {
-                        facebookLogin();
+                        logInWithFacebook();
                       } else {
-                        print('User is signed in!');
+                        showOverlay((context, t) {
+                          return Opacity(
+                            opacity: t,
+                            child:  IosStyleToast(label: "user is sign in"),
+                          );
+                        });
+                        Navigator.pushNamed(context, '/bottom_nav');
                       }
                     });
                   },
@@ -276,17 +351,18 @@ class _SignInState extends State<SignIn> {
       }
     }
   }
-  facebookLogin()async{
+
+ /* facebookLogin() async {
     final result = await FacebookAuth.i.login(
-      permissions: ["public_profile", "email"]
+        permissions: ["public_profile", "email"]
     );
-    if(result.status == LoginStatus.success){
+    if (result.status == LoginStatus.success) {
       var userData = await FacebookAuth.i.getUserData(
-        fields: "email,name"
+          fields: "email,name"
       );
-      Navigator.pushNamed(context, '/bottom_nav');
+
 
     }
-  }
+  }*/
 
 }
