@@ -324,7 +324,7 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
+                  height: MediaQuery.of(context).size.height * 0.07,
                 ),
                 Stack(
                   clipBehavior: Clip.none,
@@ -435,6 +435,7 @@ class _SignUpState extends State<SignUp> {
                   width: MediaQuery.of(context).size.width * 0.8,
                  // height: MediaQuery.of(context).size.height * 0.10,
                   child: TextFormField(
+                    obscureText: true,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(fontSize: 10),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -477,6 +478,7 @@ class _SignUpState extends State<SignUp> {
                   width: MediaQuery.of(context).size.width * 0.8,
                  // height: MediaQuery.of(context).size.height * 0.10,
                   child: TextFormField(
+                    obscureText: true,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(fontSize: 10),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -537,6 +539,7 @@ class _SignUpState extends State<SignUp> {
                         emailEditingController.text,
                         passwordEditingController.text,
                         nameEditingController.text);
+
                   },
                 ),
                 SizedBox(
@@ -655,8 +658,6 @@ class _SignUpState extends State<SignUp> {
         child: const IosStyleToast(label: "Account created"),
       );
     });
-    Navigator.of(context).pushNamed(
-      '/SignIn',
-    );
+    Navigator.pushNamed(context, '/bottom_nav');
   }
 }
