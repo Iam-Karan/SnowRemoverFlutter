@@ -44,8 +44,8 @@ class _SignInState extends State<SignIn> {
       final String? uid = FirebaseAuth.instance.currentUser?.uid;
       var collection = await FirebaseFirestore.instance.collection('users');
       await collection.doc(uid).set({
+        'firstName': userData['name'],
         'email': userData['email'],
-        'Firstname': userData['name'],
         'uid': uid
       }).then((value) => print("added"));
       // await FirebaseFirestore.instance.collection("users").add({
@@ -75,7 +75,7 @@ class _SignInState extends State<SignIn> {
       });
     }
   }
-
+  String searchValue = "";
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
