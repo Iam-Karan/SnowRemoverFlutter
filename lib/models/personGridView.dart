@@ -4,10 +4,8 @@ import 'package:snow_remover/models/Person.dart';
 
 import 'PersonCard.dart';
 
-
 class PersonGridView extends StatefulWidget {
-  const PersonGridView({Key? key, required this.gridData})
-      : super(key: key);
+  const PersonGridView({Key? key, required this.gridData}) : super(key: key);
   final List<person> gridData;
 
   @override
@@ -35,7 +33,12 @@ class _PersonGridViewState extends State<PersonGridView> {
               child: Container(
                 alignment: Alignment.center,
                 child:*/
-                personCard(heading: gridData[index].description, cardImage: gridData[index].imageurl, supportingText: gridData[index].name, id: gridData[index].id, price: gridData[index].numberOfOrder);
+                  personCard(
+                      heading: gridData[index].description,
+                      cardImage: gridData[index].imageurl,
+                      supportingText: gridData[index].name,
+                      id: gridData[index].id,
+                      price: gridData[index].numberOfOrder);
             }),
       ),
     );

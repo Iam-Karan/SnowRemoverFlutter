@@ -25,7 +25,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
       CollectionReference _persons =
           FirebaseFirestore.instance.collection('person');
       QuerySnapshot querySnapshot = await _persons.get();
-     querySnapshot.docs.map((e) => print(e.data().toString()));
       List<person> apiData = querySnapshot.docs.map((e) {
         singleElem = e.data() as Map<String, dynamic>;
         singleElem["imageurl"] = singleElem["imageurl"];
@@ -52,7 +51,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     double Width = (MediaQuery.of(context).size.width);
     return Scaffold(
       appBar: AppBar(

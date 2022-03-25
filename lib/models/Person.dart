@@ -1,7 +1,7 @@
 class person {
   final int age;
   final String description;
-  final int id;
+  final String id;
   final String imageurl;
   final String name;
   final int numberOfOrder;

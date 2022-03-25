@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:snow_remover/utility.dart' as utility;
 
-
 class personCard extends StatelessWidget {
   final String heading;
   final String cardImage;
   final String supportingText;
-  final int id;
+  final String id;
   final int price;
 
-
-  const personCard(
-      {Key? key,
-        required this.heading,
-        required this.cardImage,
-        required this.supportingText,
-        required this.id,
-        required this.price,
-        })
-      : super(key: key);
+  const personCard({
+    Key? key,
+    required this.heading,
+    required this.cardImage,
+    required this.supportingText,
+    required this.id,
+    required this.price,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +51,7 @@ class personCard extends StatelessWidget {
                 //     image: NetworkImage(imageUrl!),
                 //   ),
                 // ),
-                child:  Container(
+                child: Container(
                   width: MediaQuery.of(context).size.width * 0.35,
                   height: MediaQuery.of(context).size.height * 0.18,
                   alignment: Alignment.bottomLeft,
@@ -73,9 +70,8 @@ class personCard extends StatelessWidget {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-
                             Text(
-                              supportingText ,
+                              supportingText,
                               maxLines: 1,
                               textAlign: TextAlign.start,
                               style: const TextStyle(
@@ -92,8 +88,7 @@ class personCard extends StatelessWidget {
                                 fontSize: 14.0,
                               ),
                             ),
-                          ]
-                      )
+                          ])
                     ],
                   ),
                 ),
