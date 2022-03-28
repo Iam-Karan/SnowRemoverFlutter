@@ -4,7 +4,7 @@ import 'package:snow_remover/UiScreen/orders_screen.dart';
 import '../UiScreen/aboutus_screen.dart';
 import '../UiScreen/service_screen.dart';
 import 'package:snow_remover/constant.dart' as constant;
-
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
 
@@ -30,9 +30,28 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: Center(child:_widgetOptions.elementAt(_selectedIndex)),
+        bottomNavigationBar: ConvexAppBar(
+         backgroundColor : constant.primaryColor,
+
+          //style: TabStyle.flip,
+          items: [
+            TabItem(icon: Icons.home, title: 'Home'),
+            TabItem(icon: Icons.person, title: 'Services'),
+            TabItem(icon: Icons.menu, title: 'menu'),
+            TabItem(icon: Icons.more_vert, title: ''),
+
+          ],
+          initialActiveIndex: 0,//optional, default as 0
+          onTap: (int i) =>  _onItemTapped(i),
+
+
+        )
+
+     /* body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex)
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -60,7 +79,7 @@ class _BottomNavState extends State<BottomNav> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
         onTap: _onItemTapped,
-      ),
+      ),*/
     );
   }
 }
