@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:snow_remover/utility.dart' as utility;
-
+import './Generate_Image_Url.dart';
 class personCard extends StatelessWidget {
   final String heading;
   final String cardImage;
   final String supportingText;
-  final String id;
+  final int id;
   final int price;
 
   const personCard({
@@ -76,7 +76,7 @@ class personCard extends StatelessWidget {
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
-                                fontSize: 14.0,
+                                fontSize: 18.0,
                               ),
                             ),
                             Text(
@@ -85,7 +85,7 @@ class personCard extends StatelessWidget {
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
-                                fontSize: 14.0,
+                                fontSize: 18.0,
                               ),
                             ),
                           ])
@@ -98,7 +98,7 @@ class personCard extends StatelessWidget {
             }
         }
       }),
-      future: utility.generateImageUrl(cardImage),
+      future: generateImageUrl2(cardImage),
     );
   }
 }

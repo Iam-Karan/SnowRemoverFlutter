@@ -44,6 +44,7 @@ dependencies:
   overlay_support: ^1.2.1
   flutter_facebook_auth: ^4.1.2
   material_floating_search_bar: ^0.3.7
+  convex_bottom_bar: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/Rectangle 35.png
+    - assets/images/1.jpg
+    - assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

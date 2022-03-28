@@ -15,11 +15,13 @@ class PersonGridView extends StatefulWidget {
 class _PersonGridViewState extends State<PersonGridView> {
   @override
   Widget build(BuildContext context) {
+
     final List<person> gridData = widget.gridData;
     int itemCount = widget.gridData.length;
+    print(itemCount);
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -37,8 +39,8 @@ class _PersonGridViewState extends State<PersonGridView> {
                       heading: gridData[index].description,
                       cardImage: gridData[index].imageurl,
                       supportingText: gridData[index].name,
-                      id: gridData[index].id,
-                      price: gridData[index].numberOfOrder);
+                      id: gridData[index].personId,
+                      price: gridData[index].personId);
             }),
       ),
     );
