@@ -21,15 +21,15 @@ Future<String> generateImageUrl2(String imageName) async {
 List<person> applyFilter2(List<person> inputData, String type) {
   List<person> result = [];
   switch (type) {
-    case 'Avilable':
+    case 'Avilable' :
       result = inputData.where((element) => element.personId > 0).toList();
       break;
     case 'low to high':
-      inputData.sort(((a, b) => a.Price.compareTo(b.Price)));
+      inputData.where((element) => element.personId > 0).toList();
       result = inputData;
       break;
     case 'High to low':
-      inputData.sort(((a, b) => b.Price.compareTo(a.Price)));
+      inputData.sort(((a, b) => a.Price.compareTo(b.Price)));
       result = inputData;
       break;
     default:

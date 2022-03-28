@@ -35,8 +35,8 @@ class _BottomNavState extends State<BottomNav> {
       body: Center(child:_widgetOptions.elementAt(_selectedIndex)),
         bottomNavigationBar: ConvexAppBar(
          backgroundColor : constant.primaryColor,
-
-          //style: TabStyle.reactCircle,
+top: -10,
+        // style: TabStyle.flip,
           color: Colors.white,
           items: [
             TabItem(icon: Icons.home, title: 'Home'),
