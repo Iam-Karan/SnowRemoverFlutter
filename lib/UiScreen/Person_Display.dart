@@ -187,7 +187,7 @@ class _personDisplayState extends State<personDisplay> {
                                       ]),
                                       Row(children: [
                                         SizedBox(width: 15),
-                                        Text("Quantity:  ",
+                                        Text("Number of hours:  ",
                                             style: GoogleFonts.roboto(
                                                 textStyle: TextStyle(
                                                     fontSize: 24,
