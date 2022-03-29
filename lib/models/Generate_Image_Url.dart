@@ -29,7 +29,7 @@ List<person> applyFilter2(List<person> inputData, String type) {
       result = inputData;
       break;
     case 'High to low':
-      inputData.sort(((a, b) => a.Price.compareTo(b.Price)));
+      inputData.sort(((a, b) => b.personId.compareTo(a.personId)));
       result = inputData;
       break;
     default:
