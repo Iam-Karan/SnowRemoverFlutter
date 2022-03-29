@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:snow_remover/UiScreen/Product_Screen.dart';
 import 'package:snow_remover/utility.dart' as utility;
+import '../UiScreen/Person_Display.dart';
 import './Generate_Image_Url.dart';
+
 class personCard extends StatelessWidget {
   final String heading;
   final String cardImage;
-  final String supportingText;
+  final String name;
   final int id;
-  final int price;
+  final String price;
 
   const personCard({
     Key? key,
     required this.heading,
     required this.cardImage,
-    required this.supportingText,
+    required this.name,
     required this.id,
     required this.price,
   }) : super(key: key);
 
-
+  void SelectedRoute(BuildContext ctx) {
+    Navigator.push(
+      ctx,
+      MaterialPageRoute(
+          builder: (context) => personDisplay(
+                brand: name,
+                description: heading,
+                price: price,
+                image: cardImage,
+              )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return FutureBuilder<String>(
@@ -42,7 +53,7 @@ class personCard extends StatelessWidget {
             } else {
               String? imageUrl = snapshot.data;
               return InkWell(
-                onTap: () => {},
+                onTap: () => SelectedRoute(context),
                 hoverColor: Colors.yellow,
                 splashColor: Colors.yellow,
                 child: Card(
@@ -61,23 +72,23 @@ class personCard extends StatelessWidget {
                   // ),
                   child: Expanded(
                     child: Column(
-                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     // crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           flex: 6,
                           child: Image(
                             fit: BoxFit.fill,
                             image: NetworkImage(imageUrl!),
-                           // width: MediaQuery.of(context).size.height * 0.35,
-                          //  height: MediaQuery.of(context).size.height * 0.15,
+                            // width: MediaQuery.of(context).size.height * 0.35,
+                            //  height: MediaQuery.of(context).size.height * 0.15,
                           ),
                         ),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                supportingText,
+                                name,
                                 maxLines: 1,
                                 textAlign: TextAlign.start,
                                 style: const TextStyle(
