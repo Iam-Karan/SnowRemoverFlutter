@@ -81,7 +81,7 @@ class _SignInState extends State<SignIn> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     print(screenHeight);
-    return screenHeight < 550
+    return screenHeight < 600
         ? SingleChildScrollView(
             child: Scaffold(
               body: Form(
