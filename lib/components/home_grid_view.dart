@@ -40,6 +40,8 @@ class _HomeScreenGridViewState extends State<HomeScreenGridView> {
                 price: gridData[index].priceNumerical,
                 subHeading: gridData[index].selfId.toString(),
                 supportingText: gridData[index].description,
+                    quantity: gridData[index].stockUnit,
+                    video_url: gridData[index].videoURL,
               );
             }),
       ),
