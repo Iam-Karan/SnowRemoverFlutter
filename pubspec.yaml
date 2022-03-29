@@ -76,8 +76,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/Rectangle 35.png
-    - assets/images/1.jpg
-    - assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
