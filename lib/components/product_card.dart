@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snow_remover/UiScreen/Product_Screen.dart';
 import 'package:snow_remover/utility.dart' as utility;
 import 'package:snow_remover/constant.dart' as constant;
 
@@ -10,7 +11,8 @@ class ProductCard extends StatelessWidget {
   final String id;
   final double price;
   final String brand;
-
+  final int quantity;
+  final String video_url;
   const ProductCard(
       {Key? key,
       required this.heading,
@@ -19,11 +21,24 @@ class ProductCard extends StatelessWidget {
       required this.supportingText,
       required this.id,
       required this.price,
-      required this.brand})
+      required this.brand,
+     required this.quantity,
+        required this.video_url
+      })
       : super(key: key);
+
+
+  void  SelectedRoute(BuildContext ctx) {
+    Navigator.push(
+      ctx,
+      MaterialPageRoute(builder: (context) => productDisplay(video_url: video_url,brand: brand,description: supportingText,price: price,image: cardImage,)),
+
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return FutureBuilder<String>(
@@ -42,65 +57,68 @@ class ProductCard extends StatelessWidget {
               );
             } else {
               String? imageUrl = snapshot.data;
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                elevation: 5,
-               // child: Column(
-               //   children: [
-                    // SizedBox(
-                    //   height: screenHeight * 0.20,
-                    //   width: screenWidth * 0.20,
-                    //   child: Image(
-                    //     image: NetworkImage(imageUrl!),
-                    //   ),
-                    // ),
-                  child:  Container(
-                      width: MediaQuery.of(context).size.width * 0.35,
-                      height: MediaQuery.of(context).size.height * 0.18,
-                      alignment: Alignment.bottomLeft,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 6,
-                            child: Image(
-                              image: NetworkImage(imageUrl!),
-                              width: MediaQuery.of(context).size.height * 0.35,
-                              height: MediaQuery.of(context).size.height * 0.15,
+              return InkWell(
+                onTap: () => SelectedRoute(context),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  elevation: 5,
+                 // child: Column(
+                 //   children: [
+                      // SizedBox(
+                      //   height: screenHeight * 0.20,
+                      //   width: screenWidth * 0.20,
+                      //   child: Image(
+                      //     image: NetworkImage(imageUrl!),
+                      //   ),
+                      // ),
+                    child:  Container(
+                        width: MediaQuery.of(context).size.width * 0.35,
+                        height: MediaQuery.of(context).size.height * 0.18,
+                        alignment: Alignment.bottomLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 6,
+                              child: Image(
+                                image: NetworkImage(imageUrl!),
+                                width: MediaQuery.of(context).size.height * 0.35,
+                                height: MediaQuery.of(context).size.height * 0.15,
+                              ),
                             ),
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
 
-                            Text(
-                              brand ,
-                              maxLines: 1,
-                              textAlign: TextAlign.start,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14.0,
+                              Text(
+                                brand ,
+                                maxLines: 1,
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 14.0,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "   \$" + price.toString(),
-                              maxLines: 1,
-                              textAlign: TextAlign.start,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14.0,
+                              Text(
+                                "   \$" + price.toString(),
+                                maxLines: 1,
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 14.0,
+                                ),
                               ),
-                            ),
-                            ]
-                          )
-                        ],
+                              ]
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                //  ],
-              //  ),
+                  //  ],
+                //  ),
+                ),
               );
             }
         }
@@ -108,4 +126,5 @@ class ProductCard extends StatelessWidget {
       future: utility.generateImageUrl(cardImage),
     );
   }
+
 }
