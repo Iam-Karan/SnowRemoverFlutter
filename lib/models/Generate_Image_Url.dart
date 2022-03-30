@@ -25,11 +25,12 @@ List<person> applyFilter2(List<person> inputData, String type) {
       result = inputData.where((element) => element.personId > 0).toList();
       break;
     case 'low to high':
-      inputData.where((element) => element.personId > 0).toList();
+      inputData.sort((a, b) => a.Price.compareTo(b.Price));
       result = inputData;
       break;
     case 'High to low':
-      inputData.sort(((a, b) => b.personId.compareTo(a.personId)));
+//inputData.sort();
+      inputData.sort((a, b) => b.Price.compareTo(a.Price));
       result = inputData;
       break;
     default:

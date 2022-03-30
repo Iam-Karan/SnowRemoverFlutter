@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:page_animation_transition/animations/right_to_left_transition.dart';
+import 'package:page_animation_transition/page_animation_transition.dart';
 import 'package:snow_remover/UiScreen/Product_Screen.dart';
 import 'package:snow_remover/utility.dart' as utility;
-import 'package:snow_remover/constant.dart' as constant;
+
 
 class ProductCard extends StatelessWidget {
   final String heading;
@@ -29,11 +31,8 @@ class ProductCard extends StatelessWidget {
 
 
   void  SelectedRoute(BuildContext ctx) {
-    Navigator.push(
-      ctx,
-      MaterialPageRoute(builder: (context) => productDisplay(video_url: video_url,brand: brand,description: supportingText,price: price,image: cardImage,)),
+    Navigator.of(ctx).push(PageAnimationTransition(page: productDisplay(video_url: video_url,brand: brand,description: supportingText,price: price,image: cardImage,), pageAnimationType: RightToLeftTransition()));
 
-    );
   }
 
   @override

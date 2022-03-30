@@ -49,7 +49,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
   }
 
   _navigateToHome() async {
-    await Future.delayed(Duration(milliseconds: 1500), () {});
+    await Future.delayed(Duration(milliseconds: 1000), () {});
     Navigator.pushReplacementNamed(context, '/bottom_nav');
   }
 }

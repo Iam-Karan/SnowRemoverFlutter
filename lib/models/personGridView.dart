@@ -37,9 +37,9 @@ class _PersonGridViewState extends State<PersonGridView> {
                 personCard(
                     heading: gridData[index].description,
                     cardImage: gridData[index].imageurl,
-                    supportingText: gridData[index].name,
+                    name: gridData[index].name,
                     id: gridData[index].personId,
-                    price: gridData[index].personId);
+                    price: gridData[index].Price);
           }),
     );
     // ));
