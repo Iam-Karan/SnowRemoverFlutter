@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quantity_input/quantity_input.dart';
 import '../models/Generate_Image_Url.dart';
 
-
-
 class personDisplay extends StatefulWidget {
   String brand;
   String description;
@@ -31,8 +29,6 @@ class _personDisplayState extends State<personDisplay> {
 
   int simpleIntInput = 0;
 
-
-
   @override
   Widget build(BuildContext context) {
     productPrice = (widget.price).toString();
@@ -44,7 +40,7 @@ class _personDisplayState extends State<personDisplay> {
         title: Text("Details",
             style: GoogleFonts.roboto(
                 textStyle:
-                TextStyle(fontWeight: FontWeight.w500, fontSize: 24))),
+                    TextStyle(fontWeight: FontWeight.w500, fontSize: 24))),
       ),
       body: FutureBuilder<String>(
         builder: ((BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -67,18 +63,17 @@ class _personDisplayState extends State<personDisplay> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        //color: Colors.blue,
+                          //color: Colors.blue,
                           width: MediaQuery.of(context).size.width * 1,
                           height: MediaQuery.of(context).size.height * 0.4,
                           child: Stack(
                             children: [
-                               Image(
+                              Image(
                                 image: NetworkImage(imageUrl!),
                                 fit: BoxFit.contain,
                                 height: 220,
                                 alignment: Alignment.center,
-                                width:
-                                MediaQuery.of(context).size.width * 1,
+                                width: MediaQuery.of(context).size.width * 1,
                               ),
                               Positioned(
                                 child: GestureDetector(
@@ -94,7 +89,7 @@ class _personDisplayState extends State<personDisplay> {
                                 ),
                                 bottom: 20,
                                 left: ((MediaQuery.of(context).size.width * 1 -
-                                    50) /
+                                        50) /
                                     2),
                               ),
                               Positioned(
@@ -121,7 +116,7 @@ class _personDisplayState extends State<personDisplay> {
                           height: 600,
                           decoration: BoxDecoration(
                             borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(90)),
+                                BorderRadius.only(topLeft: Radius.circular(90)),
                             color: Colors.white,
                           ),
                           margin: EdgeInsets.all(2),
@@ -183,7 +178,7 @@ class _personDisplayState extends State<personDisplay> {
                                                     fontSize: 24,
                                                     color: Colors.blue,
                                                     fontWeight:
-                                                    FontWeight.w700))),
+                                                        FontWeight.w700))),
                                       ]),
                                       Row(children: [
                                         SizedBox(width: 15),
@@ -193,15 +188,13 @@ class _personDisplayState extends State<personDisplay> {
                                                     fontSize: 24,
                                                     color: Colors.blue,
                                                     fontWeight:
-                                                    FontWeight.w700))),
+                                                        FontWeight.w700))),
                                         QuantityInput(
                                           value: simpleIntInput,
-
                                           onChanged: (value) => setState(() =>
-                                          simpleIntInput = int.parse(value
-                                              .replaceAll(',', ''))),
+                                              simpleIntInput = int.parse(
+                                                  value.replaceAll(',', ''))),
                                           elevation: 2,
-
                                         ),
                                       ]),
                                       SizedBox(
@@ -209,7 +202,7 @@ class _personDisplayState extends State<personDisplay> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           ElevatedButton.icon(
                                             onPressed: () {},
@@ -218,7 +211,7 @@ class _personDisplayState extends State<personDisplay> {
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(20),
+                                                    BorderRadius.circular(20),
                                               ),
                                             ),
                                           ),

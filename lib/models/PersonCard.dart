@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:snow_remover/utility.dart' as utility;
+import 'package:page_animation_transition/animations/scale_animation_transition.dart';
+import 'package:page_animation_transition/page_animation_transition.dart';
+
 import '../UiScreen/Person_Display.dart';
 import './Generate_Image_Url.dart';
 
@@ -19,17 +21,15 @@ class personCard extends StatelessWidget {
     required this.price,
   }) : super(key: key);
 
-  void SelectedRoute(BuildContext ctx) {
-    Navigator.push(
-      ctx,
-      MaterialPageRoute(
-          builder: (context) => personDisplay(
-                brand: name,
-                description: heading,
-                price: price,
-                image: cardImage,
-              )),
-    );
+
+  void  SelectedRoute(BuildContext ctx) {
+    Navigator.of(ctx).push(PageAnimationTransition(page: personDisplay(
+      brand: name,
+      description: heading,
+      price: price,
+      image: cardImage,
+    ), pageAnimationType: ScaleAnimationTransition()));
+
   }
 
   @override
