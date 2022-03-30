@@ -98,7 +98,7 @@ Future<List<person>> fetchPersonsFromDatabase(bool applyArchiveCon) async {
       singleElem["imageurl"] = singleElem["imageurl"];
       singleElem["_id"] = e.reference.id;
       person temp = person(
-          singleElem["Price"],
+          double.parse(singleElem["Price"]),
           singleElem["age"],
           singleElem["description"],
           singleElem["_id"],

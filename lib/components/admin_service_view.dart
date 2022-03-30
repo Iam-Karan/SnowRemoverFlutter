@@ -25,7 +25,7 @@ class _AdminServiceViewState extends State<AdminServiceView> {
         itemBuilder: (context, index) => AdminServiceCard(
           cardImage: productData[index].imageurl,
           id: productData[index].id,
-          price: double.parse(productData[index].Price),
+          price: productData[index].Price,
           name: productData[index].name,
           archiveStatus: productData[index].archiveStatus,
           dataRef: productData,

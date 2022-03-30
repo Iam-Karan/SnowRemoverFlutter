@@ -8,7 +8,7 @@ import '../models/Generate_Image_Url.dart';
 class personDisplay extends StatefulWidget {
   String brand;
   String description;
-  String price;
+  double price;
   String image;
 
   @override
