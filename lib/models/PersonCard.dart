@@ -10,7 +10,7 @@ class personCard extends StatelessWidget {
   final String cardImage;
   final String name;
   final int id;
-  final String price;
+  final double price;
 
   const personCard({
     Key? key,

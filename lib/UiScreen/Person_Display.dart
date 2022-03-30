@@ -8,7 +8,7 @@ import '../models/Generate_Image_Url.dart';
 class personDisplay extends StatefulWidget {
   String brand;
   String description;
-  String price;
+  double price;
   String image;
 
   @override
@@ -31,7 +31,7 @@ class _personDisplayState extends State<personDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    productPrice = (widget.price).toString();
+    productPrice = (widget.price.toString());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

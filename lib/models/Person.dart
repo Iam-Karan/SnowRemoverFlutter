@@ -1,5 +1,5 @@
 class person {
-  final String Price;
+  final double Price;
   final int age;
   final String description;
   final String id;
