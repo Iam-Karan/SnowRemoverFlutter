@@ -21,15 +21,15 @@ class personCard extends StatelessWidget {
     required this.price,
   }) : super(key: key);
 
-
-  void  SelectedRoute(BuildContext ctx) {
-    Navigator.of(ctx).push(PageAnimationTransition(page: personDisplay(
-      brand: name,
-      description: heading,
-      price: price,
-      image: cardImage,
-    ), pageAnimationType: ScaleAnimationTransition()));
-
+  void SelectedRoute(BuildContext ctx) {
+    Navigator.of(ctx).push(PageAnimationTransition(
+        page: personDisplay(
+          brand: name,
+          description: heading,
+          price: price,
+          image: cardImage,
+        ),
+        pageAnimationType: ScaleAnimationTransition()));
   }
 
   @override

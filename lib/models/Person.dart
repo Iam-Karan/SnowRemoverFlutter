@@ -6,18 +6,16 @@ class person {
   final String imageurl;
   final String name;
   final int personId;
-
+  bool archiveStatus;
 
   person(
-      this.Price,
+    this.Price,
     this.age,
     this.description,
     this.id,
     this.imageurl,
     this.name,
-
     this.personId,
+    this.archiveStatus,
   );
-  }
-
-
+}

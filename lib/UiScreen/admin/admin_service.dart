@@ -1,25 +1,25 @@
-import 'package:snow_remover/components/home_grid_view.dart';
-import 'package:snow_remover/components/product_card.dart';
+import 'dart:async';
+import 'package:snow_remover/components/admin_list_view.dart';
+import 'package:snow_remover/components/admin_service_view.dart';
 import 'package:snow_remover/constant.dart' as constant;
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:snow_remover/utility.dart' as utility;
+import 'package:snow_remover/models/Person.dart';
 import 'package:snow_remover/models/product_model.dart';
-import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:snow_remover/models/Generate_Image_Url.dart';
+import 'package:snow_remover/utility.dart' as utility;
 
-import 'package:snow_remover/utility.dart';
-
-class HomeScreenTwo extends StatefulWidget {
-  const HomeScreenTwo({Key? key}) : super(key: key);
+class AdminServiceScreen extends StatefulWidget {
+  const AdminServiceScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreenTwo> createState() => _HomeScreenTwoState();
+  State<AdminServiceScreen> createState() => _AdminServiceScreenState();
 }
 
-class _HomeScreenTwoState extends State<HomeScreenTwo> {
+class _AdminServiceScreenState extends State<AdminServiceScreen> {
   Timer? _debounce;
   bool showFilter = false;
-  String dropdownValue = 'Price: Low to High';
+  String dropdownValue = 'low to high';
   String searchValue = "";
   TextEditingController controller = TextEditingController();
   _onSearchChanged(String query) {
@@ -43,46 +43,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     super.dispose();
   }
 
-  Future<List<ProductModel>> fetchProductsFromDatabase() async {
-    try {
-      Map<String, dynamic> singleElem;
-      CollectionReference _products =
-          FirebaseFirestore.instance.collection('products');
-      QuerySnapshot querySnapshot =
-          await _products.where('archive', isEqualTo: false).get();
-      List<ProductModel> apiData = querySnapshot.docs.map((e) {
-        singleElem = e.data() as Map<String, dynamic>;
-        singleElem["image_url"] = singleElem["main_image"];
-        singleElem["_id"] = e.reference.id.toString();
-        ProductModel temp = ProductModel(
-            singleElem["brand"],
-            singleElem["name"],
-            singleElem["description"],
-            singleElem["main_image"],
-            double.parse(singleElem["price_numerical"]),
-            singleElem["self_id"],
-            singleElem["type"],
-            singleElem["stock_unit"],
-            singleElem["video_url"],
-            singleElem["image_url"],
-            singleElem["_id"],
-            singleElem["archive"] ?? false);
-        return temp;
-      }).toList();
-      return apiData;
-    } catch (e) {
-      print("caught error" + e.toString());
-      rethrow;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text("Shop tools"),
+            child: Text("Book services"),
           ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(55.0),
@@ -107,7 +74,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          hintText: "Search for tools",
+                          hintText: "Search for services",
                           prefixIcon: const Icon(Icons.search),
                         ),
                       ),
@@ -133,7 +100,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                     elevation: 16,
                     style: const TextStyle(color: Colors.black),
                     onChanged: _onDropDownChanged,
-                    items: constant.filterOptions
+                    items: constant.adminServiceFOps
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -146,10 +113,10 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             }),
           ),
         ),
-        FutureBuilder<List<ProductModel>>(
-            future: fetchProductsFromDatabase(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ProductModel>> snapshot) {
+        FutureBuilder<List<person>>(
+            future: utility.fetchPersonsFromDatabase(false),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<person>> snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
                   return const CircularProgressIndicator();
@@ -163,18 +130,18 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                           fontWeight: FontWeight.bold),
                     );
                   } else {
-                    List<ProductModel> myProducts = [];
+                    List<person> myProducts = [];
                     if (searchValue.isNotEmpty) {
                       myProducts = snapshot.data!
-                          .where((element) => element.brand
+                          .where((element) => element.name
                               .toLowerCase()
                               .contains(searchValue.toLowerCase()))
                           .toList();
                     } else {
                       myProducts = snapshot.data ?? [];
                     }
-                    myProducts = applyFilter(myProducts, dropdownValue);
-                    return HomeScreenGridView(gridData: myProducts);
+                    myProducts = applyFilter2(myProducts, dropdownValue);
+                    return AdminServiceView(listData: myProducts);
                   }
               }
             }),
