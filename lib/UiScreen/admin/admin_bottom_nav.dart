@@ -16,8 +16,8 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     AdminHomeScreen(),
-    AdminOrders(),
     AdminServiceScreen(),
+    AdminOrders(),
     AdminFeedback()
   ];
   void _onItemTapped(int index) {

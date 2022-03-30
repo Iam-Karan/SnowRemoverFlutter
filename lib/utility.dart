@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:snow_remover/models/product_model.dart';
+import '../models/Person.dart';
 
 import 'components/toast_message/ios_Style.dart';
 import 'constant.dart' as constant;
@@ -78,4 +79,38 @@ void SignOut(BuildContext context) {
     );
   });
   Navigator.pushReplacementNamed(context, '/bottom_nav');
+}
+
+Future<List<person>> fetchPersonsFromDatabase(bool applyArchiveCon) async {
+  try {
+    Map<String, dynamic> singleElem;
+    CollectionReference _persons =
+        FirebaseFirestore.instance.collection('person');
+    QuerySnapshot querySnapshot;
+    if (applyArchiveCon) {
+      querySnapshot = await _persons.where('archive', isEqualTo: false).get();
+    } else {
+      querySnapshot = await _persons.get();
+    }
+
+    List<person> apiData = querySnapshot.docs.map((e) {
+      singleElem = e.data() as Map<String, dynamic>;
+      singleElem["imageurl"] = singleElem["imageurl"];
+      singleElem["_id"] = e.reference.id;
+      person temp = person(
+          singleElem["Price"],
+          singleElem["age"],
+          singleElem["description"],
+          singleElem["_id"],
+          singleElem["imageurl"],
+          singleElem["name"],
+          singleElem["personId"],
+          singleElem["archive"] ?? false);
+      return temp;
+    }).toList();
+    return apiData;
+  } catch (e) {
+    print("caught error" + e.toString());
+    rethrow;
+  }
 }
