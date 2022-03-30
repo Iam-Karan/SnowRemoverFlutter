@@ -41,6 +41,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
           singleElem["imageurl"],
           singleElem["name"],
           singleElem["personId"],
+          singleElem["archiveStatus"]
         );
         return temp;
       }).toList();
