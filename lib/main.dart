@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:snow_remover/UiScreen/admin/admin_bottom_nav.dart';
+import 'package:snow_remover/UiScreen/admin/admin_feedback.dart';
+import 'package:snow_remover/UiScreen/admin/admin_home.dart';
+import 'package:snow_remover/UiScreen/admin/admin_service.dart';
 import 'package:snow_remover/UiScreen/sign_In.dart';
 import 'package:snow_remover/UiScreen/aboutus_screen.dart';
 import 'package:snow_remover/components/bottom_navigator.dart';
@@ -11,9 +15,10 @@ import 'package:snow_remover/UiScreen/user_profile.dart';
 import 'Colors/ThemeColor.dart';
 import 'constant.dart' as constant;
 import 'package:firebase_core/firebase_core.dart';
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -36,12 +41,16 @@ class MyApp extends StatelessWidget {
           '/order_screen': (context) => const OrderScreen(),
           '/SignIn': (context) => const SignIn(),
           '/SignUp': (context) => const SignUp(),
-          '/UserProfile' : (context) => const UserProfile(),
+          '/UserProfile': (context) => const UserProfile(),
+          '/admin_bottomnav': (context) => const AdminBottomNav(),
+          '/admin_home': (context) => const AdminHomeScreen(),
+          '/admin_service': (context) => const AdminServiceScreen(),
+          '/admin_feedback': (context) => const AdminFeedback(),
         },
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF34A8DB)),
-          colorScheme:
-              const ColorScheme.light().copyWith(primary: constant.primaryColor),
+          colorScheme: const ColorScheme.light()
+              .copyWith(primary: constant.primaryColor),
         ),
       ),
     );
