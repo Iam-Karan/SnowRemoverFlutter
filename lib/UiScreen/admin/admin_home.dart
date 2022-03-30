@@ -1,22 +1,19 @@
-import 'package:snow_remover/components/home_grid_view.dart';
-import 'package:snow_remover/components/product_card.dart';
+import 'dart:async';
+import 'package:snow_remover/components/admin_list_view.dart';
 import 'package:snow_remover/constant.dart' as constant;
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:snow_remover/utility.dart' as utility;
 import 'package:snow_remover/models/product_model.dart';
-import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snow_remover/utility.dart';
 
-class HomeScreenTwo extends StatefulWidget {
-  const HomeScreenTwo({Key? key}) : super(key: key);
+class AdminHomeScreen extends StatefulWidget {
+  const AdminHomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreenTwo> createState() => _HomeScreenTwoState();
+  State<AdminHomeScreen> createState() => _AdminHomeScreenState();
 }
 
-class _HomeScreenTwoState extends State<HomeScreenTwo> {
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
   Timer? _debounce;
   bool showFilter = false;
   String dropdownValue = 'Price: Low to High';
@@ -48,8 +45,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       Map<String, dynamic> singleElem;
       CollectionReference _products =
           FirebaseFirestore.instance.collection('products');
-      QuerySnapshot querySnapshot =
-          await _products.where('archive', isEqualTo: false).get();
+      QuerySnapshot querySnapshot = await _products.get();
       List<ProductModel> apiData = querySnapshot.docs.map((e) {
         singleElem = e.data() as Map<String, dynamic>;
         singleElem["image_url"] = singleElem["main_image"];
@@ -174,7 +170,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                       myProducts = snapshot.data ?? [];
                     }
                     myProducts = applyFilter(myProducts, dropdownValue);
-                    return HomeScreenGridView(gridData: myProducts);
+                    return AdminListView(listData: myProducts);
                   }
               }
             }),

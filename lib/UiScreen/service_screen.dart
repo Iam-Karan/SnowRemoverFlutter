@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:snow_remover/models/Generate_Image_Url.dart';
+import 'package:snow_remover/utility.dart' as utility;
 
 import '../models/Person.dart';
 
@@ -33,13 +34,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
         singleElem["imageurl"] = singleElem["imageurl"];
         singleElem["_id"] = e.reference.id;
         person temp = person(
-          singleElem["Price"],
+          double.parse(singleElem["Price"]),
           singleElem["age"],
           singleElem["description"],
           singleElem["_id"],
           singleElem["imageurl"],
           singleElem["name"],
           singleElem["personId"],
+          singleElem["archiveStatus"]
         );
         return temp;
       }).toList();
@@ -93,7 +95,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
         height: ((MediaQuery.of(context).size.height * 1) - 280),
         width: MediaQuery.of(context).size.width * 1,
         child: FutureBuilder<List<person>>(
-            future: fetchProductsFromDatabase(),
+            future: utility.fetchPersonsFromDatabase(true),
             builder:
                 (BuildContext context, AsyncSnapshot<List<person>> snapshot) {
               switch (snapshot.connectionState) {
@@ -110,11 +112,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     );
                   } else {
                     List<person> myProducts = [];
-                    if (seachValue.isNotEmpty ) {
+                    if (seachValue.isNotEmpty) {
                       myProducts = snapshot.data!
                           .where((element) => element.name
-                          .toLowerCase()
-                          .contains(seachValue.toLowerCase()))
+                              .toLowerCase()
+                              .contains(seachValue.toLowerCase()))
                           .toList();
                     } else {
                       myProducts = snapshot.data ?? [];
@@ -200,8 +202,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          )),
+                        borderRadius: BorderRadius.circular(30),
+                      )),
                       onPressed: () {
                         setState(() {
                           sortValue = "low to high";
@@ -212,8 +214,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          )),
+                        borderRadius: BorderRadius.circular(30),
+                      )),
                       onPressed: () {
                         setState(() {
                           sortValue = "High to low";
@@ -226,8 +228,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      )),
+                    borderRadius: BorderRadius.circular(30),
+                  )),
                   onPressed: () {
                     setState(() {
                       sortValue = "Avilable";

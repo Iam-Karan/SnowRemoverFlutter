@@ -10,6 +10,7 @@ class ProductModel {
   final String videoURL;
   final String imageURL;
   final String id;
+  bool archiveStatus;
 
   ProductModel(
       this.brand,
@@ -22,5 +23,6 @@ class ProductModel {
       this.stockUnit,
       this.videoURL,
       this.imageURL,
-      this.id);
+      this.id,
+      this.archiveStatus);
 }

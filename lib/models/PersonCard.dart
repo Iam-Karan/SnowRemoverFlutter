@@ -10,7 +10,7 @@ class personCard extends StatelessWidget {
   final String cardImage;
   final String name;
   final int id;
-  final String price;
+  final double price;
 
   const personCard({
     Key? key,
@@ -21,15 +21,15 @@ class personCard extends StatelessWidget {
     required this.price,
   }) : super(key: key);
 
-
-  void  SelectedRoute(BuildContext ctx) {
-    Navigator.of(ctx).push(PageAnimationTransition(page: personDisplay(
-      brand: name,
-      description: heading,
-      price: price,
-      image: cardImage,
-    ), pageAnimationType: ScaleAnimationTransition()));
-
+  void SelectedRoute(BuildContext ctx) {
+    Navigator.of(ctx).push(PageAnimationTransition(
+        page: personDisplay(
+          brand: name,
+          description: heading,
+          price: price,
+          image: cardImage,
+        ),
+        pageAnimationType: ScaleAnimationTransition()));
   }
 
   @override
