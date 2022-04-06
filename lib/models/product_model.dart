@@ -2,7 +2,7 @@ class ProductModel {
   final String brand;
   final String name;
   final String description;
-  final String mainImage;
+  String mainImage;
   final double priceNumerical;
   final int selfId;
   final String type;
@@ -25,4 +25,19 @@ class ProductModel {
       this.imageURL,
       this.id,
       this.archiveStatus);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'archive': false,
+      'brand': brand,
+      'description': description,
+      'main_image': mainImage,
+      'name': name,
+      'price_numerical': priceNumerical.toString(),
+      'self_id': selfId,
+      'stock_unit': stockUnit,
+      'type': type,
+      'video_url': videoURL,
+    };
+  }
 }

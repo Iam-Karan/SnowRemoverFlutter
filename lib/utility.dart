@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:snow_remover/models/product_model.dart';
 import '../models/Person.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'components/toast_message/ios_Style.dart';
 import 'constant.dart' as constant;
 import 'package:firebase_storage/firebase_storage.dart' as fs;
@@ -111,6 +114,16 @@ Future<List<person>> fetchPersonsFromDatabase(bool applyArchiveCon) async {
     return apiData;
   } catch (e) {
     print("caught error" + e.toString());
+    rethrow;
+  }
+}
+
+Future<void> uploadFile(File toUpload, String source, String filename) async {
+  try {
+    await firebase_storage.FirebaseStorage.instance
+        .ref('$source/$filename')
+        .putFile(toUpload);
+  } on firebase_core.FirebaseException catch (e) {
     rethrow;
   }
 }
