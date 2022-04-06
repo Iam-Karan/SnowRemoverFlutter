@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_animation_transition/animations/right_to_left_transition.dart';
 import 'package:page_animation_transition/page_animation_transition.dart';
-import 'package:snow_remover/UiScreen/Product_Screen.dart';
+import 'package:snow_remover/UiScreen/Product_Display.dart';
 import 'package:snow_remover/utility.dart' as utility;
 
 class ProductCard extends StatelessWidget {
@@ -35,6 +35,7 @@ class ProductCard extends StatelessWidget {
           description: supportingText,
           price: price,
           image: cardImage,
+          ID: id,
         ),
         pageAnimationType: RightToLeftTransition()));
   }
