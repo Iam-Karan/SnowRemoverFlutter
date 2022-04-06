@@ -564,7 +564,7 @@ class _SignInState extends State<SignIn> {
     DocumentSnapshot? userInfo = await utility.fetchUser();
     if (userInfo != null &&
         userInfo.get("type").toString().toLowerCase() == "admin") {
-      Navigator.pushReplacementNamed(context, '/admin_bottomnav');
+      Navigator.pushReplacementNamed(context, '/bottom_nav');
       // signed in
     } else {
       Navigator.pushReplacementNamed(context, '/bottom_nav');

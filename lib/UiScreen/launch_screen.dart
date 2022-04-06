@@ -59,7 +59,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
       Navigator.pushReplacementNamed(context, '/admin_bottomnav');
       // signed in
     } else {
-      Navigator.pushReplacementNamed(context, '/admin_bottomnav');
+      Navigator.pushReplacementNamed(context, '/bottom_nav');
     }
   }
 }

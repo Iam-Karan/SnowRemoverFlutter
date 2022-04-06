@@ -646,7 +646,7 @@ class _SignUpState extends State<SignUp> {
     userModel.email = user!.email;
     userModel.uid = user.uid;
     userModel.firstName = nameEditingController.text;
-
+    userModel.type = "customer";
     await firebaseFirestore
         .collection("users")
         .doc(user.uid)
@@ -658,6 +658,6 @@ class _SignUpState extends State<SignUp> {
         child: const IosStyleToast(label: "Account created"),
       );
     });
-    Navigator.pushNamed(context, '/bottom_nav');
+    Navigator.pushNamed(context, '/SignIn');
   }
 }

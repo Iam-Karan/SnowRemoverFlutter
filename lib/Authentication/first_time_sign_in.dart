@@ -2,7 +2,7 @@ class UserModel {
   String? uid;
   String? email;
   String? firstName;
-
+  String? type;
   UserModel({this.uid, this.email, this.firstName});
 
   // receiving data from server
@@ -19,6 +19,7 @@ class UserModel {
       'uid': uid,
       'email': email,
       'firstName': firstName,
+      'type': type,
     };
   }
 }
