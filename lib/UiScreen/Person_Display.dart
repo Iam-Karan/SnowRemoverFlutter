@@ -258,7 +258,7 @@ class _personDisplayState extends State<personDisplay> {
                   .collection('users')
                   .doc(uid)
                   .collection("cart")
-                  .doc()
+                  .doc(widget.brand)
                   .set({
                 'id': uid,
                 'image': widget.image,
@@ -295,7 +295,7 @@ class _personDisplayState extends State<personDisplay> {
           .collection('users')
           .doc(uid)
           .collection('cart')
-          .doc()
+          .doc(widget.brand)
           .set({
         'id': uid,
         'image': widget.image,
@@ -306,7 +306,7 @@ class _personDisplayState extends State<personDisplay> {
       showOverlay((context, t) {
         return Opacity(
           opacity: t,
-          child: IosStyleToast(label: "iteam added to cart"),
+          child: IosStyleToast(label: "person added to cart"),
         );
       });
     } else {
@@ -325,7 +325,7 @@ class _personDisplayState extends State<personDisplay> {
         .collection('users')
         .doc(uid)
         .collection('favorite')
-        .doc()
+        .doc(widget.brand)
         .set({
       'id': uid,
       'value': true,
@@ -337,14 +337,6 @@ class _personDisplayState extends State<personDisplay> {
     if (isLiked == false) {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         String? uid = user?.uid;
-        if (user == null) {
-          showOverlay((context, t) {
-            return Opacity(
-              opacity: t,
-              child: IosStyleToast(label: "User is not sign in"),
-            );
-          });
-        } else {
           FirebaseFirestore.instance
               .collection('users')
               .doc(uid)
@@ -357,7 +349,7 @@ class _personDisplayState extends State<personDisplay> {
                   .collection('users')
                   .doc(uid)
                   .collection('favorite')
-                  .doc()
+                  .doc(widget.brand)
                   .set({
                 'id': uid,
                 'value': true,
@@ -367,7 +359,6 @@ class _personDisplayState extends State<personDisplay> {
               addFavorite(uid!);
             }
           });
-        }
       });
     } else {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
@@ -376,7 +367,7 @@ class _personDisplayState extends State<personDisplay> {
             .collection('users')
             .doc(uid)
             .collection('favorite')
-            .doc()
+            .doc(widget.brand)
             .delete();
       });
     }

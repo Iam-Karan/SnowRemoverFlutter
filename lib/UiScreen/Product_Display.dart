@@ -293,7 +293,7 @@ class _productDisplayState extends State<productDisplay> {
                   .collection('users')
                   .doc(uid)
                   .collection("cart")
-                  .doc()
+                  .doc(widget.brand)
                   .set({
                 'id': uid,
                 'image': widget.image,
@@ -330,7 +330,7 @@ class _productDisplayState extends State<productDisplay> {
           .collection('users')
           .doc(uid)
           .collection('cart')
-          .doc()
+          .doc(widget.brand)
           .set({
         'id': uid,
         'image': widget.image,
@@ -360,7 +360,7 @@ class _productDisplayState extends State<productDisplay> {
         .collection('users')
         .doc(uid)
         .collection('favorite')
-        .doc()
+        .doc(widget.brand)
         .set({
       'id': uid,
       'value': true,
@@ -372,19 +372,10 @@ class _productDisplayState extends State<productDisplay> {
     if (isLiked == false) {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         String? uid = user?.uid;
-        if (user == null) {
-          showOverlay((context, t) {
-            return Opacity(
-              opacity: t,
-              child: IosStyleToast(label: "User is not sign in"),
-            );
-          });
-        } else {
           FirebaseFirestore.instance
               .collection('users')
               .doc(uid)
-              .collection('favorite')
-              .where('value', isEqualTo: false)
+          .collection('favorite')
               .get()
               .then((QuerySnapshot querySnapshot) async {
             if (querySnapshot.docs.isNotEmpty) {
@@ -392,7 +383,7 @@ class _productDisplayState extends State<productDisplay> {
                   .collection('users')
                   .doc(uid)
                   .collection('favorite')
-                  .doc()
+                  .doc(widget.brand)
                   .set({
                 'id': uid,
                 'value': true,
@@ -402,9 +393,8 @@ class _productDisplayState extends State<productDisplay> {
              addFavorite(uid!);
             }
           });
-        }
       });
-
+      return !isLiked;
     } else {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         String? uid = user?.uid;
@@ -412,7 +402,7 @@ class _productDisplayState extends State<productDisplay> {
             .collection('users')
             .doc(uid)
             .collection('favorite')
-            .doc()
+            .doc(widget.brand)
             .delete();
       });
     }
