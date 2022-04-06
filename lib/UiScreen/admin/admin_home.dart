@@ -74,6 +74,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
           title: const Padding(
@@ -140,6 +142,25 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 ),
               );
             }),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: InkWell(
+            onTap: (() => Navigator.pushNamed(context, '/add_edit_product')),
+            child: Container(
+              width: screenWidth * 0.90,
+              height: 40,
+              color: constant.primaryColor,
+              alignment: Alignment.center,
+              child: const Text(
+                "Add Products",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
         ),
         FutureBuilder<List<ProductModel>>(

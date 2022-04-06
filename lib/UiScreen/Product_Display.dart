@@ -1,11 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:quantity_input/quantity_input.dart';
-
+import 'package:snow_remover/models/cartModel.dart';
+import 'package:like_button/like_button.dart';
 import 'package:snow_remover/utility.dart' as utility;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import '../components/toast_message/ios_Style.dart';
 
 class productDisplay extends StatefulWidget {
   String video_url;
@@ -13,17 +19,18 @@ class productDisplay extends StatefulWidget {
   String description;
   double price;
   String image;
+  String ID;
 
   @override
   State<productDisplay> createState() => _productDisplayState();
 
-  productDisplay({
-    required this.video_url,
-    required this.brand,
-    required this.description,
-    required this.price,
-    required this.image,
-  });
+  productDisplay(
+      {required this.video_url,
+      required this.brand,
+      required this.description,
+      required this.price,
+      required this.image,
+      required this.ID});
 }
 
 bool tapped = false;
@@ -32,6 +39,7 @@ class _productDisplayState extends State<productDisplay> {
   String productPrice = "";
   late YoutubePlayerController _controller;
   int simpleIntInput = 0;
+  final _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -162,18 +170,11 @@ class _productDisplayState extends State<productDisplay> {
                                               fontWeight: FontWeight.bold)),
                                     ),
                                     SizedBox(width: 50),
-                                    ElevatedButton.icon(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
-                                        size: 40,
-                                      ),
-                                      label: Text(""),
-                                      style: ElevatedButton.styleFrom(
-                                        elevation: 0,
-                                        primary: Colors.white,
-                                      ),
+                                    LikeButton(
+                                      onTap: onLikeButtonTapped,
+                                      size: 60,
+                                      animationDuration:
+                                          const Duration(seconds: 2),
                                     ),
                                   ],
                                   verticalDirection: VerticalDirection.down,
@@ -218,24 +219,23 @@ class _productDisplayState extends State<productDisplay> {
                                                     fontWeight:
                                                         FontWeight.w700))),
                                         QuantityInput(
-                                            value: simpleIntInput,
-
-                                            onChanged: (value) => setState(() =>
-                                                simpleIntInput = int.parse(value
-                                                    .replaceAll(',', ''))),
+                                          value: simpleIntInput,
+                                          onChanged: (value) => setState(() =>
+                                              simpleIntInput = int.parse(
+                                                  value.replaceAll(',', ''))),
                                           elevation: 2,
-
                                         ),
                                       ]),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           ElevatedButton.icon(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              setState(() {
+                                                addIteamToCart();
+                                              });
+                                            },
                                             icon: Icon(Icons.add_shopping_cart),
                                             label: Text("Cart"),
                                             style: ElevatedButton.styleFrom(
@@ -265,5 +265,157 @@ class _productDisplayState extends State<productDisplay> {
         future: utility.generateImageUrl(widget.image),
       ),
     );
+  }
+
+  addIteamToCart() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      String? uid = user?.uid;
+
+      if (user == null) {
+        showOverlay((context, t) {
+          return Opacity(
+            opacity: t,
+            child: IosStyleToast(label: "User is not sign in"),
+          );
+        });
+      } else {
+        cartModel C = cartModel();
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('cart')
+            .where('name', isEqualTo: widget.brand)
+            .get()
+            .then((QuerySnapshot querySnapshot) async {
+          if (querySnapshot.docs.isNotEmpty) {
+            if (simpleIntInput != 0) {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(uid)
+                  .collection("cart")
+                  .doc()
+                  .set({
+                'id': uid,
+                'image': widget.image,
+                'name': widget.brand,
+                'quantity': simpleIntInput,
+                'type': "product",
+              });
+              showOverlay((context, t) {
+                return Opacity(
+                  opacity: t,
+                  child: IosStyleToast(label: "iteam added to cart"),
+                );
+              });
+            } else {
+              showOverlay((context, t) {
+                return Opacity(
+                  opacity: t,
+                  child: IosStyleToast(label: "please choose quantity"),
+                );
+              });
+            }
+          } else {
+            addCartToDocumentId(uid!);
+          }
+        });
+      }
+    });
+  }
+
+  addCartToDocumentId(String uid) {
+    if (simpleIntInput != 0) {
+      final databaseReference = FirebaseFirestore.instance;
+      databaseReference
+          .collection('users')
+          .doc(uid)
+          .collection('cart')
+          .doc()
+          .set({
+        'id': uid,
+        'image': widget.image,
+        'name': widget.brand,
+        'quantity': simpleIntInput,
+        'type': "product",
+      });
+      showOverlay((context, t) {
+        return Opacity(
+          opacity: t,
+          child: IosStyleToast(label: "iteam added to cart"),
+        );
+      });
+    } else {
+      showOverlay((context, t) {
+        return Opacity(
+          opacity: t,
+          child: IosStyleToast(label: "please add quantity"),
+        );
+      });
+    }
+  }
+
+  addFavorite(String uid) {
+    final databaseReference = FirebaseFirestore.instance;
+    databaseReference
+        .collection('users')
+        .doc(uid)
+        .collection('favorite')
+        .doc()
+        .set({
+      'id': uid,
+      'value': true,
+      'type': "product",
+    });
+  }
+
+  Future<bool> onLikeButtonTapped(bool isLiked) async {
+    if (isLiked == false) {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        String? uid = user?.uid;
+        if (user == null) {
+          showOverlay((context, t) {
+            return Opacity(
+              opacity: t,
+              child: IosStyleToast(label: "User is not sign in"),
+            );
+          });
+        } else {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .collection('favorite')
+              .where('value', isEqualTo: false)
+              .get()
+              .then((QuerySnapshot querySnapshot) async {
+            if (querySnapshot.docs.isNotEmpty) {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(uid)
+                  .collection('favorite')
+                  .doc()
+                  .set({
+                'id': uid,
+                'value': true,
+                'type': "product",
+              });
+            } else {
+             addFavorite(uid!);
+            }
+          });
+        }
+      });
+
+    } else {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        String? uid = user?.uid;
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('favorite')
+            .doc()
+            .delete();
+      });
+    }
+    return !isLiked;
   }
 }

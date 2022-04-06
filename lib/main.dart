@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:snow_remover/UiScreen/admin/admin_add_product.dart';
 import 'package:snow_remover/UiScreen/admin/admin_bottom_nav.dart';
 import 'package:snow_remover/UiScreen/admin/admin_feedback.dart';
 import 'package:snow_remover/UiScreen/admin/admin_home.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           '/admin_home': (context) => const AdminHomeScreen(),
           '/admin_service': (context) => const AdminServiceScreen(),
           '/admin_feedback': (context) => const AdminFeedback(),
+          '/add_edit_product': (context) => const AddEditProduct(),
         },
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF34A8DB)),

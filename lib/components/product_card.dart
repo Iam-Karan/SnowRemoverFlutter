@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:page_animation_transition/animations/right_to_left_transition.dart';
 import 'package:page_animation_transition/page_animation_transition.dart';
-import 'package:snow_remover/UiScreen/Product_Screen.dart';
+import 'package:snow_remover/UiScreen/Product_Display.dart';
 import 'package:snow_remover/utility.dart' as utility;
-
 
 class ProductCard extends StatelessWidget {
   final String heading;
@@ -24,20 +23,25 @@ class ProductCard extends StatelessWidget {
       required this.id,
       required this.price,
       required this.brand,
-     required this.quantity,
-        required this.video_url
-      })
+      required this.quantity,
+      required this.video_url})
       : super(key: key);
 
-
-  void  SelectedRoute(BuildContext ctx) {
-    Navigator.of(ctx).push(PageAnimationTransition(page: productDisplay(video_url: video_url,brand: brand,description: supportingText,price: price,image: cardImage,), pageAnimationType: RightToLeftTransition()));
-
+  void SelectedRoute(BuildContext ctx) {
+    Navigator.of(ctx).push(PageAnimationTransition(
+        page: productDisplay(
+          video_url: video_url,
+          brand: brand,
+          description: supportingText,
+          price: price,
+          image: cardImage,
+          ID: id,
+        ),
+        pageAnimationType: RightToLeftTransition()));
   }
 
   @override
   Widget build(BuildContext context) {
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return FutureBuilder<String>(
@@ -63,37 +67,36 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(13),
                   ),
                   elevation: 5,
-                 // child: Column(
-                 //   children: [
-                      // SizedBox(
-                      //   height: screenHeight * 0.20,
-                      //   width: screenWidth * 0.20,
-                      //   child: Image(
-                      //     image: NetworkImage(imageUrl!),
-                      //   ),
-                      // ),
-                    child:  Container(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        height: MediaQuery.of(context).size.height * 0.18,
-                        alignment: Alignment.bottomLeft,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 6,
-                              child: Image(
-                                image: NetworkImage(imageUrl!),
-                                width: MediaQuery.of(context).size.height * 0.35,
-                                height: MediaQuery.of(context).size.height * 0.15,
-                              ),
-                            ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-
+                  // child: Column(
+                  //   children: [
+                  // SizedBox(
+                  //   height: screenHeight * 0.20,
+                  //   width: screenWidth * 0.20,
+                  //   child: Image(
+                  //     image: NetworkImage(imageUrl!),
+                  //   ),
+                  // ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.18,
+                    alignment: Alignment.bottomLeft,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Image(
+                            image: NetworkImage(imageUrl!),
+                            width: MediaQuery.of(context).size.height * 0.35,
+                            height: MediaQuery.of(context).size.height * 0.15,
+                          ),
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
                               Text(
-                                brand ,
+                                brand,
                                 maxLines: 1,
                                 textAlign: TextAlign.start,
                                 style: const TextStyle(
@@ -110,13 +113,12 @@ class ProductCard extends StatelessWidget {
                                   fontSize: 14.0,
                                 ),
                               ),
-                              ]
-                            )
-                          ],
-                        ),
-                      ),
+                            ])
+                      ],
+                    ),
+                  ),
                   //  ],
-                //  ),
+                  //  ),
                 ),
               );
             }
@@ -125,5 +127,4 @@ class ProductCard extends StatelessWidget {
       future: utility.generateImageUrl(cardImage),
     );
   }
-
 }
