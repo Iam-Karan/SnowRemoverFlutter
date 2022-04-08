@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:snow_remover/UiScreen/Cart_Screen.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -83,7 +84,12 @@ class _OrderScreenState extends State<OrderScreen> {
                       Expanded(
                           flex: 1,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const CartScreen()),
+                              );
+                            },
                             child: const Icon(
                               Icons.shopping_cart,
                               color: Colors.white,

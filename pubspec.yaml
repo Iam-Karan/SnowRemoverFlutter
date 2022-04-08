@@ -80,6 +80,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/Rectangle 35.png
+    - assets/images/cart.jpg
+    - assets/images/happCart
 
   #   - images/a_dot_ham.jpeg
 

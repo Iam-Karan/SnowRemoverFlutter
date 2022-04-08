@@ -38,7 +38,7 @@ bool tapped = false;
 class _productDisplayState extends State<productDisplay> {
   String productPrice = "";
   late YoutubePlayerController _controller;
-  int simpleIntInput = 0;
+  int simpleIntInput = 1;
   final _auth = FirebaseAuth.instance;
 
   @override
@@ -293,13 +293,16 @@ class _productDisplayState extends State<productDisplay> {
                   .collection('users')
                   .doc(uid)
                   .collection("cart")
-                  .doc(widget.brand)
+                  .doc(widget.ID)
                   .set({
+                'hours': 1,
                 'id': uid,
                 'image': widget.image,
                 'name': widget.brand,
                 'quantity': simpleIntInput,
-                'type': "product",
+                'type': "products",
+                'price': widget.price,
+
               });
               showOverlay((context, t) {
                 return Opacity(
@@ -330,13 +333,16 @@ class _productDisplayState extends State<productDisplay> {
           .collection('users')
           .doc(uid)
           .collection('cart')
-          .doc(widget.brand)
+          .doc(widget.ID)
           .set({
-        'id': uid,
+        'id': widget.ID,
         'image': widget.image,
         'name': widget.brand,
         'quantity': simpleIntInput,
-        'type': "product",
+        'type': "products",
+        'hours': 1,
+        'price': widget.price,
+
       });
       showOverlay((context, t) {
         return Opacity(
@@ -360,11 +366,13 @@ class _productDisplayState extends State<productDisplay> {
         .collection('users')
         .doc(uid)
         .collection('favorite')
-        .doc(widget.brand)
+        .doc(widget.ID)
         .set({
-      'id': uid,
+      'id': widget.ID,
       'value': true,
-      'type': "product",
+      'type': "products",
+      'hours': 1,
+      'price': widget.price,
     });
   }
 
@@ -383,11 +391,13 @@ class _productDisplayState extends State<productDisplay> {
                   .collection('users')
                   .doc(uid)
                   .collection('favorite')
-                  .doc(widget.brand)
+                  .doc(widget.ID)
                   .set({
-                'id': uid,
+                'id': widget.ID,
                 'value': true,
-                'type': "product",
+                'type': "products",
+                'hours': 1,
+                'price': widget.price,
               });
             } else {
              addFavorite(uid!);
@@ -402,7 +412,7 @@ class _productDisplayState extends State<productDisplay> {
             .collection('users')
             .doc(uid)
             .collection('favorite')
-            .doc(widget.brand)
+            .doc(widget.ID)
             .delete();
       });
     }
