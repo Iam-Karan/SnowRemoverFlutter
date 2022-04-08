@@ -9,7 +9,7 @@ class personCard extends StatelessWidget {
   final String heading;
   final String cardImage;
   final String name;
-  final int id;
+  final String id;
   final double price;
 
   const personCard({
@@ -28,6 +28,7 @@ class personCard extends StatelessWidget {
           description: heading,
           price: price,
           image: cardImage,
+          id: id,
         ),
         pageAnimationType: ScaleAnimationTransition()));
   }

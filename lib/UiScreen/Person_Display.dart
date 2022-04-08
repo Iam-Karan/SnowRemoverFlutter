@@ -15,7 +15,7 @@ class personDisplay extends StatefulWidget {
   String description;
   double price;
   String image;
-
+  String id;
   @override
   State<personDisplay> createState() => _personDisplayState();
 
@@ -24,6 +24,7 @@ class personDisplay extends StatefulWidget {
     required this.description,
     required this.price,
     required this.image,
+    required this.id,
   });
 }
 
@@ -32,7 +33,7 @@ bool tapped = false;
 class _personDisplayState extends State<personDisplay> {
   String productPrice = "";
 
-  int simpleIntInput = 0;
+  int simpleIntInput = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -258,13 +259,15 @@ class _personDisplayState extends State<personDisplay> {
                   .collection('users')
                   .doc(uid)
                   .collection("cart")
-                  .doc(widget.brand)
+                  .doc(widget.id)
                   .set({
-                'id': uid,
+                'id': widget.id,
                 'image': widget.image,
                 'name': widget.brand,
-                'quantity': simpleIntInput,
-                'type': "person",
+                'hours': simpleIntInput,
+                'type': "personimages",
+                'price': widget.price,
+                'quantity': 1,
               });
               showOverlay((context, t) {
                 return Opacity(
@@ -295,13 +298,15 @@ class _personDisplayState extends State<personDisplay> {
           .collection('users')
           .doc(uid)
           .collection('cart')
-          .doc(widget.brand)
+          .doc(widget.id)
           .set({
-        'id': uid,
+        'id': widget.id,
         'image': widget.image,
         'name': widget.brand,
-        'quantity': simpleIntInput,
-        'type': "person",
+        'hours': simpleIntInput,
+        'type': "personimages",
+        'price': widget.price,
+        'quantity': 1,
       });
       showOverlay((context, t) {
         return Opacity(
@@ -325,11 +330,12 @@ class _personDisplayState extends State<personDisplay> {
         .collection('users')
         .doc(uid)
         .collection('favorite')
-        .doc(widget.brand)
+        .doc(widget.id)
         .set({
-      'id': uid,
+      'id': widget.id,
       'value': true,
       'type': "product",
+      'price': widget.price,
     });
   }
 
@@ -349,11 +355,12 @@ class _personDisplayState extends State<personDisplay> {
                   .collection('users')
                   .doc(uid)
                   .collection('favorite')
-                  .doc(widget.brand)
+                  .doc(widget.id)
                   .set({
-                'id': uid,
+                'id': widget.id,
                 'value': true,
                 'type': "product",
+                'price': widget.price,
               });
             } else {
               addFavorite(uid!);
@@ -367,7 +374,7 @@ class _personDisplayState extends State<personDisplay> {
             .collection('users')
             .doc(uid)
             .collection('favorite')
-            .doc(widget.brand)
+            .doc(widget.id)
             .delete();
       });
     }

@@ -1,11 +1,13 @@
-class cartModel {
-  String? uid;
-  String? image;
-  String? name;
-  String? quantity;
-  String? type;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  cartModel({
+class cartModel {
+final  String? uid;
+final  String? image;
+final  String? name;
+final  String? quantity;
+final  String? type;
+
+ const cartModel({
     this.uid,
     this.image,
     this.name,
@@ -14,16 +16,7 @@ class cartModel {
   });
 
 
-  // sending data to our server
-  Map<String, dynamic> toMap() {
-    return {
-      'id': uid,
-      'name': name,
-      'image': image ,
-      'quantity': quantity,
-      'type': type,
-    };
-  }
+
 
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:snow_remover/UiScreen/Cart_Screen.dart';
 import 'package:snow_remover/UiScreen/admin/admin_add_product.dart';
 import 'package:snow_remover/UiScreen/admin/admin_bottom_nav.dart';
 import 'package:snow_remover/UiScreen/admin/admin_feedback.dart';
@@ -13,6 +14,7 @@ import 'package:snow_remover/UiScreen/orders_screen.dart';
 import 'package:snow_remover/UiScreen/service_screen.dart';
 import 'package:snow_remover/UiScreen/sign_Up.dart';
 import 'package:snow_remover/UiScreen/user_profile.dart';
+import 'package:snow_remover/models/cartModel.dart';
 import 'Colors/ThemeColor.dart';
 import 'constant.dart' as constant;
 import 'package:firebase_core/firebase_core.dart';
@@ -48,6 +50,7 @@ class MyApp extends StatelessWidget {
           '/admin_service': (context) => const AdminServiceScreen(),
           '/admin_feedback': (context) => const AdminFeedback(),
           '/add_edit_product': (context) => const AddEditProduct(),
+          '/cartScreen': (context) => const CartScreen(),
         },
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF34A8DB)),
