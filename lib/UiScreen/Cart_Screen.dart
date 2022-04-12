@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snow_remover/UiScreen/cart_Screen_Card.dart';
+import 'package:snow_remover/models/cart_model.dart';
 
 import '../models/Generate_Image_Url.dart';
 
@@ -17,14 +18,15 @@ class CartScreen extends StatefulWidget {
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
-   FirebaseAuth auth = FirebaseAuth.instance ;
- User? users = auth.currentUser;
-final uid = users?.uid;
 
+FirebaseAuth auth = FirebaseAuth.instance;
+User? users = auth.currentUser;
+final uid = users?.uid;
 
 bool signIn = false;
 
 class _CartScreenState extends State<CartScreen> {
+  List<CartModel> currentCart = [];
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('users')
       .doc(uid)
@@ -32,18 +34,13 @@ class _CartScreenState extends State<CartScreen> {
       .snapshots(includeMetadataChanges: true);
   @override
   Widget build(BuildContext context) {
-
-    FirebaseAuth.instance
-        .userChanges()
-        .listen((User? user) {
+    FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
         signIn = false;
       } else {
         signIn = true;
       }
     });
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +69,7 @@ class _CartScreenState extends State<CartScreen> {
       body: StreamBuilder<QuerySnapshot>(
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (signIn == false ) {
+          if (signIn == false) {
             return Column(children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -105,7 +102,7 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.grey)),
               ),
             ]);
-          } else if(signIn == true && snapshot.hasData == true )  {
+          } else if (signIn == true && snapshot.hasData == true) {
             return Column(children: [
               Container(
                 height: MediaQuery.of(context).size.height * 0.8,
@@ -114,6 +111,15 @@ class _CartScreenState extends State<CartScreen> {
                       snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data()! as Map<String, dynamic>;
+                    CartModel curr = CartModel(
+                        hours: data['hours'],
+                        id: data['id'],
+                        image: data['image'],
+                        name: data['name'],
+                        price: data['price'],
+                        quantity: data['quantity'],
+                        type: data['type']);
+                    currentCart.add(curr);
                     return cartScreenCard(
                         hours: data['hours'],
                         id: data['id'].toString(),
@@ -128,19 +134,21 @@ class _CartScreenState extends State<CartScreen> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 ElevatedButton(
                   onPressed: () {},
-                  child: Text("Reserve Now"),
+                  child: const Text("Reserve Now"),
                   style: ElevatedButton.styleFrom(
                     onPrimary: Colors.white,
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 20,
                         fontStyle: FontStyle.italic),
                   ),
                 ),
-                ElevatedButton(onPressed: () {}, child: Text("Checkout"),
+                ElevatedButton(
+                  onPressed: checkout,
+                  child: const Text("Checkout"),
                   style: ElevatedButton.styleFrom(
                     onPrimary: Colors.white,
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 25,
                         fontStyle: FontStyle.italic),
@@ -153,5 +161,9 @@ class _CartScreenState extends State<CartScreen> {
         },
       ),
     );
+  }
+
+  void checkout() {
+    Navigator.pushNamed(context, '/checkout', arguments: currentCart);
   }
 }
