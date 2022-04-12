@@ -17,10 +17,10 @@ class CartScreen extends StatefulWidget {
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
-   FirebaseAuth auth = FirebaseAuth.instance ;
- User? users = auth.currentUser;
-final uid = users?.uid;
 
+FirebaseAuth auth = FirebaseAuth.instance;
+User? users = auth.currentUser;
+final uid = users?.uid;
 
 bool signIn = false;
 
@@ -32,18 +32,13 @@ class _CartScreenState extends State<CartScreen> {
       .snapshots(includeMetadataChanges: true);
   @override
   Widget build(BuildContext context) {
-
-    FirebaseAuth.instance
-        .userChanges()
-        .listen((User? user) {
+    FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
         signIn = false;
       } else {
         signIn = true;
       }
     });
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +67,7 @@ class _CartScreenState extends State<CartScreen> {
       body: StreamBuilder<QuerySnapshot>(
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (signIn == false ) {
+          if (signIn == false) {
             return Column(children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -105,7 +100,7 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.grey)),
               ),
             ]);
-          } else if(signIn == true && snapshot.hasData == true )  {
+          } else if (signIn == true && snapshot.hasData == true) {
             return Column(children: [
               Container(
                 height: MediaQuery.of(context).size.height * 0.8,
@@ -128,19 +123,21 @@ class _CartScreenState extends State<CartScreen> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 ElevatedButton(
                   onPressed: () {},
-                  child: Text("Reserve Now"),
+                  child: const Text("Reserve Now"),
                   style: ElevatedButton.styleFrom(
                     onPrimary: Colors.white,
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 20,
                         fontStyle: FontStyle.italic),
                   ),
                 ),
-                ElevatedButton(onPressed: () {}, child: Text("Checkout"),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text("Checkout"),
                   style: ElevatedButton.styleFrom(
                     onPrimary: Colors.white,
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 25,
                         fontStyle: FontStyle.italic),

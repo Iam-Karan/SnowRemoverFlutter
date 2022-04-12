@@ -232,9 +232,7 @@ class _productDisplayState extends State<productDisplay> {
                                         children: [
                                           ElevatedButton.icon(
                                             onPressed: () {
-                                              setState(() {
-                                                addIteamToCart();
-                                              });
+                                              addIteamToCart();
                                             },
                                             icon: Icon(Icons.add_shopping_cart),
                                             label: Text("Cart"),
@@ -284,10 +282,12 @@ class _productDisplayState extends State<productDisplay> {
             .collection('users')
             .doc(uid)
             .collection('cart')
-            .where('name', isEqualTo: widget.brand)
+            .doc(widget.ID)
             .get()
-            .then((QuerySnapshot querySnapshot) async {
-          if (querySnapshot.docs.isNotEmpty) {
+            .then((DocumentSnapshot docSnapshot) async {
+          if (docSnapshot.exists) {
+            Map<String, dynamic> data =
+                docSnapshot.data()! as Map<String, dynamic>;
             if (simpleIntInput != 0) {
               await FirebaseFirestore.instance
                   .collection('users')
@@ -296,13 +296,12 @@ class _productDisplayState extends State<productDisplay> {
                   .doc(widget.ID)
                   .set({
                 'hours': 1,
-                'id': uid,
-                'image': widget.image,
+                'id': widget.ID,
+                'image': "products/" + widget.image,
                 'name': widget.brand,
-                'quantity': simpleIntInput,
+                'quantity': simpleIntInput + data['quantity'],
                 'type': "products",
                 'price': widget.price,
-
               });
               showOverlay((context, t) {
                 return Opacity(
@@ -336,13 +335,12 @@ class _productDisplayState extends State<productDisplay> {
           .doc(widget.ID)
           .set({
         'id': widget.ID,
-        'image': widget.image,
+        'image': "products/" + widget.image,
         'name': widget.brand,
         'quantity': simpleIntInput,
         'type': "products",
         'hours': 1,
         'price': widget.price,
-
       });
       showOverlay((context, t) {
         return Opacity(
@@ -380,29 +378,29 @@ class _productDisplayState extends State<productDisplay> {
     if (isLiked == false) {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         String? uid = user?.uid;
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(uid)
-          .collection('favorite')
-              .get()
-              .then((QuerySnapshot querySnapshot) async {
-            if (querySnapshot.docs.isNotEmpty) {
-              await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .collection('favorite')
-                  .doc(widget.ID)
-                  .set({
-                'id': widget.ID,
-                'value': true,
-                'type': "products",
-                'hours': 1,
-                'price': widget.price,
-              });
-            } else {
-             addFavorite(uid!);
-            }
-          });
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('favorite')
+            .get()
+            .then((QuerySnapshot querySnapshot) async {
+          if (querySnapshot.docs.isNotEmpty) {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .collection('favorite')
+                .doc(widget.ID)
+                .set({
+              'id': widget.ID,
+              'value': true,
+              'type': "products",
+              'hours': 1,
+              'price': widget.price,
+            });
+          } else {
+            addFavorite(uid!);
+          }
+        });
       });
       return !isLiked;
     } else {

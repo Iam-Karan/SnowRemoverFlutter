@@ -37,7 +37,9 @@ String value = "";
 class _cartScreenCardState extends State<cartScreenCard> {
   @override
   Widget build(BuildContext context) {
-    int simpleIntInput = widget.quantity;
+    String type = widget.type;
+    int simpleIntInput =
+        widget.type.compareTo("products") == 0 ? widget.quantity : widget.hours;
 
     return FutureBuilder<String>(
       builder: ((BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -158,12 +160,14 @@ class _cartScreenCardState extends State<cartScreenCard> {
         .doc(uid)
         .collection('cart')
         .doc(widget.id)
-        .update({'quantity': quantity});
+        .update(widget.type.compareTo("products") == 0
+            ? {'quantity': quantity}
+            : {'hours': quantity});
   }
 }
 
 Future<String> generateImageUrl3(String imageName, String type) async {
   fs.FirebaseStorage storage = fs.FirebaseStorage.instance;
-  String downloadURL = await storage.ref('$type/$imageName').getDownloadURL();
+  String downloadURL = await storage.ref(imageName).getDownloadURL();
   return downloadURL;
 }
