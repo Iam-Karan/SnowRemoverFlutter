@@ -284,7 +284,6 @@ class _productDisplayState extends State<productDisplay> {
             .collection('users')
             .doc(uid)
             .collection('cart')
-            .where('name', isEqualTo: widget.brand)
             .get()
             .then((QuerySnapshot querySnapshot) async {
           if (querySnapshot.docs.isNotEmpty) {
@@ -296,7 +295,7 @@ class _productDisplayState extends State<productDisplay> {
                   .doc(widget.ID)
                   .set({
                 'hours': 1,
-                'id': uid,
+                'id': widget.ID,
                 'image': widget.image,
                 'name': widget.brand,
                 'quantity': simpleIntInput,

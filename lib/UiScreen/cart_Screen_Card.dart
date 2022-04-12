@@ -105,8 +105,9 @@ class _cartScreenCardState extends State<cartScreenCard> {
                       ],
                     ),
                     leading: CircleAvatar(
-                      backgroundImage: NetworkImage(imageUrl!),
-                      radius: 40,
+                   //   backgroundImage:  ,
+                      radius: 60,
+                      foregroundImage: NetworkImage(imageUrl!),
                     ),
                     trailing: Container(
                       height: 250,
