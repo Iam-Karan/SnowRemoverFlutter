@@ -164,7 +164,8 @@ giveFeedback( String name,
         .set({
       "name": name,
       "email": email,
-      "feedback": message
+      "message": message,
+      "read": false,
     });
     showOverlay((context, t) {
       return Opacity(

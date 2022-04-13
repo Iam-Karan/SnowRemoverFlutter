@@ -10,8 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:snow_remover/UiScreen/cart_Screen_Card.dart';
 import 'package:snow_remover/models/cart_model.dart';
 
-import '../models/Generate_Image_Url.dart';
-
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
 
