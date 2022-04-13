@@ -69,6 +69,8 @@ class _CartScreenState extends State<CartScreen> {
       body: StreamBuilder<QuerySnapshot>(
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          currentCart.clear();
+          // print("cart length on rerender" + currentCart.length.toString());
           if (signIn == false) {
             return Column(children: [
               SizedBox(
@@ -103,59 +105,64 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ]);
           } else if (signIn == true && snapshot.hasData == true) {
-            return Column(children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.8,
-                child: ListView(
-                  children:
-                      snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data =
-                        document.data()! as Map<String, dynamic>;
-                    CartModel curr = CartModel(
-                        hours: data['hours'],
-                        id: data['id'],
-                        image: data['image'],
-                        name: data['name'],
-                        price: data['price'],
-                        quantity: data['quantity'],
-                        type: data['type']);
-                    currentCart.add(curr);
-                    return cartScreenCard(
-                        hours: data['hours'],
-                        id: data['id'].toString(),
-                        image: data['image'].toString(),
-                        name: data['name'].toString(),
-                        price: data['price'],
-                        quantity: data['quantity'],
-                        type: data['type'].toString());
-                  }).toList(),
-                ),
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("Reserve Now"),
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                    textStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontStyle: FontStyle.italic),
+            // print("signed in and have data");
+            return SingleChildScrollView(
+              child: Column(children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.78,
+                  child: ListView(
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      CartModel curr = CartModel(
+                          hours: data['hours'],
+                          id: data['id'],
+                          image: data['image'],
+                          name: data['name'],
+                          price: data['price'],
+                          quantity: data['quantity'],
+                          type: data['type']);
+                      currentCart.add(curr);
+                      return cartScreenCard(
+                          hours: data['hours'],
+                          id: data['id'].toString(),
+                          image: data['image'].toString(),
+                          name: data['name'].toString(),
+                          price: data['price'],
+                          quantity: data['quantity'],
+                          type: data['type'].toString());
+                    }).toList(),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: checkout,
-                  child: const Text("Checkout"),
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                    textStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontStyle: FontStyle.italic),
-                  ),
-                )
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Text("Reserve Now"),
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: Colors.white,
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: checkout,
+                        child: const Text("Checkout"),
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: Colors.white,
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 25,
+                              fontStyle: FontStyle.italic),
+                        ),
+                      )
+                    ]),
               ]),
-            ]);
+            );
           }
           return Text("jhsdcvbhjk");
         },

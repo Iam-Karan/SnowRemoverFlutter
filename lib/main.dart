@@ -18,9 +18,11 @@ import 'package:snow_remover/UiScreen/user_profile.dart';
 import 'Colors/ThemeColor.dart';
 import 'constant.dart' as constant;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = constant.pKEY;
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
