@@ -6,6 +6,7 @@ import 'package:snow_remover/UiScreen/admin/admin_bottom_nav.dart';
 import 'package:snow_remover/UiScreen/admin/admin_feedback.dart';
 import 'package:snow_remover/UiScreen/admin/admin_home.dart';
 import 'package:snow_remover/UiScreen/admin/admin_service.dart';
+import 'package:snow_remover/UiScreen/checkout_screen.dart';
 import 'package:snow_remover/UiScreen/sign_In.dart';
 import 'package:snow_remover/UiScreen/aboutus_screen.dart';
 import 'package:snow_remover/components/bottom_navigator.dart';
@@ -14,13 +15,14 @@ import 'package:snow_remover/UiScreen/orders_screen.dart';
 import 'package:snow_remover/UiScreen/service_screen.dart';
 import 'package:snow_remover/UiScreen/sign_Up.dart';
 import 'package:snow_remover/UiScreen/user_profile.dart';
-import 'package:snow_remover/models/cartModel.dart';
 import 'Colors/ThemeColor.dart';
 import 'constant.dart' as constant;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = constant.pKEY;
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
@@ -51,6 +53,7 @@ class MyApp extends StatelessWidget {
           '/admin_feedback': (context) => const AdminFeedback(),
           '/add_edit_product': (context) => const AddEditProduct(),
           '/cartScreen': (context) => const CartScreen(),
+          '/checkout': (context) => const CheckoutScreen(),
         },
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF34A8DB)),

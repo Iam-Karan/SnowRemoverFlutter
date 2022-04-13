@@ -52,6 +52,9 @@ dependencies:
   shared_preferences: ^2.0.13
   image_picker: ^0.8.4+11
   like_button: ^2.0.4
+  flutter_stripe: ^2.4.0
+  http: ^0.13.4
+  get: ^4.6.1
 
 
 

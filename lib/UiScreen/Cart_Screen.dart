@@ -8,8 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snow_remover/UiScreen/cart_Screen_Card.dart';
-
-import '../models/Generate_Image_Url.dart';
+import 'package:snow_remover/models/cart_model.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -17,14 +16,15 @@ class CartScreen extends StatefulWidget {
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
-   FirebaseAuth auth = FirebaseAuth.instance ;
- User? users = auth.currentUser;
-final uid = users?.uid;
 
+FirebaseAuth auth = FirebaseAuth.instance;
+User? users = auth.currentUser;
+final uid = users?.uid;
 
 bool signIn = false;
 
 class _CartScreenState extends State<CartScreen> {
+  List<CartModel> currentCart = [];
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('users')
       .doc(uid)
@@ -32,18 +32,13 @@ class _CartScreenState extends State<CartScreen> {
       .snapshots(includeMetadataChanges: true);
   @override
   Widget build(BuildContext context) {
-
-    FirebaseAuth.instance
-        .userChanges()
-        .listen((User? user) {
+    FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
         signIn = false;
       } else {
         signIn = true;
       }
     });
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +67,9 @@ class _CartScreenState extends State<CartScreen> {
       body: StreamBuilder<QuerySnapshot>(
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (signIn == false ) {
+          currentCart.clear();
+          // print("cart length on rerender" + currentCart.length.toString());
+          if (signIn == false) {
             return Column(children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -105,53 +102,73 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.grey)),
               ),
             ]);
-          } else if(signIn == true && snapshot.hasData == true )  {
-            return Column(children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.8,
-                child: ListView(
-                  children:
-                      snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data =
-                        document.data()! as Map<String, dynamic>;
-                    return cartScreenCard(
-                        hours: data['hours'],
-                        id: data['id'].toString(),
-                        image: data['image'].toString(),
-                        name: data['name'].toString(),
-                        price: data['price'],
-                        quantity: data['quantity'],
-                        type: data['type'].toString());
-                  }).toList(),
-                ),
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text("Reserve Now"),
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                    textStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontStyle: FontStyle.italic),
+          } else if (signIn == true && snapshot.hasData == true) {
+            // print("signed in and have data");
+            return SingleChildScrollView(
+              child: Column(children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.78,
+                  child: ListView(
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      CartModel curr = CartModel(
+                          hours: data['hours'],
+                          id: data['id'],
+                          image: data['image'],
+                          name: data['name'],
+                          price: data['price'],
+                          quantity: data['quantity'],
+                          type: data['type']);
+                      currentCart.add(curr);
+                      return cartScreenCard(
+                          hours: data['hours'],
+                          id: data['id'].toString(),
+                          image: data['image'].toString(),
+                          name: data['name'].toString(),
+                          price: data['price'],
+                          quantity: data['quantity'],
+                          type: data['type'].toString());
+                    }).toList(),
                   ),
                 ),
-                ElevatedButton(onPressed: () {}, child: Text("Checkout"),
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                    textStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontStyle: FontStyle.italic),
-                  ),
-                )
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Text("Reserve Now"),
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: Colors.white,
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: checkout,
+                        child: const Text("Checkout"),
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: Colors.white,
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 25,
+                              fontStyle: FontStyle.italic),
+                        ),
+                      )
+                    ]),
               ]),
-            ]);
+            );
           }
           return Text("jhsdcvbhjk");
         },
       ),
     );
+  }
+
+  void checkout() {
+    Navigator.pushNamed(context, '/checkout', arguments: currentCart);
   }
 }

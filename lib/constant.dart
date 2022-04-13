@@ -21,3 +21,5 @@ String dummyUploadImg =
 List<String> imageUploadOptions = ["camera", " gallery"];
 
 String miscFolder = "misc";
+String pKEY =
+    "pk_test_51KnTwUEeWLLzf6XRPYGwXPOkSE98yeUkbjchJLFOQy8i9Gi6cnqW2AG0QkV2IfSXhxgY1cb0gFUl2X40vG4VStbA00p865OQIv";

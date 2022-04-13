@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:snow_remover/constant.dart' as constant;
+import 'package:snow_remover/utility.dart' as utility;
 class AdminOrders extends StatefulWidget {
   const AdminOrders({Key? key}) : super(key: key);
 
@@ -8,8 +10,21 @@ class AdminOrders extends StatefulWidget {
 }
 
 class _AdminOrdersState extends State<AdminOrders> {
+  bool isLoggedIn = FirebaseAuth.instance.currentUser != null ? true : false;
   @override
   Widget build(BuildContext context) {
-    return Container(child: const Text("Admin handles orders here"));
+    return Center(
+        child: InkWell(
+            onTap: () => utility.SignOut(context),
+            child: Container(
+              height: 40,
+              width: 80,
+              decoration: const BoxDecoration(color: constant.primaryColor),
+              alignment: Alignment.center,
+              child: Text(
+                isLoggedIn ? "Logout" : "Login",
+                textAlign: TextAlign.justify,
+              ),
+            )));
   }
 }

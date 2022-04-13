@@ -250,10 +250,12 @@ class _personDisplayState extends State<personDisplay> {
             .collection('users')
             .doc(uid)
             .collection('cart')
-            .where('name', isEqualTo: widget.brand)
+            .doc(widget.id)
             .get()
-            .then((QuerySnapshot querySnapshot) async {
-          if (querySnapshot.docs.isNotEmpty) {
+            .then((DocumentSnapshot docSnapshot) async {
+          if (docSnapshot.exists) {
+            Map<String, dynamic> data =
+                docSnapshot.data()! as Map<String, dynamic>;
             if (simpleIntInput != 0) {
               await FirebaseFirestore.instance
                   .collection('users')
@@ -262,9 +264,9 @@ class _personDisplayState extends State<personDisplay> {
                   .doc(widget.id)
                   .set({
                 'id': widget.id,
-                'image': widget.image,
+                'image': "personimages/" + widget.image,
                 'name': widget.brand,
-                'hours': simpleIntInput,
+                'hours': simpleIntInput + data['hours'],
                 'type': "personimages",
                 'price': widget.price,
                 'quantity': 1,
@@ -301,7 +303,7 @@ class _personDisplayState extends State<personDisplay> {
           .doc(widget.id)
           .set({
         'id': widget.id,
-        'image': widget.image,
+        'image': "personimages/" + widget.image,
         'name': widget.brand,
         'hours': simpleIntInput,
         'type': "personimages",
@@ -343,29 +345,29 @@ class _personDisplayState extends State<personDisplay> {
     if (isLiked == false) {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         String? uid = user?.uid;
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(uid)
-              .collection('favorite')
-              .where('value', isEqualTo: false)
-              .get()
-              .then((QuerySnapshot querySnapshot) async {
-            if (querySnapshot.docs.isNotEmpty) {
-              await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .collection('favorite')
-                  .doc(widget.id)
-                  .set({
-                'id': widget.id,
-                'value': true,
-                'type': "product",
-                'price': widget.price,
-              });
-            } else {
-              addFavorite(uid!);
-            }
-          });
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('favorite')
+            .where('value', isEqualTo: false)
+            .get()
+            .then((QuerySnapshot querySnapshot) async {
+          if (querySnapshot.docs.isNotEmpty) {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .collection('favorite')
+                .doc(widget.id)
+                .set({
+              'id': widget.id,
+              'value': true,
+              'type': "product",
+              'price': widget.price,
+            });
+          } else {
+            addFavorite(uid!);
+          }
+        });
       });
     } else {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
