@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:snow_remover/UiScreen/Cart_Screen.dart';
+import 'package:snow_remover/UiScreen/cart/Cart_Screen.dart';
 import 'package:snow_remover/UiScreen/admin/admin_add_product.dart';
 import 'package:snow_remover/UiScreen/admin/admin_bottom_nav.dart';
 import 'package:snow_remover/UiScreen/admin/admin_feedback.dart';
@@ -8,7 +8,7 @@ import 'package:snow_remover/UiScreen/admin/admin_home.dart';
 import 'package:snow_remover/UiScreen/admin/admin_service.dart';
 import 'package:snow_remover/UiScreen/checkout_screen.dart';
 import 'package:snow_remover/UiScreen/sign_In.dart';
-import 'package:snow_remover/UiScreen/aboutus_screen.dart';
+import 'package:snow_remover/UiScreen/About%20us/aboutus_screen.dart';
 import 'package:snow_remover/components/bottom_navigator.dart';
 import 'package:snow_remover/UiScreen/launch_screen.dart';
 import 'package:snow_remover/UiScreen/orders_screen.dart';

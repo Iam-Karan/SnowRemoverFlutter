@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:snow_remover/UiScreen/FeedBack.dart';
+import 'package:snow_remover/UiScreen/About%20us/FeedBack.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({Key? key}) : super(key: key);

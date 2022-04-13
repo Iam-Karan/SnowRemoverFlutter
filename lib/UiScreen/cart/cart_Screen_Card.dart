@@ -37,7 +37,6 @@ String value = "";
 class _cartScreenCardState extends State<cartScreenCard> {
   @override
   Widget build(BuildContext context) {
-    String type = widget.type;
     int simpleIntInput =
         widget.type.compareTo("products") == 0 ? widget.quantity : widget.hours;
 

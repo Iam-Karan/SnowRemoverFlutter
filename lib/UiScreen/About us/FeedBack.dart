@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-import '../components/toast_message/ios_Style.dart';
+import '../../components/toast_message/ios_Style.dart';
 
 
 class feedback extends StatefulWidget {
