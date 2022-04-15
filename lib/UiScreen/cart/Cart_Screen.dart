@@ -1,14 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snow_remover/UiScreen/cart/cart_Screen_Card.dart';
 import 'package:snow_remover/models/cart_model.dart';
+import 'package:snow_remover/utility.dart' as utility;
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -20,7 +16,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   User? users;
-  final uid = null;
+  String? uid;
 
   bool signIn = false;
   List<CartModel> currentCart = [];
@@ -28,7 +24,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     User? users = auth.currentUser;
-    final uid = users?.uid;
+    uid = users?.uid;
     final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
@@ -54,7 +50,7 @@ class _CartScreenState extends State<CartScreen> {
                 text: "Cart ",
               ),
               WidgetSpan(
-                child: Icon(Icons.shopping_cart, size: 35),
+                child: utility.getAction(context)[0],
               ),
             ],
             style: GoogleFonts.lato(

@@ -1,9 +1,8 @@
 import 'package:snow_remover/components/home_grid_view.dart';
-import 'package:snow_remover/components/product_card.dart';
 import 'package:snow_remover/constant.dart' as constant;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:snow_remover/utility.dart' as utility;
+import 'package:snow_remover/utility.dart' as utility;
 import 'package:snow_remover/models/product_model.dart';
 import 'dart:async';
 
@@ -84,6 +83,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Text("Shop tools"),
           ),
+          actions: utility.getAction(context),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(55.0),
             child: Padding(

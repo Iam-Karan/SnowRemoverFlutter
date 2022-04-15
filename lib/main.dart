@@ -19,12 +19,17 @@ import 'Colors/ThemeColor.dart';
 import 'constant.dart' as constant;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:provider/provider.dart';
+
+import 'store/counter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = constant.pKEY;
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => Counter()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

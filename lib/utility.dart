@@ -3,14 +3,18 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 import 'package:snow_remover/models/product_model.dart';
 import '../models/Person.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'components/toast_message/ios_Style.dart';
-import 'constant.dart' as constant;
+import 'package:snow_remover/components/badge.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fs;
+
+import 'store/counter.dart';
 
 // String generateImageUrl(String imageName) {
 //   String storageKey = constant.storageKey;
@@ -126,4 +130,22 @@ Future<void> uploadFile(File toUpload, String source, String filename) async {
   } on firebase_core.FirebaseException catch (e) {
     rethrow;
   }
+}
+
+List<Widget> getAction(BuildContext context) {
+  return [
+    MyBadge(
+        child: InkWell(
+          child: const Icon(
+            Icons.shopping_cart,
+            size: 35,
+          ),
+          onTap: () {
+            Navigator.pushNamed(context, '/cartScreen');
+          },
+        ),
+        value: '${context.watch<Counter>().count}',
+        top: 10,
+        right: 5)
+  ];
 }

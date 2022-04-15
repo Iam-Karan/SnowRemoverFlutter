@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:snow_remover/UiScreen/cart/Cart_Screen.dart';
+import 'package:snow_remover/utility.dart' as utility;
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -91,11 +92,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   builder: (context) => const CartScreen()),
                             );
                           },
-                          child: const Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                            size: 30.0,
-                          ),
+                          child: utility.getAction(context)[0],
                         ))
                   ],
                 ),

@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:snow_remover/models/Generate_Image_Url.dart';
 import 'package:snow_remover/utility.dart' as utility;
@@ -27,22 +25,21 @@ class _ServiceScreenState extends State<ServiceScreen> {
     try {
       Map<String, dynamic> singleElem;
       CollectionReference _persons =
-      FirebaseFirestore.instance.collection('person');
+          FirebaseFirestore.instance.collection('person');
       QuerySnapshot querySnapshot = await _persons.get();
       List<person> apiData = querySnapshot.docs.map((e) {
         singleElem = e.data() as Map<String, dynamic>;
         singleElem["imageurl"] = singleElem["imageurl"];
         singleElem["_id"] = e.reference.id;
         person temp = person(
-          double.parse(singleElem["Price"]),
-          singleElem["age"],
-          singleElem["description"],
-          singleElem["_id"],
-          singleElem["imageurl"],
-          singleElem["name"],
-          singleElem["personId"],
-          singleElem["archiveStatus"]
-        );
+            double.parse(singleElem["Price"]),
+            singleElem["age"],
+            singleElem["description"],
+            singleElem["_id"],
+            singleElem["imageurl"],
+            singleElem["name"],
+            singleElem["personId"],
+            singleElem["archiveStatus"]);
         return temp;
       }).toList();
       return apiData;
@@ -63,10 +60,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
     double Width = (MediaQuery.of(context).size.width);
     return Scaffold(
       appBar: AppBar(
-        //leading: Image.asset('assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg',fit: BoxFit.fill,),
-        elevation: 5,
-        title: Text("Snow Removal"),
-      ),
+          //leading: Image.asset('assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg',fit: BoxFit.fill,),
+          elevation: 5,
+          title: const Text("Snow Removal"),
+          actions: utility.getAction(context)),
       // This is handled by the search bar itself.
       // resizeToAvoidBottomInset: false,
       body: Stack(
@@ -316,9 +313,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               icon: const Icon(Icons.search),
               onPressed: () {
                 if (seachValue.isNotEmpty) {
-                  setState(() {
-
-                  });
+                  setState(() {});
                 }
               },
             ),
