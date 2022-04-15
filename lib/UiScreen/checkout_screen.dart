@@ -137,7 +137,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             Container(
-              height: screenHeight * 0.30,
+              height: screenHeight > 550
+                  ? screenHeight * 0.35
+                  : screenHeight * 0.40,
               width: screenWidth * 0.90,
               margin: const EdgeInsets.all(10),
               child: Padding(

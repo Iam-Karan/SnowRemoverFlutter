@@ -17,21 +17,23 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-FirebaseAuth auth = FirebaseAuth.instance;
-User? users = auth.currentUser;
-final uid = users?.uid;
-
-bool signIn = false;
-
 class _CartScreenState extends State<CartScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? users;
+  final uid = null;
+
+  bool signIn = false;
   List<CartModel> currentCart = [];
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .collection('cart')
-      .snapshots(includeMetadataChanges: true);
+
   @override
   Widget build(BuildContext context) {
+    User? users = auth.currentUser;
+    final uid = users?.uid;
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('cart')
+        .snapshots(includeMetadataChanges: true);
     FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
         signIn = false;
@@ -68,7 +70,6 @@ class _CartScreenState extends State<CartScreen> {
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           currentCart.clear();
-          // print("cart length on rerender" + currentCart.length.toString());
           if (signIn == false) {
             return Column(children: [
               SizedBox(
@@ -107,7 +108,7 @@ class _CartScreenState extends State<CartScreen> {
             return SingleChildScrollView(
               child: Column(children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.78,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   child: ListView(
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {
