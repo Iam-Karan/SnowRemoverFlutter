@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:snow_remover/UiScreen/sign_Up.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:snow_remover/components/toast_message/ios_Style.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:snow_remover/store/counter.dart';
 import 'package:snow_remover/utility.dart' as utility;
 
 final TextEditingController emailController = TextEditingController();
@@ -564,14 +568,16 @@ class _SignInState extends State<SignIn> {
   }
 
   _navigateToHome() async {
-    await Future.delayed(const Duration(milliseconds: 1500), () {});
     DocumentSnapshot? userInfo = await utility.fetchUser();
     if (userInfo != null &&
         userInfo.get("type").toString().toLowerCase() == "admin") {
       Navigator.pushReplacementNamed(context, '/admin_bottomnav');
       // signed in
     } else {
-      Navigator.pushReplacementNamed(context, '/bottom_nav');
+      await context.read<Counter>().init();
+      Timer(const Duration(milliseconds: 1000), () {
+        Navigator.pushReplacementNamed(context, '/bottom_nav');
+      });
     }
   }
 

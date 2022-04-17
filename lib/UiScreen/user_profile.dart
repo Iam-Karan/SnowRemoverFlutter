@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:snow_remover/store/counter.dart';
 import '../components/toast_message/ios_Style.dart';
-
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -17,11 +18,13 @@ class _UserProfileState extends State<UserProfile> {
   String name = "user";
   String email = "";
 
-
   late TextEditingController nameEditingController = TextEditingController();
-  late TextEditingController oldPasswordEditingController = TextEditingController();
-  late TextEditingController newPasswordEditingController = TextEditingController();
-  late TextEditingController confirmPasswordEditingController = TextEditingController();
+  late TextEditingController oldPasswordEditingController =
+      TextEditingController();
+  late TextEditingController newPasswordEditingController =
+      TextEditingController();
+  late TextEditingController confirmPasswordEditingController =
+      TextEditingController();
 
   final firebaseUser = FirebaseAuth.instance.currentUser!;
 
@@ -44,11 +47,11 @@ class _UserProfileState extends State<UserProfile> {
       );
     });
     Navigator.pushReplacementNamed(context, '/bottom_nav');
+    context.read<Counter>().reset();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Color(0xFF34A8DB),
         appBar: AppBar(
@@ -127,12 +130,12 @@ class _UserProfileState extends State<UserProfile> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 20),)),
+                                            fontSize: 20),
+                                      )),
                                   Expanded(
                                     flex: 2,
                                     child: TextFormField(
-                                      controller:
-                                          nameEditingController,
+                                      controller: nameEditingController,
                                       decoration: InputDecoration(
                                         filled: true,
                                         labelStyle:
@@ -158,7 +161,7 @@ class _UserProfileState extends State<UserProfile> {
                                         }
                                         return null;
                                       },
-                                      onSaved: (value){
+                                      onSaved: (value) {
                                         nameEditingController.text = value!;
                                       },
                                     ),
@@ -378,10 +381,8 @@ class _UserProfileState extends State<UserProfile> {
           child: const IosStyleToast(label: "Name updated successfully"),
         );
       });
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => super.widget));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => super.widget));
     }
     if (oldPassword.isNotEmpty && newPassword == confirmPassword) {
       RegExp regex = RegExp(r'^.{6,}$');

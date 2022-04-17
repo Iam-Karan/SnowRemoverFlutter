@@ -6,14 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 import 'package:snow_remover/components/custom_form_field.dart';
 import 'package:snow_remover/components/toast_message/ios_Style.dart';
 import 'package:snow_remover/controller/payment_controller.dart';
+import 'package:snow_remover/models/admin_order_model.dart';
 import 'package:snow_remover/models/cart_model.dart';
 import 'package:snow_remover/constant.dart' as constant;
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:snow_remover/models/order_item_model.dart';
 import 'package:snow_remover/models/order_model.dart';
+import 'package:snow_remover/store/counter.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);
@@ -258,10 +261,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   void reset() {
+    context.read<Counter>().reset();
     _formKey.currentState!.reset();
   }
 
-  Future<DocumentReference> postOrdersToFirestore(
+  Future<void> postOrdersToFirestore(
       List<CartModel> currCart, uid, double total) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     List<OrderItem> listItems = currCart
@@ -271,11 +275,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     DateTime now = DateTime.now();
     // print("this is the item array length" + listItems.length.toString());
     OrderModel uploadObj = OrderModel(listItems, now, true, now, total);
-    return await firebaseFirestore
+    String completeAddress = '$address, $zip, $city ,$province, $country';
+    AdminOrderModel separateCollectionObj = AdminOrderModel(
+        listItems, now, true, now, total, uid, completeAddress, '');
+    DocumentReference addedOrder = await firebaseFirestore
         .collection('users')
         .doc(uid)
         .collection('order')
         .add(uploadObj.toMap());
+    return await firebaseFirestore
+        .collection('orders')
+        .doc(addedOrder.id)
+        .set(separateCollectionObj.toMap());
     // await firebaseFirestore.collection("products").add(uploadObj.toMap());
   }
 }

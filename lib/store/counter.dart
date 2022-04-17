@@ -10,18 +10,26 @@ class Counter with ChangeNotifier, DiagnosticableTreeMixin {
   Counter() {
     init();
   }
+  void reset() {
+    _count = 0;
+    notifyListeners();
+  }
 
-  void init() {
+  Future<void> init() async {
     User? users = auth.currentUser;
     String? uid = users?.uid;
-    FirebaseFirestore.instance
+    QuerySnapshot cart = await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .collection('cart')
-        .get()
-        .then((value) {
-      _count = value.size;
-    });
+        .get();
+
+    _count = cart.docs.map(
+      (e) {
+        Map<String, dynamic> singleElem = e.data() as Map<String, dynamic>;
+        return singleElem['quantity'];
+      },
+    ).reduce((value, element) => value + element);
     notifyListeners();
   }
 
