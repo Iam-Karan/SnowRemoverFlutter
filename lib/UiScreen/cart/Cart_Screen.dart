@@ -26,20 +26,16 @@ class _CartScreenState extends State<CartScreen> {
       .doc(uid)
       .collection('cart')
       .snapshots();
+
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
-        setState(() {
-          signIn = false;
-        });
+        signIn = false;
       } else {
-        setState(() {
-          signIn = true;
-        });
+        signIn = true;
       }
     });
-
 
     return Scaffold(
       appBar: AppBar(
@@ -70,7 +66,7 @@ class _CartScreenState extends State<CartScreen> {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           currentCart.clear();
 
-          if (signIn == false || snapshot.data!.docs.length == 0) {
+          if (signIn == false || snapshot.data?.docs.length == 0) {
             return Column(children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -103,9 +99,8 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.grey)),
               ),
             ]);
-          }
-          else if (signIn == true && snapshot.hasData == true) {
-            // print("signed in and have data");
+          } else if (signIn == true && snapshot.data?.docs.length != 0) {
+            //
             return SingleChildScrollView(
               child: Column(children: [
                 Container(
@@ -164,7 +159,7 @@ class _CartScreenState extends State<CartScreen> {
               ]),
             );
           }
-          return Text("jhsdcvbhjk");
+          return Text("there is error");
         },
       ),
     );

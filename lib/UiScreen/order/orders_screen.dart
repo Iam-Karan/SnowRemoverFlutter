@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snow_remover/UiScreen/cart/Cart_Screen.dart';
 
-import '../../models/order_item_model.dart';
 import 'orderHistoryCard.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -57,44 +56,40 @@ class _OrderScreenState extends State<OrderScreen> {
 
     children.add(_buildCard());
 
-    //children.add(_buildFeedbackButton());
-
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       String? uid = user?.uid;
     });
-    return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            primary: true,
-            backgroundColor: Color(0xFF34A8DB),
-            elevation: 0,
-            leading: GestureDetector(
-              onTap: goToScreen,
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          primary: true,
+          backgroundColor: Color(0xFF34A8DB),
+          elevation: 0,
+          leading: GestureDetector(
+            onTap: goToScreen,
+            child: const Icon(
+              Icons.account_circle,
+              color: Colors.white,
+              size: 30.0,
+            ),
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CartScreen()),
+                );
+              },
               child: const Icon(
-                Icons.account_circle,
+                Icons.shopping_cart,
                 color: Colors.white,
                 size: 30.0,
               ),
-            ),
-            actions: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CartScreen()),
-                  );
-                },
-                child: const Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-              )
-            ],
-          ),
-          body: Stack(children: children)),
-    );
+            )
+          ],
+        ),
+        body: Stack(children: children));
   }
 
   Widget _buildCard() {
@@ -105,8 +100,8 @@ class _OrderScreenState extends State<OrderScreen> {
                 .doc(uid)
                 .collection('order')
                 .snapshots(includeMetadataChanges: true),
-            builder: (BuildContext context,
-                AsyncSnapshot<QuerySnapshot> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return Center(
                   child: CircularProgressIndicator(),
