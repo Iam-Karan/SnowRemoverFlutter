@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:snow_remover/models/Generate_Image_Url.dart';
 import 'package:snow_remover/utility.dart' as utility;
@@ -41,7 +39,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
             singleElem["imageurl"],
             singleElem["name"],
             singleElem["personId"],
-            singleElem["archiveStatus"]);
+            singleElem["archiveStatus"],
+            singleElem["completed_order"]);
         return temp;
       }).toList();
       return apiData;
@@ -58,13 +57,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
   @override
   Widget build(BuildContext context) {
     //  finalSortValue = filterButtonIteams.sortValue;
-
+    print(((MediaQuery.of(context).size.height * 1) - 2));
+    double Width = (MediaQuery.of(context).size.width);
     return Scaffold(
       appBar: AppBar(
-        //leading: Image.asset('assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg',fit: BoxFit.fill,),
-        elevation: 5,
-        title: Text("Snow Removal"),
-      ),
+          //leading: Image.asset('assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg',fit: BoxFit.fill,),
+          elevation: 5,
+          title: const Text("Snow Removal"),
+          actions: utility.getAction(context)),
       // This is handled by the search bar itself.
       // resizeToAvoidBottomInset: false,
       body: SizedBox(

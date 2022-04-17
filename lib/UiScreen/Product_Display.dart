@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 import 'package:quantity_input/quantity_input.dart';
 import 'package:like_button/like_button.dart';
+import 'package:snow_remover/store/counter.dart';
 import 'package:snow_remover/utility.dart' as utility;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -317,6 +319,7 @@ class _productDisplayState extends State<productDisplay> {
             addCartToDocumentId(uid!);
           }
         });
+        context.read<Counter>().increment(simpleIntInput);
       }
     });
   }

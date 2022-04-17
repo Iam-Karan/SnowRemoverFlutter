@@ -10,17 +10,22 @@ class orderHistory extends StatefulWidget {
   @override
   State<orderHistory> createState() => _orderHistoryState();
 }
+
 var number = 0;
 String image = "imageUrl";
+
 class _orderHistoryState extends State<orderHistory> {
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? users = auth.currentUser;
+    final uid = users?.uid;
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       String? uid = user?.uid;
     });
     return Scaffold(
       appBar: AppBar(
-        title: Text("OrderHistory"),
+        title: const Text("Order History"),
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
@@ -31,19 +36,20 @@ class _orderHistoryState extends State<orderHistory> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
             return ListView(
               shrinkWrap: true,
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               children: snapshot.data!.docs.map((document) {
-
                 Map<String, dynamic> data =
                     document.data()! as Map<String, dynamic>;
                 print(data);
-                return orderHistoryCard(image: "",);
+                return orderHistoryCard(
+                  image: "",
+                );
               }).toList(),
             );
           }),

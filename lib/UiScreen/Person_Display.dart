@@ -6,7 +6,9 @@ import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 import 'package:quantity_input/quantity_input.dart';
+import 'package:snow_remover/store/counter.dart';
 import '../components/toast_message/ios_Style.dart';
 import '../models/Generate_Image_Url.dart';
 
@@ -289,6 +291,7 @@ class _personDisplayState extends State<personDisplay> {
             addCartToDocumentId(uid!);
           }
         });
+        context.read<Counter>().increment(1);
       }
     });
   }

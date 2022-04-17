@@ -1,14 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snow_remover/UiScreen/cart/cart_Screen_Card.dart';
 import 'package:snow_remover/models/cart_model.dart';
+import 'package:snow_remover/utility.dart' as utility;
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -57,7 +53,7 @@ class _CartScreenState extends State<CartScreen> {
                 text: "Cart ",
               ),
               WidgetSpan(
-                child: Icon(Icons.shopping_cart, size: 35),
+                child: utility.getAction(context)[0],
               ),
             ],
             style: GoogleFonts.lato(
@@ -113,7 +109,7 @@ class _CartScreenState extends State<CartScreen> {
             return SingleChildScrollView(
               child: Column(children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.78,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   child: ListView(
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {

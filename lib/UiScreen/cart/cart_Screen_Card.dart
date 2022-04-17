@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fs;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:like_button/like_button.dart';
+import 'package:provider/provider.dart';
 import 'package:quantity_input/quantity_input.dart';
+import 'package:snow_remover/store/counter.dart';
 
 import 'Cart_Screen.dart';
 
@@ -37,6 +37,9 @@ String value = "";
 class _cartScreenCardState extends State<cartScreenCard> {
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    print(screenHeight);
     int simpleIntInput =
         widget.type.compareTo("products") == 0 ? widget.quantity : widget.hours;
 
@@ -67,7 +70,7 @@ class _cartScreenCardState extends State<cartScreenCard> {
                   ),
                   elevation: 2,
                   child: ListTile(
-                    contentPadding: EdgeInsets.only(top: 25),
+                    contentPadding: const EdgeInsets.only(top: 25),
                     title: Text(
                       widget.name,
                       style: GoogleFonts.sora(
@@ -76,59 +79,58 @@ class _cartScreenCardState extends State<cartScreenCard> {
                         fontSize: 18,
                       )),
                     ),
-                    subtitle: Column(
-                      children: [
-                        Container(height: 15, child: Row()),
-                        Text(
-                          (() {
-                            if (widget.type == "products") {
-                              return "Quantity";
-                            }
-                            return "Number of hours";
-                          })(),
-                          style: GoogleFonts.sora(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Colors.grey)),
-                        ),
-                        QuantityInput(
-                          value: simpleIntInput,
-                          onChanged: (value) => setState(
-                            () {
-                              simpleIntInput =
-                                  int.parse(value.replaceAll(',', ''));
-                              updateQuantity(simpleIntInput);
-                            },
+                    subtitle: Center(
+                      child: Column(
+                        children: [
+                          // Container(height: 15, child: Row()),
+                          Text(
+                            (() {
+                              if (widget.type == "products") {
+                                return "Quantity";
+                              }
+                              return "Number of hours";
+                            })(),
+                            style: GoogleFonts.sora(
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Colors.grey)),
                           ),
-                          elevation: 2,
-                        ),
-                      ],
+                          QuantityInput(
+                            value: simpleIntInput,
+                            onChanged: (value) => setState(
+                              () {
+                                updateCartState(simpleIntInput,
+                                    int.parse(value), widget.type);
+                                simpleIntInput =
+                                    int.parse(value.replaceAll(',', ''));
+                                updateQuantity(simpleIntInput);
+                              },
+                            ),
+                            elevation: 2,
+                          ),
+                        ],
+                      ),
                     ),
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(imageUrl!),
-                      radius: 40,
+                      radius: screenHeight < 550 ? 25 : 40,
                     ),
-                    trailing: Container(
-                      height: 250,
-                      width: 80,
-                      child: ElevatedButton.icon(
-                        label: Text(""),
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                          size: 30,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            elevation: 0,
-                            padding: EdgeInsets.all(1),
-                            splashFactory: InkSplash.splashFactory,
-                            alignment: Alignment.center),
-                        onPressed: () {
-                          deleteIteamInCart();
-                        },
+                    trailing: ElevatedButton.icon(
+                      label: const Text(""),
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                        size: 30,
                       ),
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          elevation: 0,
+                          splashFactory: InkSplash.splashFactory,
+                          alignment: Alignment.center),
+                      onPressed: () {
+                        deleteIteamInCart();
+                      },
                     ),
                   ),
                 ),
@@ -141,6 +143,7 @@ class _cartScreenCardState extends State<cartScreenCard> {
   }
 
   deleteIteamInCart() {
+    context.read<Counter>().decrement(widget.quantity);
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       String? uid = user?.uid;
       FirebaseFirestore.instance
@@ -153,6 +156,9 @@ class _cartScreenCardState extends State<cartScreenCard> {
   }
 
   updateQuantity(int quantity) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? users = auth.currentUser;
+    final uid = users?.uid;
     final databaseReference = FirebaseFirestore.instance;
     databaseReference
         .collection('users')
@@ -162,6 +168,14 @@ class _cartScreenCardState extends State<cartScreenCard> {
         .update(widget.type.compareTo("products") == 0
             ? {'quantity': quantity}
             : {'hours': quantity});
+  }
+
+  updateCartState(int prev, int valInt, String type) {
+    if (type.compareTo("products") == 0 && prev != valInt) {
+      prev - valInt < 0
+          ? context.read<Counter>().increment(valInt - prev)
+          : context.read<Counter>().decrement(prev - valInt);
+    }
   }
 }
 

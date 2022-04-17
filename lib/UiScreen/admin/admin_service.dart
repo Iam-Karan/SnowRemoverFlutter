@@ -45,6 +45,7 @@ class _AdminServiceScreenState extends State<AdminServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
           title: const Padding(
@@ -111,6 +112,25 @@ class _AdminServiceScreenState extends State<AdminServiceScreen> {
                 ),
               );
             }),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: InkWell(
+            onTap: (() => Navigator.pushNamed(context, '/add_person')),
+            child: Container(
+              width: screenWidth * 0.90,
+              height: 40,
+              color: constant.primaryColor,
+              alignment: Alignment.center,
+              child: const Text(
+                "Add Person",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
         ),
         FutureBuilder<List<person>>(
