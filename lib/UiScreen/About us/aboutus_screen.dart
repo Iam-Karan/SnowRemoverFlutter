@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:snow_remover/UiScreen/About%20us/FeedBack.dart';
+import 'package:snow_remover/UiScreen/About%20us/ContactUs.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({Key? key}) : super(key: key);
@@ -83,7 +83,7 @@ class AboutUs extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "    FeedBack Form",
+                "    Contact Us",
                 style: GoogleFonts.pacifico(
                     textStyle: const TextStyle(
                         fontSize: 30,

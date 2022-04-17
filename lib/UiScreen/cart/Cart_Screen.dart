@@ -29,16 +29,21 @@ class _CartScreenState extends State<CartScreen> {
       .collection('users')
       .doc(uid)
       .collection('cart')
-      .snapshots(includeMetadataChanges: true);
+      .snapshots();
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
-        signIn = false;
+        setState(() {
+          signIn = false;
+        });
       } else {
-        signIn = true;
+        setState(() {
+          signIn = true;
+        });
       }
     });
+
 
     return Scaffold(
       appBar: AppBar(
@@ -68,8 +73,8 @@ class _CartScreenState extends State<CartScreen> {
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           currentCart.clear();
-          // print("cart length on rerender" + currentCart.length.toString());
-          if (signIn == false) {
+
+          if (signIn == false || snapshot.data!.docs.length == 0) {
             return Column(children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -102,7 +107,8 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.grey)),
               ),
             ]);
-          } else if (signIn == true && snapshot.hasData == true) {
+          }
+          else if (signIn == true && snapshot.hasData == true) {
             // print("signed in and have data");
             return SingleChildScrollView(
               child: Column(children: [
