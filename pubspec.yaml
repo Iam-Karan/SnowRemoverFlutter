@@ -55,6 +55,8 @@ dependencies:
   flutter_stripe: ^2.4.0
   http: ^0.13.4
   get: ^4.6.1
+  provider: ^6.0.2
+
 
 
 
@@ -88,6 +90,11 @@ flutter:
     - assets/images/happCart
     - assets/images/groupImage.jpg
     - assets/images/Rectangle 27.png
+    - assets/images/cartoon0.jpg
+    - assets/images/cartoon1.jpg
+    - assets/images/cartoon2.jpg
+    - assets/images/cartoon3.jpg
+    - assets/images/dribbble_shot_hd-order.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

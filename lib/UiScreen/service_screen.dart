@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:snow_remover/models/Generate_Image_Url.dart';
 import 'package:snow_remover/utility.dart' as utility;
@@ -27,22 +25,22 @@ class _ServiceScreenState extends State<ServiceScreen> {
     try {
       Map<String, dynamic> singleElem;
       CollectionReference _persons =
-      FirebaseFirestore.instance.collection('person');
+          FirebaseFirestore.instance.collection('person');
       QuerySnapshot querySnapshot = await _persons.get();
       List<person> apiData = querySnapshot.docs.map((e) {
         singleElem = e.data() as Map<String, dynamic>;
         singleElem["imageurl"] = singleElem["imageurl"];
         singleElem["_id"] = e.reference.id;
         person temp = person(
-          double.parse(singleElem["Price"]),
-          singleElem["age"],
-          singleElem["description"],
-          singleElem["_id"],
-          singleElem["imageurl"],
-          singleElem["name"],
-          singleElem["personId"],
-          singleElem["archiveStatus"]
-        );
+            double.parse(singleElem["Price"]),
+            singleElem["age"],
+            singleElem["description"],
+            singleElem["_id"],
+            singleElem["imageurl"],
+            singleElem["name"],
+            singleElem["personId"],
+            singleElem["archiveStatus"],
+            singleElem["completed_order"]);
         return temp;
       }).toList();
       return apiData;
@@ -63,27 +61,28 @@ class _ServiceScreenState extends State<ServiceScreen> {
     double Width = (MediaQuery.of(context).size.width);
     return Scaffold(
       appBar: AppBar(
-        //leading: Image.asset('assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg',fit: BoxFit.fill,),
-        elevation: 5,
-        title: Text("Snow Removal"),
-      ),
+          //leading: Image.asset('assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg',fit: BoxFit.fill,),
+          elevation: 5,
+          title: const Text("Snow Removal"),
+          actions: utility.getAction(context)),
       // This is handled by the search bar itself.
       // resizeToAvoidBottomInset: false,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned(
-            right: 25,
-            left: 25,
-            top: MediaQuery.of(context).size.height * 0.08,
-            child: Container(
-              // margin: EdgeInsets.all(10),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height * 1,
+        width: MediaQuery.of(context).size.width * 1,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Positioned(
+              right: 25,
+              left: 25,
+              top: MediaQuery.of(context).size.height * 0.08,
               child: floatBar(),
             ),
-          ),
-          productView(),
-          buildFloatingSearchBar()
-        ],
+            productView(),
+            buildFloatingSearchBar()
+          ],
+        ),
       ),
     );
   }
@@ -91,43 +90,47 @@ class _ServiceScreenState extends State<ServiceScreen> {
   Widget productView() {
     return Positioned(
       top: 120,
-      child: SizedBox(
-        height: ((MediaQuery.of(context).size.height * 1) - 280),
-        width: MediaQuery.of(context).size.width * 1,
-        child: FutureBuilder<List<person>>(
-            future: utility.fetchPersonsFromDatabase(true),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<person>> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return const CircularProgressIndicator();
-                default:
-                  if (snapshot.hasError) {
-                    return Text(
-                      'Error yes: ${snapshot.error}',
-                      style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    );
-                  } else {
-                    List<person> myProducts = [];
-                    if (seachValue.isNotEmpty) {
-                      myProducts = snapshot.data!
-                          .where((element) => element.name
-                              .toLowerCase()
-                              .contains(seachValue.toLowerCase()))
-                          .toList();
-                    } else {
-                      myProducts = snapshot.data ?? [];
-                    }
-                    if (sortValue != "nil") {
-                      myProducts = applyFilter2(myProducts, sortValue);
-                    }
-                    return PersonGridView(gridData: myProducts);
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+           height: ((MediaQuery.of(context).size.height * 1) - 260),
+            width: MediaQuery.of(context).size.width * 1,
+            child: FutureBuilder<List<person>>(
+                future: utility.fetchPersonsFromDatabase(true),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<person>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const CircularProgressIndicator();
+                    default:
+                      if (snapshot.hasError) {
+                        return Text(
+                          'Error yes: ${snapshot.error}',
+                          style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        );
+                      } else {
+                        List<person> myProducts = [];
+                        if (seachValue.isNotEmpty) {
+                          myProducts = snapshot.data!
+                              .where((element) => element.name
+                                  .toLowerCase()
+                                  .contains(seachValue.toLowerCase()))
+                              .toList();
+                        } else {
+                          myProducts = snapshot.data ?? [];
+                        }
+                        if (sortValue != "nil") {
+                          myProducts = applyFilter2(myProducts, sortValue);
+                        }
+                        return PersonGridView(gridData: myProducts);
+                      }
                   }
-              }
-            }),
+                }),
+          ),
+        ],
       ),
     );
   }
@@ -316,9 +319,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               icon: const Icon(Icons.search),
               onPressed: () {
                 if (seachValue.isNotEmpty) {
-                  setState(() {
-
-                  });
+                  setState(() {});
                 }
               },
             ),

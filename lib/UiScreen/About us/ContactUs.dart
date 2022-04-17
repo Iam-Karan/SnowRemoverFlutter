@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-import '../components/toast_message/ios_Style.dart';
+import '../../components/toast_message/ios_Style.dart';
 
 
 class feedback extends StatefulWidget {
@@ -159,7 +159,7 @@ giveFeedback( String name,
   if (_formKey.currentState!.validate()) {
 
     await FirebaseFirestore.instance
-        .collection('feedback')
+        .collection('contactMessages')
         .doc()
         .set({
       "name": name,
@@ -170,7 +170,7 @@ giveFeedback( String name,
     showOverlay((context, t) {
       return Opacity(
         opacity: t,
-        child: IosStyleToast(label: "Feedback send"),
+        child: IosStyleToast(label: "message send"),
       );
     });
   }

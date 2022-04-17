@@ -15,12 +15,10 @@ class PersonGridView extends StatefulWidget {
 class _PersonGridViewState extends State<PersonGridView> {
   @override
   Widget build(BuildContext context) {
-
     final List<person> gridData = widget.gridData;
     int itemCount = widget.gridData.length;
-    print(itemCount);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

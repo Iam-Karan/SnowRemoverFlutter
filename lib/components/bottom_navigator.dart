@@ -1,8 +1,13 @@
+
+
+
+
 import 'package:flutter/material.dart';
-import 'package:snow_remover/UiScreen/Cart_Screen.dart';
+
 import 'package:snow_remover/UiScreen/home_screen_redo.dart';
-import 'package:snow_remover/UiScreen/orders_screen.dart';
-import '../UiScreen/aboutus_screen.dart';
+import 'package:snow_remover/UiScreen/order/orders_screen.dart';
+
+import '../UiScreen/About us/aboutus_screen.dart';
 import '../UiScreen/service_screen.dart';
 import 'package:snow_remover/constant.dart' as constant;
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
@@ -33,7 +38,7 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: Center(child:_widgetOptions.elementAt(_selectedIndex)),
+      body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: ConvexAppBar(
          backgroundColor : constant.primaryColor,
 

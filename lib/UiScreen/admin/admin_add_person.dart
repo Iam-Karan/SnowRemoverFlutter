@@ -2,23 +2,22 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as p;
 import 'package:overlay_support/overlay_support.dart';
-import 'package:snow_remover/components/product_details_form.dart';
+import 'package:snow_remover/components/person_details_form.dart';
 import 'package:snow_remover/components/toast_message/ios_Style.dart';
 import 'package:snow_remover/constant.dart' as constant;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:snow_remover/models/product_model.dart';
+import 'package:snow_remover/models/Person.dart';
 import 'package:snow_remover/utility.dart' as utility;
 
-class AddEditProduct extends StatefulWidget {
-  const AddEditProduct({Key? key}) : super(key: key);
+class AdminAddPerson extends StatefulWidget {
+  const AdminAddPerson({Key? key}) : super(key: key);
 
   @override
-  State<AddEditProduct> createState() => _AddEditProductState();
+  State<AdminAddPerson> createState() => _AdminAddPersonState();
 }
 
-class _AddEditProductState extends State<AddEditProduct> {
+class _AdminAddPersonState extends State<AdminAddPerson> {
   bool show = false;
   // String fileExtension = "";
   File? _image;
@@ -42,7 +41,7 @@ class _AddEditProductState extends State<AddEditProduct> {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                  "Product Details",
+                  "Person Details",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -77,9 +76,9 @@ class _AddEditProductState extends State<AddEditProduct> {
                     ),
                   ),
                 ),
-                ProductDetailsForm(
+                PersonDetailsForm(
                   resetImage: resetImage,
-                  postData: postProductToFirestore,
+                  postData: postPersonToFirestore,
                 )
               ]),
         ),
@@ -184,7 +183,7 @@ class _AddEditProductState extends State<AddEditProduct> {
     });
   }
 
-  postProductToFirestore(ProductModel obj) async {
+  postPersonToFirestore(person obj) async {
     if (_image == null) {
       showOverlay((context, t) {
         return Opacity(
@@ -196,13 +195,13 @@ class _AddEditProductState extends State<AddEditProduct> {
     }
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    obj.mainImage = fileName;
-    await firebaseFirestore.collection("products").add(obj.toMap());
-    utility.uploadFile(_image!, "products", fileName);
+    obj.imageurl = fileName;
+    await firebaseFirestore.collection("person").add(obj.toMap());
+    utility.uploadFile(_image!, "personimages", fileName);
     showOverlay((context, t) {
       return Opacity(
         opacity: t,
-        child: const IosStyleToast(label: "Product Added Successfully"),
+        child: const IosStyleToast(label: "Person Added Successfully"),
       );
     });
   }

@@ -1,14 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:snow_remover/UiScreen/cart_Screen_Card.dart';
+import 'package:snow_remover/UiScreen/cart/cart_Screen_Card.dart';
 import 'package:snow_remover/models/cart_model.dart';
+import 'package:snow_remover/utility.dart' as utility;
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -29,7 +25,8 @@ class _CartScreenState extends State<CartScreen> {
       .collection('users')
       .doc(uid)
       .collection('cart')
-      .snapshots(includeMetadataChanges: true);
+      .snapshots();
+
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.userChanges().listen((User? user) {
@@ -52,7 +49,7 @@ class _CartScreenState extends State<CartScreen> {
                 text: "Cart ",
               ),
               WidgetSpan(
-                child: Icon(Icons.shopping_cart, size: 35),
+                child: utility.getAction(context)[0],
               ),
             ],
             style: GoogleFonts.lato(
@@ -68,8 +65,8 @@ class _CartScreenState extends State<CartScreen> {
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           currentCart.clear();
-          // print("cart length on rerender" + currentCart.length.toString());
-          if (signIn == false) {
+
+          if (signIn == false || snapshot.data?.docs.length == 0) {
             return Column(children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -102,12 +99,12 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.grey)),
               ),
             ]);
-          } else if (signIn == true && snapshot.hasData == true) {
-            // print("signed in and have data");
+          } else if (signIn == true && snapshot.data?.docs.length != 0) {
+            //
             return SingleChildScrollView(
               child: Column(children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.78,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   child: ListView(
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -162,7 +159,7 @@ class _CartScreenState extends State<CartScreen> {
               ]),
             );
           }
-          return Text("jhsdcvbhjk");
+          return Text("there is error");
         },
       ),
     );

@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snow_remover/constant.dart' as constant;
+import 'package:snow_remover/models/Person.dart';
 import 'package:snow_remover/models/product_model.dart';
 import 'package:snow_remover/validaiton_extension.dart';
 import 'custom_form_field.dart';
 
-class ProductDetailsForm extends StatefulWidget {
+class PersonDetailsForm extends StatefulWidget {
   final Function resetImage;
   final Function postData;
-  const ProductDetailsForm(
+  const PersonDetailsForm(
       {Key? key, required this.resetImage, required this.postData})
       : super(key: key);
 
   @override
-  State<ProductDetailsForm> createState() => _ProductDetailsFormState();
+  State<PersonDetailsForm> createState() => _PersonDetailsFormState();
 }
 
-class _ProductDetailsFormState extends State<ProductDetailsForm> {
+class _PersonDetailsFormState extends State<PersonDetailsForm> {
   final _formKey = GlobalKey<FormState>();
-  String brand = "";
   String name = "";
   String description = "";
+  int age = 0;
   String mainImage = "";
   double priceNumerical = 0;
-  int selfId = 0;
-  String type = "";
-  int stockUnit = 0;
-  String videoURL = "";
+  int orders_completed = 0;
+  int personId = 0;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -68,12 +67,20 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
             ),
           ),
           CustomFormField(
-            hintText: 'Brand Name',
+            hintText: 'Orders completed',
             onSaved: (String value) {
-              brand = value;
+              orders_completed = int.parse(value);
             },
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'\d'),
+              )
+            ],
             validator: (val) {
-              if (!val!.isNotEmpty) return 'Brand Name cannot be empty';
+              if (!val!.isNotEmpty) return 'Orders completed cannot be empty';
+              if (!val.numbersOnly) {
+                return 'Orders completed can be numbers only';
+              }
             },
           ),
           CustomFormField(
@@ -93,55 +100,32 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
           ),
           CustomFormField(
             onSaved: (String value) {
-              selfId = int.parse(value);
+              personId = int.parse(value);
             },
-            hintText: 'Self ID',
+            hintText: 'person ID',
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                 RegExp(r'\d'),
               )
             ],
             validator: (val) {
-              if (!val!.isNotEmpty) return 'Self ID cannot be empty';
-              if (!val.numbersOnly) return 'Self ID can be numbers only';
+              if (!val!.isNotEmpty) return 'person ID cannot be empty';
+              if (!val.numbersOnly) return 'person ID can be numbers only';
             },
           ),
           CustomFormField(
             onSaved: (String value) {
-              stockUnit = int.parse(value);
+              age = int.parse(value);
             },
-            hintText: 'Stock Unit',
+            hintText: 'age',
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                 RegExp(r'\d'),
               )
             ],
             validator: (val) {
-              if (!val!.isNotEmpty) return 'Stock unit cannot be empty';
-              if (!val.numbersOnly) return 'Stock unit can be numbers only';
-            },
-          ),
-          CustomFormField(
-            onSaved: (String value) {
-              type = value;
-            },
-            hintText: 'Type',
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(
-                RegExp(r"[a-zA-Z]+|\s"),
-              )
-            ],
-            validator: (val) {
-              if (!val!.isNotEmpty) return 'Self ID cannot be empty';
-            },
-          ),
-          CustomFormField(
-            onSaved: (String value) {
-              videoURL = value;
-            },
-            hintText: 'Video URL',
-            validator: (val) {
-              if (!val!.validURL) return 'Please enter valid URL';
+              if (!val!.isNotEmpty) return 'age cannot be empty';
+              if (!val.numbersOnly) return 'age can be numbers only';
             },
           ),
           Container(
@@ -163,7 +147,7 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
                 color: constant.primaryColor,
                 alignment: Alignment.center,
                 child: const Text(
-                  "Add Product",
+                  "Add Person",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -181,8 +165,8 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
     _formKey.currentState!.reset();
   }
 
-  ProductModel formToModel() {
-    return ProductModel(brand, name, description, mainImage, priceNumerical,
-        selfId, type, stockUnit, videoURL, mainImage, selfId.toString(), false);
+  person formToModel() {
+    return person(priceNumerical, age, description, personId.toString(),
+        mainImage, name, personId, false, orders_completed);
   }
 }
