@@ -71,44 +71,42 @@ class personCard extends StatelessWidget {
                   //     image: NetworkImage(imageUrl!),
                   //   ),
                   // ),
-                  child: Expanded(
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      // crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 6,
-                          child: Image(
-                            fit: BoxFit.fill,
-                            image: NetworkImage(imageUrl!),
-                            // width: MediaQuery.of(context).size.height * 0.35,
-                            //  height: MediaQuery.of(context).size.height * 0.15,
-                          ),
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 6,
+                        child: Image(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(imageUrl!),
+                          // width: MediaQuery.of(context).size.height * 0.35,
+                          //  height: MediaQuery.of(context).size.height * 0.15,
                         ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                name,
-                                maxLines: 1,
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 18.0,
-                                ),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              name,
+                              maxLines: 1,
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 18.0,
                               ),
-                              Text(
-                                "   \$" + price.toString(),
-                                maxLines: 1,
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 18.0,
-                                ),
+                            ),
+                            Text(
+                              "   \$" + price.toString(),
+                              maxLines: 1,
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 18.0,
                               ),
-                            ])
-                      ],
-                    ),
+                            ),
+                          ])
+                    ],
                   ),
                   //  ],
                   //  ),

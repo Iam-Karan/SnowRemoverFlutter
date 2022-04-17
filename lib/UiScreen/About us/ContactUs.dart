@@ -159,7 +159,7 @@ giveFeedback( String name,
   if (_formKey.currentState!.validate()) {
 
     await FirebaseFirestore.instance
-        .collection('feedback')
+        .collection('contactMessages')
         .doc()
         .set({
       "name": name,
@@ -170,7 +170,7 @@ giveFeedback( String name,
     showOverlay((context, t) {
       return Opacity(
         opacity: t,
-        child: IosStyleToast(label: "Feedback send"),
+        child: IosStyleToast(label: "message send"),
       );
     });
   }
