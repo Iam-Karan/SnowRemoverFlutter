@@ -112,7 +112,8 @@ Future<List<person>> fetchPersonsFromDatabase(bool applyArchiveCon) async {
           singleElem["imageurl"],
           singleElem["name"],
           singleElem["personId"],
-          singleElem["archive"] ?? false);
+          singleElem["archive"] ?? false,
+          singleElem["completed_order"]);
       return temp;
     }).toList();
     return apiData;
