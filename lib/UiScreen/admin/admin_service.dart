@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'package:snow_remover/components/admin_list_view.dart';
 import 'package:snow_remover/components/admin_service_view.dart';
 import 'package:snow_remover/constant.dart' as constant;
 import 'package:flutter/material.dart';
 import 'package:snow_remover/models/Person.dart';
-import 'package:snow_remover/models/product_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:snow_remover/models/Generate_Image_Url.dart';
 import 'package:snow_remover/utility.dart' as utility;
 
 class AdminServiceScreen extends StatefulWidget {
@@ -134,7 +130,8 @@ class _AdminServiceScreenState extends State<AdminServiceScreen> {
           ),
         ),
         FutureBuilder<List<person>>(
-            future: utility.fetchPersonsFromDatabase(false),
+            future: utility.fetchPersonsFromDatabase(
+                false, searchValue, dropdownValue),
             builder:
                 (BuildContext context, AsyncSnapshot<List<person>> snapshot) {
               switch (snapshot.connectionState) {
@@ -150,17 +147,7 @@ class _AdminServiceScreenState extends State<AdminServiceScreen> {
                           fontWeight: FontWeight.bold),
                     );
                   } else {
-                    List<person> myProducts = [];
-                    if (searchValue.isNotEmpty) {
-                      myProducts = snapshot.data!
-                          .where((element) => element.name
-                              .toLowerCase()
-                              .contains(searchValue.toLowerCase()))
-                          .toList();
-                    } else {
-                      myProducts = snapshot.data ?? [];
-                    }
-                    myProducts = applyFilter2(myProducts, dropdownValue);
+                    List<person> myProducts = snapshot.data!;
                     return AdminServiceView(listData: myProducts);
                   }
               }
