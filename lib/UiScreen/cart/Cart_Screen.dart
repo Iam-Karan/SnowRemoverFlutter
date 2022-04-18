@@ -13,29 +13,32 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-FirebaseAuth auth = FirebaseAuth.instance;
-User? users = auth.currentUser;
-final uid = users?.uid;
-
-bool signIn = false;
-
 class _CartScreenState extends State<CartScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   List<CartModel> currentCart = [];
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .collection('cart')
-      .snapshots();
+  User? users;
+  String? uid;
+  bool signIn = false;
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.userChanges().listen((User? user) {
-      if (user == null) {
-        signIn = false;
-      } else {
-        signIn = true;
-      }
-    });
+    users = auth.currentUser;
+    String? uid = users?.uid;
+    signIn = false;
+
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('cart')
+        .snapshots();
+
+    // FirebaseAuth.instance.userChanges().listen((User? user) {
+    if (users == null) {
+      signIn = false;
+    } else {
+      signIn = true;
+    }
+    // });
 
     return Scaffold(
       appBar: AppBar(

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -238,77 +236,77 @@ class _personDisplayState extends State<personDisplay> {
   }
 
   addIteamToCart() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      String? uid = user?.uid;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? users = auth.currentUser;
+    String? uid = users?.uid;
 
-      if (user == null) {
-        showOverlay((context, t) {
-          return Opacity(
-            opacity: t,
-            child: IosStyleToast(label: "User is not sign in"),
-          );
-        });
-      } else {
-        CartModel cartItem;
-        int totalHours = 0;
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('cart')
-            .doc(widget.id)
-            .get()
-            .then((DocumentSnapshot docSnapshot) async {
-          if (docSnapshot.exists) {
-            Map<String, dynamic> data =
-                docSnapshot.data()! as Map<String, dynamic>;
-            if (simpleIntInput != 0) {
-              totalHours = simpleIntInput + int.parse(data['hours'].toString());
-              await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .collection("cart")
-                  .doc(widget.id)
-                  .set({
-                'id': widget.id,
-                'image': "personimages/" + widget.image,
-                'name': widget.brand,
-                'hours': totalHours,
-                'type': "personimages",
-                'price': widget.price,
-                'quantity': 1,
-              });
-              showOverlay((context, t) {
-                return Opacity(
-                  opacity: t,
-                  child: IosStyleToast(label: "person added to cart"),
-                );
-              });
-            } else {
-              showOverlay((context, t) {
-                return Opacity(
-                  opacity: t,
-                  child: IosStyleToast(label: "please choose hour"),
-                );
-              });
-            }
+    if (users == null) {
+      showOverlay((context, t) {
+        return Opacity(
+          opacity: t,
+          child: IosStyleToast(label: "User is not sign in"),
+        );
+      });
+    } else {
+      CartModel cartItem;
+      int totalHours = 0;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('cart')
+          .doc(widget.id)
+          .get()
+          .then((DocumentSnapshot docSnapshot) async {
+        if (docSnapshot.exists) {
+          Map<String, dynamic> data =
+              docSnapshot.data()! as Map<String, dynamic>;
+          if (simpleIntInput != 0) {
+            totalHours = simpleIntInput + int.parse(data['hours'].toString());
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .collection("cart")
+                .doc(widget.id)
+                .set({
+              'id': widget.id,
+              'image': "personimages/" + widget.image,
+              'name': widget.brand,
+              'hours': totalHours,
+              'type': "personimages",
+              'price': widget.price,
+              'quantity': 1,
+            });
+            showOverlay((context, t) {
+              return Opacity(
+                opacity: t,
+                child: IosStyleToast(label: "person added to cart"),
+              );
+            });
           } else {
-            totalHours = simpleIntInput;
-            addCartToDocumentId(uid!);
+            showOverlay((context, t) {
+              return Opacity(
+                opacity: t,
+                child: IosStyleToast(label: "please choose hour"),
+              );
+            });
           }
-          cartItem = CartModel(
-              hours: totalHours,
-              id: widget.id,
-              image: "personimages/" + widget.image,
-              name: widget.brand,
-              price: widget.price,
-              quantity: 1,
-              type: "personimages");
-          if (mounted) {
-            context.read<Counter>().addItem(totalHours, cartItem);
-          }
-        });
-      }
-    });
+        } else {
+          totalHours = simpleIntInput;
+          addCartToDocumentId(uid!);
+        }
+        cartItem = CartModel(
+            hours: totalHours,
+            id: widget.id,
+            image: "personimages/" + widget.image,
+            name: widget.brand,
+            price: widget.price,
+            quantity: 1,
+            type: "personimages");
+        if (mounted) {
+          context.read<Counter>().addItem(totalHours, cartItem);
+        }
+      });
+    }
   }
 
   addCartToDocumentId(String uid) {

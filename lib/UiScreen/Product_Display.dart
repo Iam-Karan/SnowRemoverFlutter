@@ -33,7 +33,7 @@ class productDisplay extends StatefulWidget {
       required this.ID});
 }
 
-bool tapped = false;
+bool tapped = true;
 
 class _productDisplayState extends State<productDisplay> {
   String productPrice = "";
@@ -268,73 +268,73 @@ class _productDisplayState extends State<productDisplay> {
   }
 
   addIteamToCart() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      String? uid = user?.uid;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? users = auth.currentUser;
+    String? uid = users?.uid;
 
-      if (user == null) {
-        showOverlay((context, t) {
-          return Opacity(
-            opacity: t,
-            child: IosStyleToast(label: "User is not sign in"),
-          );
-        });
-      } else {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('cart')
-            .doc(widget.ID)
-            .get()
-            .then((DocumentSnapshot docSnapshot) async {
-          if (docSnapshot.exists) {
-            Map<String, dynamic> data =
-                docSnapshot.data()! as Map<String, dynamic>;
-            if (simpleIntInput != 0) {
-              await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .collection("cart")
-                  .doc(widget.ID)
-                  .set({
-                'hours': 1,
-                'id': widget.ID,
-                'image': "products/" + widget.image,
-                'name': widget.brand,
-                'quantity': simpleIntInput + data['quantity'],
-                'type': "products",
-                'price': widget.price,
-              });
-              showOverlay((context, t) {
-                return Opacity(
-                  opacity: t,
-                  child: IosStyleToast(label: "iteam added to cart"),
-                );
-              });
-            } else {
-              showOverlay((context, t) {
-                return Opacity(
-                  opacity: t,
-                  child: IosStyleToast(label: "please choose quantity"),
-                );
-              });
-            }
+    if (users == null) {
+      showOverlay((context, t) {
+        return Opacity(
+          opacity: t,
+          child: IosStyleToast(label: "User is not sign in"),
+        );
+      });
+    } else {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('cart')
+          .doc(widget.ID)
+          .get()
+          .then((DocumentSnapshot docSnapshot) async {
+        if (docSnapshot.exists) {
+          Map<String, dynamic> data =
+              docSnapshot.data()! as Map<String, dynamic>;
+          if (simpleIntInput != 0) {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .collection("cart")
+                .doc(widget.ID)
+                .set({
+              'hours': 1,
+              'id': widget.ID,
+              'image': "products/" + widget.image,
+              'name': widget.brand,
+              'quantity': simpleIntInput + data['quantity'],
+              'type': "products",
+              'price': widget.price,
+            });
+            showOverlay((context, t) {
+              return Opacity(
+                opacity: t,
+                child: IosStyleToast(label: "iteam added to cart"),
+              );
+            });
           } else {
-            addCartToDocumentId(uid!);
+            showOverlay((context, t) {
+              return Opacity(
+                opacity: t,
+                child: IosStyleToast(label: "please choose quantity"),
+              );
+            });
           }
-          CartModel cartItem = CartModel(
-              hours: 1,
-              id: widget.ID,
-              image: "products/" + widget.image,
-              name: widget.brand,
-              price: widget.price,
-              quantity: simpleIntInput,
-              type: "products");
-          if (mounted) {
-            context.read<Counter>().addItem(simpleIntInput, cartItem);
-          }
-        });
-      }
-    });
+        } else {
+          addCartToDocumentId(uid!);
+        }
+        CartModel cartItem = CartModel(
+            hours: 1,
+            id: widget.ID,
+            image: "products/" + widget.image,
+            name: widget.brand,
+            price: widget.price,
+            quantity: simpleIntInput,
+            type: "products");
+        if (mounted) {
+          context.read<Counter>().addItem(simpleIntInput, cartItem);
+        }
+      });
+    }
   }
 
   addCartToDocumentId(String uid) {

@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:flutter/material.dart';
 
 import 'package:snow_remover/UiScreen/home_screen_redo.dart';
@@ -11,6 +7,7 @@ import '../UiScreen/About us/aboutus_screen.dart';
 import '../UiScreen/service_screen.dart';
 import 'package:snow_remover/constant.dart' as constant;
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
 
@@ -36,30 +33,26 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+        body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: ConvexAppBar(
-         backgroundColor : constant.primaryColor,
+          backgroundColor: constant.primaryColor,
 
-elevation: 10,
-top: -8,
-        // style: TabStyle.flip,
+          elevation: 10,
+          top: -8,
+          // style: TabStyle.flip,
           color: Colors.white,
           items: [
             TabItem(icon: Icons.home, title: 'Home'),
             TabItem(icon: Icons.person, title: 'Services'),
-            TabItem(icon: Icons.menu, title: 'menu'),
-            TabItem(icon: Icons.more_vert, title: ''),
-
+            TabItem(icon: Icons.menu, title: 'Menu'),
+            TabItem(icon: Icons.more_vert, title: 'About us'),
           ],
-          initialActiveIndex: 0,//optional, default as 0
-          onTap: (int i) =>  _onItemTapped(i),
-
-
+          initialActiveIndex: 0, //optional, default as 0
+          onTap: (int i) => _onItemTapped(i),
         )
 
-     /* body: Center(
+        /* body: Center(
         child: _widgetOptions.elementAt(_selectedIndex)
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -89,6 +82,6 @@ top: -8,
         selectedItemColor: Colors.white,
         onTap: _onItemTapped,
       ),*/
-    );
+        );
   }
 }
