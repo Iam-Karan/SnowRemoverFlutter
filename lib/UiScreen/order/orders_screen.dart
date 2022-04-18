@@ -113,7 +113,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   child: ListView(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(1),
                     children: snapshot.data!.docs.map((document) {
                       Map<String, dynamic> data =
                           document.data()! as Map<String, dynamic>;

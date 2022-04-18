@@ -18,12 +18,12 @@ class _PersonGridViewState extends State<PersonGridView> {
     final List<person> gridData = widget.gridData;
     int itemCount = widget.gridData.length;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      padding: const EdgeInsets.all(5),
       child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
               childAspectRatio: 1),
           itemCount: itemCount,
           itemBuilder: (BuildContext context, int index) {
