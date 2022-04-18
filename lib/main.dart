@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:snow_remover/UiScreen/admin/admin_add_person.dart';
 import 'package:snow_remover/UiScreen/cart/Cart_Screen.dart';
 import 'package:snow_remover/UiScreen/admin/admin_add_product.dart';
 import 'package:snow_remover/UiScreen/admin/admin_bottom_nav.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
           '/add_edit_product': (context) => const AddEditProduct(),
           '/cartScreen': (context) => const CartScreen(),
           '/checkout': (context) => const CheckoutScreen(),
+          '/add_person': (context) => const AdminAddPerson(),
         },
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF34A8DB)),

@@ -6,6 +6,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:quantity_input/quantity_input.dart';
 import 'package:like_button/like_button.dart';
+import 'package:snow_remover/models/cart_model.dart';
 import 'package:snow_remover/store/counter.dart';
 import 'package:snow_remover/utility.dart' as utility;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -231,7 +232,9 @@ class _productDisplayState extends State<productDisplay> {
                                         children: [
                                           ElevatedButton.icon(
                                             onPressed: () {
-                                              addIteamToCart();
+                                              if (mounted) {
+                                                addIteamToCart();
+                                              }
                                             },
                                             icon: Icon(Icons.add_shopping_cart),
                                             label: Text("Cart"),
@@ -318,8 +321,18 @@ class _productDisplayState extends State<productDisplay> {
           } else {
             addCartToDocumentId(uid!);
           }
+          CartModel cartItem = CartModel(
+              hours: 1,
+              id: widget.ID,
+              image: "products/" + widget.image,
+              name: widget.brand,
+              price: widget.price,
+              quantity: simpleIntInput,
+              type: "products");
+          if (mounted) {
+            context.read<Counter>().addItem(simpleIntInput, cartItem);
+          }
         });
-        context.read<Counter>().increment(simpleIntInput);
       }
     });
   }

@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart' as fs;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quantity_input/quantity_input.dart';
+import 'package:snow_remover/models/cart_model.dart';
 import 'package:snow_remover/store/counter.dart';
 
 import 'Cart_Screen.dart';
@@ -39,7 +40,6 @@ class _cartScreenCardState extends State<cartScreenCard> {
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
-    print(screenHeight);
     int simpleIntInput =
         widget.type.compareTo("products") == 0 ? widget.quantity : widget.hours;
 
@@ -143,7 +143,7 @@ class _cartScreenCardState extends State<cartScreenCard> {
   }
 
   deleteIteamInCart() {
-    context.read<Counter>().decrement(widget.quantity);
+    context.read<Counter>().deleteItem(widget.id, widget.quantity);
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       String? uid = user?.uid;
       FirebaseFirestore.instance
@@ -171,10 +171,18 @@ class _cartScreenCardState extends State<cartScreenCard> {
   }
 
   updateCartState(int prev, int valInt, String type) {
-    if (type.compareTo("products") == 0 && prev != valInt) {
-      prev - valInt < 0
-          ? context.read<Counter>().increment(valInt - prev)
-          : context.read<Counter>().decrement(prev - valInt);
+    CartModel item = CartModel(
+        hours: widget.hours,
+        id: widget.id,
+        image: widget.image,
+        name: widget.name,
+        price: widget.price,
+        quantity: widget.quantity,
+        type: widget.type);
+    if (prev - valInt < 0) {
+      context.read<Counter>().addItem(valInt - prev, item);
+    } else if (prev - valInt > 0) {
+      context.read<Counter>().removeItem(prev - valInt, item.id, item.type);
     }
   }
 }

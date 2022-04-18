@@ -8,6 +8,7 @@ import 'package:like_button/like_button.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:quantity_input/quantity_input.dart';
+import 'package:snow_remover/models/cart_model.dart';
 import 'package:snow_remover/store/counter.dart';
 import '../components/toast_message/ios_Style.dart';
 import '../models/Generate_Image_Url.dart';
@@ -248,6 +249,8 @@ class _personDisplayState extends State<personDisplay> {
           );
         });
       } else {
+        CartModel cartItem;
+        int totalHours = 0;
         FirebaseFirestore.instance
             .collection('users')
             .doc(uid)
@@ -259,6 +262,7 @@ class _personDisplayState extends State<personDisplay> {
             Map<String, dynamic> data =
                 docSnapshot.data()! as Map<String, dynamic>;
             if (simpleIntInput != 0) {
+              totalHours = simpleIntInput + int.parse(data['hours'].toString());
               await FirebaseFirestore.instance
                   .collection('users')
                   .doc(uid)
@@ -268,7 +272,7 @@ class _personDisplayState extends State<personDisplay> {
                 'id': widget.id,
                 'image': "personimages/" + widget.image,
                 'name': widget.brand,
-                'hours': simpleIntInput + data['hours'],
+                'hours': totalHours,
                 'type': "personimages",
                 'price': widget.price,
                 'quantity': 1,
@@ -288,10 +292,21 @@ class _personDisplayState extends State<personDisplay> {
               });
             }
           } else {
+            totalHours = simpleIntInput;
             addCartToDocumentId(uid!);
           }
+          cartItem = CartModel(
+              hours: totalHours,
+              id: widget.id,
+              image: "personimages/" + widget.image,
+              name: widget.brand,
+              price: widget.price,
+              quantity: 1,
+              type: "personimages");
+          if (mounted) {
+            context.read<Counter>().addItem(totalHours, cartItem);
+          }
         });
-        context.read<Counter>().increment(1);
       }
     });
   }

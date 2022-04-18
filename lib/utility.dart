@@ -29,6 +29,9 @@ Future<String> generateImageUrl(String imageName) async {
 }
 
 List<ProductModel> applyFilter(List<ProductModel> inputData, String type) {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? users = auth.currentUser;
+  String? uid = users?.uid;
   List<ProductModel> result = [];
   switch (type) {
     case 'Available':
@@ -36,6 +39,19 @@ List<ProductModel> applyFilter(List<ProductModel> inputData, String type) {
       break;
     case 'Favourite':
       result = inputData;
+      // if (FirebaseAuth.instance.currentUser == null) {
+      //   result = inputData;
+      //   break;
+      // }
+      // FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+      // QuerySnapshot favList = await firebaseFirestore
+      //     .collection("users")
+      //     .doc(uid)
+      //     .collection("favourite")
+      //     .get();
+      // List<String> favIds = favList.docs.map((e) => e.reference.id).toList();
+      // result =
+      //     inputData.where((element) => favIds.contains(element.id)).toList();
       break;
     case 'Price: Low to High':
       inputData.sort(((a, b) => a.priceNumerical.compareTo(b.priceNumerical)));
