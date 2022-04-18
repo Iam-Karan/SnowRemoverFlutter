@@ -59,6 +59,7 @@ dependencies:
 
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -89,6 +90,11 @@ flutter:
     - assets/images/happCart
     - assets/images/groupImage.jpg
     - assets/images/Rectangle 27.png
+    - assets/images/cartoon0.jpg
+    - assets/images/cartoon1.jpg
+    - assets/images/cartoon2.jpg
+    - assets/images/cartoon3.jpg
+    - assets/images/dribbble_shot_hd-order.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

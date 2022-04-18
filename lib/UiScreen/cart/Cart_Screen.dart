@@ -13,23 +13,22 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? users;
-  String? uid;
+FirebaseAuth auth = FirebaseAuth.instance;
+User? users = auth.currentUser;
+final uid = users?.uid;
 
-  bool signIn = false;
+bool signIn = false;
+
+class _CartScreenState extends State<CartScreen> {
   List<CartModel> currentCart = [];
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('cart')
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
-    User? users = auth.currentUser;
-    uid = users?.uid;
-    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('cart')
-        .snapshots(includeMetadataChanges: true);
     FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
         signIn = false;
@@ -66,7 +65,8 @@ class _CartScreenState extends State<CartScreen> {
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           currentCart.clear();
-          if (signIn == false) {
+
+          if (signIn == false || snapshot.data?.docs.length == 0) {
             return Column(children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -99,8 +99,8 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.grey)),
               ),
             ]);
-          } else if (signIn == true && snapshot.hasData == true) {
-            // print("signed in and have data");
+          } else if (signIn == true && snapshot.data?.docs.length != 0) {
+            //
             return SingleChildScrollView(
               child: Column(children: [
                 Container(
@@ -159,7 +159,7 @@ class _CartScreenState extends State<CartScreen> {
               ]),
             );
           }
-          return Text("jhsdcvbhjk");
+          return Text("there is error");
         },
       ),
     );
