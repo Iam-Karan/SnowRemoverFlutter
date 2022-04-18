@@ -93,7 +93,7 @@ class personCard extends StatelessWidget {
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
-                                fontSize: 18.0,
+                                fontSize: 16.0,
                               ),
                             ),
                             Text(
@@ -102,7 +102,7 @@ class personCard extends StatelessWidget {
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
-                                fontSize: 18.0,
+                                fontSize: 16.0,
                               ),
                             ),
                           ])

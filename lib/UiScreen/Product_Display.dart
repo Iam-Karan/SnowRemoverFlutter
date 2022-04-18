@@ -6,6 +6,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:quantity_input/quantity_input.dart';
 import 'package:like_button/like_button.dart';
+import 'package:snow_remover/models/cart_model.dart';
 import 'package:snow_remover/store/counter.dart';
 import 'package:snow_remover/utility.dart' as utility;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -32,7 +33,7 @@ class productDisplay extends StatefulWidget {
       required this.ID});
 }
 
-bool tapped = false;
+bool tapped = true;
 
 class _productDisplayState extends State<productDisplay> {
   String productPrice = "";
@@ -231,7 +232,9 @@ class _productDisplayState extends State<productDisplay> {
                                         children: [
                                           ElevatedButton.icon(
                                             onPressed: () {
-                                              addIteamToCart();
+                                              if (mounted) {
+                                                addIteamToCart();
+                                              }
                                             },
                                             icon: Icon(Icons.add_shopping_cart),
                                             label: Text("Cart"),
@@ -265,63 +268,73 @@ class _productDisplayState extends State<productDisplay> {
   }
 
   addIteamToCart() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      String? uid = user?.uid;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? users = auth.currentUser;
+    String? uid = users?.uid;
 
-      if (user == null) {
-        showOverlay((context, t) {
-          return Opacity(
-            opacity: t,
-            child: IosStyleToast(label: "User is not sign in"),
-          );
-        });
-      } else {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('cart')
-            .doc(widget.ID)
-            .get()
-            .then((DocumentSnapshot docSnapshot) async {
-          if (docSnapshot.exists) {
-            Map<String, dynamic> data =
-                docSnapshot.data()! as Map<String, dynamic>;
-            if (simpleIntInput != 0) {
-              await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .collection("cart")
-                  .doc(widget.ID)
-                  .set({
-                'hours': 1,
-                'id': widget.ID,
-                'image': "products/" + widget.image,
-                'name': widget.brand,
-                'quantity': simpleIntInput + data['quantity'],
-                'type': "products",
-                'price': widget.price,
-              });
-              showOverlay((context, t) {
-                return Opacity(
-                  opacity: t,
-                  child: IosStyleToast(label: "iteam added to cart"),
-                );
-              });
-            } else {
-              showOverlay((context, t) {
-                return Opacity(
-                  opacity: t,
-                  child: IosStyleToast(label: "please choose quantity"),
-                );
-              });
-            }
+    if (users == null) {
+      showOverlay((context, t) {
+        return Opacity(
+          opacity: t,
+          child: IosStyleToast(label: "User is not sign in"),
+        );
+      });
+    } else {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('cart')
+          .doc(widget.ID)
+          .get()
+          .then((DocumentSnapshot docSnapshot) async {
+        if (docSnapshot.exists) {
+          Map<String, dynamic> data =
+              docSnapshot.data()! as Map<String, dynamic>;
+          if (simpleIntInput != 0) {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .collection("cart")
+                .doc(widget.ID)
+                .set({
+              'hours': 1,
+              'id': widget.ID,
+              'image': "products/" + widget.image,
+              'name': widget.brand,
+              'quantity': simpleIntInput + data['quantity'],
+              'type': "products",
+              'price': widget.price,
+            });
+            showOverlay((context, t) {
+              return Opacity(
+                opacity: t,
+                child: IosStyleToast(label: "iteam added to cart"),
+              );
+            });
           } else {
-            addCartToDocumentId(uid!);
+            showOverlay((context, t) {
+              return Opacity(
+                opacity: t,
+                child: IosStyleToast(label: "please choose quantity"),
+              );
+            });
           }
-        });
-        context.read<Counter>().increment(simpleIntInput);
-      }
-    });
+        } else {
+          addCartToDocumentId(uid!);
+        }
+        CartModel cartItem = CartModel(
+            hours: 1,
+            id: widget.ID,
+            image: "products/" + widget.image,
+            name: widget.brand,
+            price: widget.price,
+            quantity: simpleIntInput,
+            type: "products");
+        if (mounted) {
+          context.read<Counter>().addItem(simpleIntInput, cartItem);
+        }
+      });
+    }
   }
 
   addCartToDocumentId(String uid) {
