@@ -1,3 +1,4 @@
+
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -75,146 +76,148 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
               );
-            } else {
+            }
+
+            else {
               String? imageUrl = snapshot.data;
-              return SingleChildScrollView(
-                child: InkWell(
-                  splashColor: Colors.yellow,
-                  onTap: () {
-                    showDialogBox(
-                        context,
-                        widget.data,
-                        getDateFormated(widget.data, "order_date"),
-                        getDateFormated(widget.data, "reservation_datetime"),
-                        widget.uid,
-                        widget.orderId,
-                        iteamCounter);
-                  },
-                  child: SingleChildScrollView(
-                    child: Card(
-                      elevation: 3,
-                      margin: const EdgeInsets.all(7),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: SingleChildScrollView(
-                        child: Column(
+              return InkWell(
+                splashColor: Colors.yellow,
+                onTap: () {
+                  showDialogBox(
+                      context,
+                      widget.data,
+                      getDateFormated(widget.data, "order_date"),
+                      getDateFormated(widget.data, "reservation_datetime"),
+                      widget.uid,
+                      widget.orderId,
+                      iteamCounter);
+                },
+
+                child: SingleChildScrollView(
+
+                  child: Card(
+                    elevation: 3,
+                    margin: const EdgeInsets.all(7),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: SingleChildScrollView(
+                      child: Column(
                           children: [
-                            ListTile(
-                              contentPadding: const EdgeInsets.all(10),
-                              title: Row(children: [
-                               Text(
-                                  "Order ",
-                                 style: GoogleFonts.montserrat(
-                                     textStyle: TextStyle(
-                                       fontSize: 22,
-                                       fontWeight: FontWeight.w500,
-                                     )),
-                                ),
-                                Text(
-                                  '  #' + widget.orderId,
-                                  style: GoogleFonts.montserrat(
-                                      textStyle: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                         )),
-                                ),
-                              ]),
-                              subtitle: Text(
-                                getDateFormated(widget.data, "order_date"),
-                                style: GoogleFonts.openSans(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                )),
+                          ListTile(
+                            contentPadding: const EdgeInsets.all(2),
+                            title: Row(children: [
+                             Text(
+                                "Order ",
+                               style: GoogleFonts.montserrat(
+                                   textStyle: TextStyle(
+                                     fontSize: MediaQuery.of(context).size.width > 400 ? 22 : 18,
+                                     fontWeight: FontWeight.w500,
+                                   )),
                               ),
-                              trailing: CircleAvatar(
-                                backgroundImage:
-                                    Image.asset(getImage(number)).image,
-                                radius: 40,
+                              Text(
+                                '#' + widget.orderId,
+                                style: GoogleFonts.montserrat(
+                                    textStyle: TextStyle(
+                                        fontSize: MediaQuery.of(context).size.width > 380 ? 14 : 10,
+                                        fontWeight: FontWeight.w500,
+                                       )),
                               ),
+                            ]),
+                            subtitle: Text(
+                              getDateFormated(widget.data, "order_date"),
+                              style: GoogleFonts.openSans(
+                                  textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              )),
                             ),
-                            const Divider(
-                              thickness: 2,
-                              indent: 15,
-                              endIndent: 15,
+                            trailing: CircleAvatar(
+                              backgroundImage:
+                                  Image.asset(getImage(number)).image,
+                              radius: 40,
                             ),
-                            Container(
-                              margin: EdgeInsets.all(10),
-                              child: Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Column(children: [
-                                        Text(
-                                          "X" + iteamCounter.toString() + " iteams",
-                                          style: GoogleFonts.lato(
+                          ),
+                          const Divider(
+                            thickness: 2,
+                            indent: 15,
+                            endIndent: 15,
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    Column(children: [
+                                      Text(
+                                        "X" + iteamCounter.toString() + " iteams",
+                                        style: GoogleFonts.lato(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w800,
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.grey)),
+                                      ),
+                                      Text("\$" + total,
+                                          style: GoogleFonts.openSans(
                                               textStyle: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w800,
-                                                  fontStyle: FontStyle.italic,
-                                                  color: Colors.grey)),
-                                        ),
-                                        Text("\$" + total,
-                                            style: GoogleFonts.openSans(
-                                                textStyle: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w800,
-                                                    fontStyle: FontStyle.italic)))
-                                      ])
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 120,
-                                  ),
-                                 Row(
+                                                  fontStyle: FontStyle.italic)))
+                                    ])
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width > 380 ? 160 : 100,
+                                ),
+                               Row(
 
-                                    children: [
+                                  children: [
 
-                                      ElevatedButton.icon(
-                                        onPressed: () {
-                                          !admin  ?
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) => FeedbackDialog(
-                                                    id: widget.orderId,
-                                                  ))
+                                    ElevatedButton.icon(
+                                      onPressed: () {
+                                        !admin  ?
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => FeedbackDialog(
+                                                  id: widget.orderId,
+                                                ))
 
-                                          : showDialog(
-                                              context: context,
-                                              builder: (context) => adminFeedbackDialog(
-                                                id: widget.orderId,
-                                              )) ;
-                                        },
-                                        icon: Icon(
-                                          admin ?
-                                          Icons.add_alert:  Icons.reviews,
-                                          color: Colors.green,
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          admin ? "Check review" : "Review",
-                                          style: GoogleFonts.jetBrainsMono(
-                                              textStyle: TextStyle(
-                                                  color: Colors.green,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w700)),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                            elevation: 2,
-                                            primary: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                side: BorderSide(
-                                                    color: Colors.green))),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                                        : showDialog(
+                                            context: context,
+                                            builder: (context) => adminFeedbackDialog(
+                                              id: widget.orderId,
+                                            )) ;
+                                      },
+                                      icon: Icon(
+                                        admin ?
+                                        Icons.add_alert:  Icons.reviews,
+                                        color: Colors.green,
+                                        size: 18,
+                                      ),
+                                      label: Text(
+                                        admin ? "Check review" : "Review",
+                                        style: GoogleFonts.jetBrainsMono(
+                                            textStyle: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700)),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 2,
+                                          primary: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              side: BorderSide(
+                                                  color: Colors.green))),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
