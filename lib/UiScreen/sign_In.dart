@@ -88,6 +88,7 @@ class _SignInState extends State<SignIn> {
     print(screenHeight);
     return screenHeight < 550
         ? Scaffold(
+
             body: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -304,6 +305,10 @@ class _SignInState extends State<SignIn> {
             ),
           )
         : Scaffold(
+      appBar: AppBar(
+automaticallyImplyLeading: true,
+        elevation: 0,
+      ),
             body: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -313,9 +318,7 @@ class _SignInState extends State<SignIn> {
                   decoration: const BoxDecoration(color: Color(0xFF34A8DB)),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: screenHeight * 0.10,
-                      ),
+
                       Stack(
                         clipBehavior: Clip.none,
                         children: [

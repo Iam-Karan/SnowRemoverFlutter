@@ -168,7 +168,7 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                                   ],
                                 ),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width > 380 ? 160 : 100,
+                                  width: MediaQuery.of(context).size.width > 380 ? 120 : 100,
                                 ),
                                Row(
 

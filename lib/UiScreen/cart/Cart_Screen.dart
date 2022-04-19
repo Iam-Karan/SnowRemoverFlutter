@@ -133,9 +133,27 @@ class _CartScreenState extends State<CartScreen> {
                     }).toList(),
                   ),
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Column(
+
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      ElevatedButton(
+                        onPressed: checkout,
+                        child: const Text(" Proceed to Checkout"),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(10),
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          onPrimary: Colors.white,
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 25,
+                              fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      SizedBox(height: 2,),
                       ElevatedButton(
                         onPressed: () {},
                         child: const Text("Reserve Now"),
@@ -147,17 +165,6 @@ class _CartScreenState extends State<CartScreen> {
                               fontStyle: FontStyle.italic),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: checkout,
-                        child: const Text("Checkout"),
-                        style: ElevatedButton.styleFrom(
-                          onPrimary: Colors.white,
-                          textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 25,
-                              fontStyle: FontStyle.italic),
-                        ),
-                      )
                     ]),
               ]),
             );

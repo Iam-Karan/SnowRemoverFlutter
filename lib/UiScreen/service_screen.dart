@@ -235,12 +235,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   )),
                   onPressed: () {
                     setState(() {
-                      sortValue = "Avilable";
-                      print(sortValue);
+                      sortValue = "favorite";
                     });
                   },
                   child: Text(
-                    "Avilable",
+                    "favorite",
                     style: TextStyle(fontSize: 16),
                   )),
             ],
