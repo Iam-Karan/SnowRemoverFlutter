@@ -113,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {
                       Map<String, dynamic> data =
-                          document.data()! as Map<String, dynamic>;
+                          document.data() as Map<String, dynamic>;
                       CartModel curr = CartModel(
                           hours: data['hours'],
                           id: data['id'],

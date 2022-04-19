@@ -181,7 +181,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         "Good afternoon,",
                         style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
-                          fontSize: 22,
+                          fontSize:  MediaQuery.of(context).size.width > 380 ? 22 : 14,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
                         )),
@@ -190,7 +190,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         name,
                         style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
-                          fontSize: 22,
+                          fontSize:  MediaQuery.of(context).size.width > 380 ? 22 : 18,
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
                         )),

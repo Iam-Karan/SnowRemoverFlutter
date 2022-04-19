@@ -20,16 +20,18 @@ class OrderScreenListTile extends StatefulWidget {
       required this.quantity});
 }
 
-var Title1 = GoogleFonts.sora(
-    textStyle: TextStyle(
-        fontWeight: FontWeight.w700, fontSize: 20, color: Colors.white));
-var subTitle1 = GoogleFonts.sora(
-    textStyle: TextStyle(
-        fontWeight: FontWeight.w500, fontSize: 14, color: Colors.white));
+
 
 class _OrderScreenListTileState extends State<OrderScreenListTile> {
+
   @override
   Widget build(BuildContext context) {
+    var Title1 = GoogleFonts.sora(
+        textStyle: TextStyle(
+            fontWeight: FontWeight.w700, fontSize:  MediaQuery.of(context).size.width > 380 ? 20 : 14 , color: Colors.white));
+    var subTitle1 = GoogleFonts.sora(
+        textStyle: TextStyle(
+            fontWeight: FontWeight.w500, fontSize: MediaQuery.of(context).size.width > 380 ? 14 : 10, color: Colors.white));
     return FutureBuilder<String>(
       builder: ((BuildContext context, AsyncSnapshot<String> snapshot) {
         switch (snapshot.connectionState) {
@@ -50,15 +52,15 @@ class _OrderScreenListTileState extends State<OrderScreenListTile> {
             } else {
               String? imageUrl = snapshot.data;
               return InkWell(
-                radius: 20,
+
                 onTap: () {
 
                 },
                 child: ListTile(
-                  contentPadding: EdgeInsets.all(1),
+                  contentPadding: EdgeInsets.all(0.2),
                   leading: CircleAvatar(
                     backgroundImage: NetworkImage(imageUrl!, scale: 10),
-                    radius: 40,
+                    radius: MediaQuery.of(context).size.width > 380 ? 40 : 30,
                   ),
                   title: Text(
                     widget.name,
@@ -70,7 +72,7 @@ class _OrderScreenListTileState extends State<OrderScreenListTile> {
                   ),
                   trailing: Text(
                     "Qty:" + widget.quantity,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: MediaQuery.of(context).size.width > 380 ? 18 : 14),
                   ),
                 ),
               );
