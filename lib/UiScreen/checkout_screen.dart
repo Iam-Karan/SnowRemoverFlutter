@@ -13,7 +13,7 @@ import 'package:snow_remover/controller/payment_controller.dart';
 import 'package:snow_remover/models/admin_order_model.dart';
 import 'package:snow_remover/models/cart_model.dart';
 import 'package:snow_remover/constant.dart' as constant;
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:snow_remover/models/checkout_screen_args.dart';
 import 'package:snow_remover/models/order_item_model.dart';
 import 'package:snow_remover/models/order_model.dart';
 import 'package:snow_remover/store/counter.dart';
@@ -33,6 +33,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String zip = "";
   String province = "";
   String country = "";
+  DateTime reservationDtime = DateTime.now();
   @override
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -40,10 +41,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final uid = users?.uid;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    final currCart =
-        ModalRoute.of(context)!.settings.arguments as List<CartModel>?;
+    final args = ModalRoute.of(context)!.settings.arguments as CheckoutArgs;
+    final currCart = args.items;
+    reservationDtime = args.rDateTime ?? reservationDtime;
     double total = 0;
-    print("Cart length here 44" + currCart!.length.toString());
     total = currCart.fold(0, (sum, item) => sum + item.price);
     // print("Cart length here 46" + currCart.length.toString());
     double tax = total * 0.13;
@@ -142,7 +143,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             Container(
               height: screenHeight > 550
                   ? screenHeight * 0.35
-                  : screenHeight * 0.40,
+                  : screenHeight * 0.45,
               width: screenWidth * 0.90,
               margin: const EdgeInsets.all(10),
               child: Padding(
@@ -274,10 +275,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         .toList();
     DateTime now = DateTime.now();
     // print("this is the item array length" + listItems.length.toString());
-    OrderModel uploadObj = OrderModel(listItems, now, true, now, total);
+    OrderModel uploadObj =
+        OrderModel(listItems, now, true, reservationDtime, total);
     String completeAddress = '$address, $zip, $city ,$province, $country';
-    AdminOrderModel separateCollectionObj = AdminOrderModel(
-        listItems, now, true, now, total, uid, completeAddress, '');
+    AdminOrderModel separateCollectionObj = AdminOrderModel(listItems, now,
+        true, reservationDtime, total, uid, completeAddress, '');
     DocumentReference addedOrder = await firebaseFirestore
         .collection('users')
         .doc(uid)

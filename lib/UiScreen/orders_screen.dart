@@ -34,9 +34,9 @@ class _OrderScreenState extends State<OrderScreen> {
 
   void goToScreen() {
     if (uid.isEmpty) {
-      Navigator.pushReplacementNamed(context, '/SignIn');
+      Navigator.pushNamed(context, '/SignIn');
     } else {
-      Navigator.pushReplacementNamed(context, '/UserProfile');
+      Navigator.pushNamed(context, '/UserProfile');
     }
   }
 

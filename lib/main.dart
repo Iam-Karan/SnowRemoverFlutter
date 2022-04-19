@@ -9,6 +9,7 @@ import 'package:snow_remover/UiScreen/admin/admin_contact_messages.dart';
 import 'package:snow_remover/UiScreen/admin/admin_home.dart';
 import 'package:snow_remover/UiScreen/admin/admin_service.dart';
 import 'package:snow_remover/UiScreen/checkout_screen.dart';
+import 'package:snow_remover/UiScreen/reserve_screen.dart';
 import 'package:snow_remover/UiScreen/sign_In.dart';
 import 'package:snow_remover/UiScreen/About%20us/aboutus_screen.dart';
 import 'package:snow_remover/components/bottom_navigator.dart';
@@ -62,14 +63,15 @@ class MyApp extends StatelessWidget {
           '/cartScreen': (context) => const CartScreen(),
           '/checkout': (context) => const CheckoutScreen(),
           '/add_person': (context) => const AdminAddPerson(),
+          '/reserve_screen': (context) => const ReserveScreen()
         },
         theme: ThemeData(
           primarySwatch: createMaterialColor(const Color(0xFF34A8DB)),
           colorScheme: const ColorScheme.light()
               .copyWith(primary: constant.primaryColor),
-    textTheme: GoogleFonts.openSansTextTheme(
-      Theme.of(context).textTheme,
-        ),
+          textTheme: GoogleFonts.openSansTextTheme(
+            Theme.of(context).textTheme,
+          ),
         ),
       ),
     );

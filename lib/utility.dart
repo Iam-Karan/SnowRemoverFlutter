@@ -179,3 +179,19 @@ List<Widget> getAction(BuildContext context) {
         right: 5)
   ];
 }
+
+String formattedDate(DateTime selected, String sep) {
+  String day = selected.day < 10 ? '0${selected.day}' : '${selected.day}';
+  String month =
+      selected.month < 10 ? '0${selected.month}' : '${selected.month}';
+  return '${selected.year}$sep$month$sep$day';
+}
+
+String formattedTime(TimeOfDay selectedTime) {
+  String hour =
+      selectedTime.hour < 10 ? '0${selectedTime.hour}' : '${selectedTime.hour}';
+  String minute = selectedTime.minute < 10
+      ? '0${selectedTime.minute}'
+      : '${selectedTime.minute}';
+  return '$hour:$minute';
+}
