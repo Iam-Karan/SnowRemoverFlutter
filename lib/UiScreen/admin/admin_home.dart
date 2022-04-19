@@ -65,6 +65,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             singleElem["archive"] ?? false);
         return temp;
       }).toList();
+      if (searchValue.isNotEmpty) {
+        apiData = apiData
+            .where((element) =>
+                element.brand.toLowerCase().contains(searchValue.toLowerCase()))
+            .toList();
+      }
+      apiData = await applyFilter(apiData, dropdownValue);
       return apiData;
     } catch (e) {
       print("caught error" + e.toString());
@@ -180,17 +187,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           fontWeight: FontWeight.bold),
                     );
                   } else {
-                    List<ProductModel> myProducts = [];
-                    if (searchValue.isNotEmpty) {
-                      myProducts = snapshot.data!
-                          .where((element) => element.brand
-                              .toLowerCase()
-                              .contains(searchValue.toLowerCase()))
-                          .toList();
-                    } else {
-                      myProducts = snapshot.data ?? [];
-                    }
-                    myProducts = applyFilter(myProducts, dropdownValue);
+                    List<ProductModel> myProducts = snapshot.data!;
                     return AdminListView(listData: myProducts);
                   }
               }

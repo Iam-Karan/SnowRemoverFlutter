@@ -13,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'components/toast_message/ios_Style.dart';
 import 'package:snow_remover/components/badge.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fs;
+import 'package:snow_remover/models/Generate_Image_Url.dart';
 
 import 'store/counter.dart';
 
@@ -28,7 +29,8 @@ Future<String> generateImageUrl(String imageName) async {
   return downloadURL;
 }
 
-List<ProductModel> applyFilter(List<ProductModel> inputData, String type) {
+Future<List<ProductModel>> applyFilter(
+    List<ProductModel> inputData, String type) async {
   FirebaseAuth auth = FirebaseAuth.instance;
   User? users = auth.currentUser;
   String? uid = users?.uid;
@@ -38,20 +40,21 @@ List<ProductModel> applyFilter(List<ProductModel> inputData, String type) {
       result = inputData.where((element) => element.stockUnit > 0).toList();
       break;
     case 'Favourite':
-      result = inputData;
-      // if (FirebaseAuth.instance.currentUser == null) {
-      //   result = inputData;
-      //   break;
-      // }
-      // FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-      // QuerySnapshot favList = await firebaseFirestore
-      //     .collection("users")
-      //     .doc(uid)
-      //     .collection("favourite")
-      //     .get();
-      // List<String> favIds = favList.docs.map((e) => e.reference.id).toList();
-      // result =
-      //     inputData.where((element) => favIds.contains(element.id)).toList();
+      // result = inputData;
+      if (FirebaseAuth.instance.currentUser == null) {
+        result = inputData;
+        break;
+      }
+      FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+      QuerySnapshot favList = await firebaseFirestore
+          .collection("users")
+          .doc(uid)
+          .collection("favorite")
+          .get();
+      List<String> favIds = favList.docs.map((e) => e.reference.id).toList();
+      result = inputData
+          .where((element) => favIds.any((e) => e.compareTo(element.id) == 0))
+          .toList();
       break;
     case 'Price: Low to High':
       inputData.sort(((a, b) => a.priceNumerical.compareTo(b.priceNumerical)));
@@ -104,7 +107,8 @@ void SignOut(BuildContext context) {
   Navigator.pushReplacementNamed(context, '/bottom_nav');
 }
 
-Future<List<person>> fetchPersonsFromDatabase(bool applyArchiveCon) async {
+Future<List<person>> fetchPersonsFromDatabase(
+    bool applyArchiveCon, String? searchValue, String sortValue) async {
   try {
     Map<String, dynamic> singleElem;
     CollectionReference _persons =
@@ -132,6 +136,15 @@ Future<List<person>> fetchPersonsFromDatabase(bool applyArchiveCon) async {
           singleElem["completed_order"]);
       return temp;
     }).toList();
+    if (searchValue != null) {
+      apiData = apiData
+          .where((element) =>
+              element.name.toLowerCase().contains(searchValue.toLowerCase()))
+          .toList();
+    }
+    if (sortValue != "nil") {
+      apiData = await applyFilter2(apiData, sortValue);
+    }
     return apiData;
   } catch (e) {
     print("caught error" + e.toString());
