@@ -116,9 +116,9 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                               ),
                               Text(
                                 '#' + widget.orderId,
-                                style: GoogleFonts.montserrat(
+                                style: GoogleFonts.openSans(
                                     textStyle: TextStyle(
-                                        fontSize: MediaQuery.of(context).size.width > 380 ? 14 : 10,
+                                        fontSize: MediaQuery.of(context).size.width > 380 ? 16 : 10,
                                         fontWeight: FontWeight.w500,
                                        )),
                               ),
@@ -168,7 +168,7 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                                   ],
                                 ),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width > 380 ? 120 : 100,
+                                  width: MediaQuery.of(context).size.width > 380 ? 180 : 100,
                                 ),
                                Row(
 
@@ -238,10 +238,10 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
       String reserveDate, String uid, String orderId, int iteamCounter) {
     var Title = GoogleFonts.pacifico(
         textStyle: TextStyle(
-            fontWeight: FontWeight.w100, fontSize: 17, color: Colors.white));
+            fontWeight: FontWeight.w100, fontSize:  MediaQuery.of(context).size.width > 380 ? 18 : 15, color: Colors.white));
     var Value = GoogleFonts.sora(
         textStyle: TextStyle(
-            fontWeight: FontWeight.w700, fontSize: 14, color: Colors.white));
+            fontWeight: FontWeight.w700, fontSize:  MediaQuery.of(context).size.width > 380 ? 13 : 10, color: Colors.white));
 
     return showDialog<void>(
         context: context,
@@ -261,9 +261,9 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                             Colors.redAccent,
                           ],
                         )),
-                    padding: EdgeInsets.all(10),
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    width: MediaQuery.of(context).size.width * 0.8,
+                    padding: EdgeInsets.all(2),
+                    height:  MediaQuery.of(context).size.width > 380 ?  MediaQuery.of(context).size.height * 0.7 : MediaQuery.of(context).size.height * 1,
+                    width: MediaQuery.of(context).size.width > 380 ? MediaQuery.of(context).size.width * 0.95 : MediaQuery.of(context).size.width * 0.95,
                     child: Column(
                       children: [
                         Row(
@@ -273,7 +273,7 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                               "Order Detail",
                               style: GoogleFonts.pacifico(
                                   textStyle: TextStyle(
-                                      fontSize: 22,
+                                      fontSize:  MediaQuery.of(context).size.width > 380 ? 22 : 16,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white)),
                               textAlign: TextAlign.center,
@@ -323,8 +323,14 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                                     "Address =>",
                                     style: Title,
                                   ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
                                   Text(
-                                    "10104 place meilleur",
+                                    data['address'],
                                     style: Value,
                                   )
                                 ],
@@ -362,10 +368,10 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                         ),
                         SingleChildScrollView(
                           child: Container(
-                            padding: EdgeInsets.all(2),
-                            height: MediaQuery.of(context).size.height * 0.45,
+                            padding: EdgeInsets.all(0.1),
+                            height: MediaQuery.of(context).size.height * 0.25,
                             child: ListView.builder(
-                              padding: EdgeInsets.all(5),
+                             // padding: EdgeInsets.all(1),
                               itemCount: iteamCounter,
                               itemBuilder: (context, index) {
                                 return OrderScreenListTile(
@@ -378,13 +384,25 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                             ),
                           ),
                         ),
+
                         // OrderScreenListTile(image: ""),
-                        ElevatedButton(
-                          onPressed: () {
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: OutlinedButton(onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text("Close"),
+                              style: OutlinedButton.styleFrom(
+                                //elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                                ),
+                                side: BorderSide(width: 2, color: Colors.yellow),
+                              ),
+
+                              child: Text("Close",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800),)),
+
                         ),
+
                       ],
                     ),
                   )));

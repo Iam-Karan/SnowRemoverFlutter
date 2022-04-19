@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:snow_remover/utility.dart' as utility;
 
