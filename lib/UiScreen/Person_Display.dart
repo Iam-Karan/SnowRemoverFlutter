@@ -17,6 +17,7 @@ class personDisplay extends StatefulWidget {
   double price;
   String image;
   String id;
+
   @override
   State<personDisplay> createState() => _personDisplayState();
 
@@ -38,6 +39,26 @@ class _personDisplayState extends State<personDisplay> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? users = auth.currentUser;
+    String? uid = users?.uid;
+
+    bool isliked = false;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('favorite')
+        .doc(widget.id)
+        .get()
+        .then((DocumentSnapshot querySnapshot) async {
+      if (querySnapshot.exists) {
+        print("jhxbc");
+        isliked = true;
+      } else {
+        isliked;
+      }
+    });
+
     productPrice = (widget.price.toString());
     return Scaffold(
       appBar: AppBar(
@@ -141,12 +162,15 @@ class _personDisplayState extends State<personDisplay> {
                                               fontWeight: FontWeight.bold)),
                                     ),
                                     SizedBox(width: 50),
-                                    LikeButton(
-                                      onTap: onLikeButtonTapped,
-                                      size: 60,
-                                      animationDuration:
-                                          const Duration(seconds: 2),
-                                    ),
+                                    uid == null
+                                        ? SizedBox(width: 5)
+                                        : LikeButton(
+                                            isLiked: isliked,
+                                            onTap: onLikeButtonTapped,
+                                            size: 60,
+                                            animationDuration:
+                                                const Duration(seconds: 2),
+                                          ),
                                   ],
                                   verticalDirection: VerticalDirection.down,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -351,50 +375,46 @@ class _personDisplayState extends State<personDisplay> {
         .doc(widget.id)
         .set({
       'id': widget.id,
-      'value': true,
       'type': "product",
-      'price': widget.price,
     });
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {
     if (isLiked == false) {
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        String? uid = user?.uid;
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('favorite')
-            .where('value', isEqualTo: false)
-            .get()
-            .then((QuerySnapshot querySnapshot) async {
-          if (querySnapshot.docs.isNotEmpty) {
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(uid)
-                .collection('favorite')
-                .doc(widget.id)
-                .set({
-              'id': widget.id,
-              'value': true,
-              'type': "product",
-              'price': widget.price,
-            });
-          } else {
-            addFavorite(uid!);
-          }
-        });
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? users = auth.currentUser;
+      String? uid = users?.uid;
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('favorite')
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        if (querySnapshot.docs.isNotEmpty) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .collection('favorite')
+              .doc(widget.id)
+              .set({
+            'id': widget.id,
+            'type': "products",
+          });
+        } else {
+          addFavorite(uid!);
+        }
       });
     } else {
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        String? uid = user?.uid;
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('favorite')
-            .doc(widget.id)
-            .delete();
-      });
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? users = auth.currentUser;
+      String? uid = users?.uid;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('favorite')
+          .doc(widget.id)
+          .delete();
     }
     return !isLiked;
   }

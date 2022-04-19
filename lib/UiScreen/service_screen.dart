@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'package:snow_remover/models/Generate_Image_Url.dart';
 import 'package:snow_remover/utility.dart' as utility;
 
 import '../models/Person.dart';
@@ -20,36 +19,6 @@ Icon iconValue = Icon(Icons.arrow_downward);
 class _ServiceScreenState extends State<ServiceScreen> {
   bool searchButtonPressed = false;
   String sortValue = "nil";
-
-  Future<List<person>> fetchProductsFromDatabase() async {
-    try {
-      Map<String, dynamic> singleElem;
-      CollectionReference _persons =
-          FirebaseFirestore.instance.collection('person');
-      QuerySnapshot querySnapshot = await _persons.get();
-      List<person> apiData = querySnapshot.docs.map((e) {
-        singleElem = e.data() as Map<String, dynamic>;
-        singleElem["imageurl"] = singleElem["imageurl"];
-        singleElem["_id"] = e.reference.id;
-        person temp = person(
-            double.parse(singleElem["Price"]),
-            singleElem["age"],
-            singleElem["description"],
-            singleElem["_id"],
-            singleElem["imageurl"],
-            singleElem["name"],
-            singleElem["personId"],
-            singleElem["archiveStatus"],
-            singleElem["completed_order"]);
-        return temp;
-      }).toList();
-      return apiData;
-    } catch (e) {
-      print("caught error" + e.toString());
-      rethrow;
-    }
-  }
-
   var seachValue = "";
 
   // final filterButtonIteams = filterButton(iconValue: iconValue, sortValue: "nil",);
@@ -93,10 +62,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
       child: Column(
         children: <Widget>[
           SizedBox(
-           height: ((MediaQuery.of(context).size.height * 1) - 260),
+            height: ((MediaQuery.of(context).size.height * 1) - 260),
             width: MediaQuery.of(context).size.width * 1,
             child: FutureBuilder<List<person>>(
-                future: utility.fetchPersonsFromDatabase(true),
+                future: utility.fetchPersonsFromDatabase(
+                    true, seachValue, sortValue),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<person>> snapshot) {
                   switch (snapshot.connectionState) {
@@ -112,19 +82,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               fontWeight: FontWeight.bold),
                         );
                       } else {
-                        List<person> myProducts = [];
-                        if (seachValue.isNotEmpty) {
-                          myProducts = snapshot.data!
-                              .where((element) => element.name
-                                  .toLowerCase()
-                                  .contains(seachValue.toLowerCase()))
-                              .toList();
-                        } else {
-                          myProducts = snapshot.data ?? [];
-                        }
-                        if (sortValue != "nil") {
-                          myProducts = applyFilter2(myProducts, sortValue);
-                        }
+                        List<person> myProducts = snapshot.data!;
                         return PersonGridView(gridData: myProducts);
                       }
                   }
@@ -228,21 +186,41 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           style: TextStyle(fontSize: 16))),
                 ],
               ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  )),
-                  onPressed: () {
-                    setState(() {
-                      sortValue = "Avilable";
-                      print(sortValue);
-                    });
-                  },
-                  child: Text(
-                    "Avilable",
-                    style: TextStyle(fontSize: 16),
-                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      )),
+                      onPressed: () {
+                        setState(() {
+                          sortValue = "Avilable";
+                          print(sortValue);
+                        });
+                      },
+                      child: Text(
+                        "Available",
+                        style: TextStyle(fontSize: 16),
+                      )),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      )),
+                      onPressed: () {
+                        setState(() {
+                          sortValue = "Favorite";
+                          print(sortValue);
+                        });
+                      },
+                      child: Text(
+                        "Favorite",
+                        style: TextStyle(fontSize: 16),
+                      )),
+                ],
+              ),
             ],
           ),
         );

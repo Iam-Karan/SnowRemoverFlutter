@@ -41,6 +41,7 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
             onSaved: (String value) {
               name = value;
             },
+            keypad: false,
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                 RegExp(r"[a-zA-Z]+|\s"),
@@ -72,6 +73,7 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
             onSaved: (String value) {
               brand = value;
             },
+            keypad: false,
             validator: (val) {
               if (!val!.isNotEmpty) return 'Brand Name cannot be empty';
             },
@@ -81,6 +83,7 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
               priceNumerical = double.parse(value);
             },
             hintText: 'Price',
+            keypad: false,
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                 RegExp(r'\d'),
@@ -95,6 +98,7 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
             onSaved: (String value) {
               selfId = int.parse(value);
             },
+            keypad: false,
             hintText: 'Self ID',
             inputFormatters: [
               FilteringTextInputFormatter.allow(
@@ -110,6 +114,7 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
             onSaved: (String value) {
               stockUnit = int.parse(value);
             },
+            keypad: false,
             hintText: 'Stock Unit',
             inputFormatters: [
               FilteringTextInputFormatter.allow(
@@ -125,6 +130,7 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
             onSaved: (String value) {
               type = value;
             },
+            keypad: false,
             hintText: 'Type',
             inputFormatters: [
               FilteringTextInputFormatter.allow(
@@ -139,6 +145,7 @@ class _ProductDetailsFormState extends State<ProductDetailsForm> {
             onSaved: (String value) {
               videoURL = value;
             },
+            keypad: false,
             hintText: 'Video URL',
             validator: (val) {
               if (!val!.validURL) return 'Please enter valid URL';

@@ -42,7 +42,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   void goToScreen() {
     if (uid.isEmpty) {
-      Navigator.pushReplacementNamed(context, '/SignIn');
+      Navigator.pushNamed(context, '/SignIn');
     } else {
       Navigator.pushReplacementNamed(context, '/UserProfile');
     }
@@ -61,6 +61,7 @@ class _OrderScreenState extends State<OrderScreen> {
     });
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           primary: true,
           backgroundColor: Color(0xFF34A8DB),
@@ -159,6 +160,7 @@ class _OrderScreenState extends State<OrderScreen> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(140.0),
           child: AppBar(
+            automaticallyImplyLeading: false,
             // centerTitle: true,
             primary: true,
             backgroundColor: Color(0xFF34A8DB),

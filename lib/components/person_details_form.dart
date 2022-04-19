@@ -40,6 +40,7 @@ class _PersonDetailsFormState extends State<PersonDetailsForm> {
             onSaved: (String value) {
               name = value;
             },
+            keypad: false,
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                 RegExp(r"[a-zA-Z]+|\s"),
@@ -71,6 +72,7 @@ class _PersonDetailsFormState extends State<PersonDetailsForm> {
             onSaved: (String value) {
               orders_completed = int.parse(value);
             },
+            keypad: false,
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                 RegExp(r'\d'),
@@ -87,6 +89,7 @@ class _PersonDetailsFormState extends State<PersonDetailsForm> {
             onSaved: (String value) {
               priceNumerical = double.parse(value);
             },
+            keypad: true,
             hintText: 'Price',
             inputFormatters: [
               FilteringTextInputFormatter.allow(
@@ -102,6 +105,7 @@ class _PersonDetailsFormState extends State<PersonDetailsForm> {
             onSaved: (String value) {
               personId = int.parse(value);
             },
+            keypad: false,
             hintText: 'person ID',
             inputFormatters: [
               FilteringTextInputFormatter.allow(
@@ -117,6 +121,7 @@ class _PersonDetailsFormState extends State<PersonDetailsForm> {
             onSaved: (String value) {
               age = int.parse(value);
             },
+            keypad: true,
             hintText: 'age',
             inputFormatters: [
               FilteringTextInputFormatter.allow(

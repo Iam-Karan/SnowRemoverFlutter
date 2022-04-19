@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snow_remover/UiScreen/cart/cart_Screen_Card.dart';
 import 'package:snow_remover/models/cart_model.dart';
+import 'package:snow_remover/models/checkout_screen_args.dart';
 import 'package:snow_remover/utility.dart' as utility;
 
 class CartScreen extends StatefulWidget {
@@ -133,19 +134,26 @@ class _CartScreenState extends State<CartScreen> {
                     }).toList(),
                   ),
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: reserveNow,
                         child: const Text("Reserve Now"),
                         style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(10),
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
                           onPrimary: Colors.white,
                           textStyle: const TextStyle(
                               color: Colors.black,
-                              fontSize: 20,
+                              fontSize: 25,
                               fontStyle: FontStyle.italic),
                         ),
+                      ),
+                      SizedBox(
+                        height: 2,
                       ),
                       ElevatedButton(
                         onPressed: checkout,
@@ -154,10 +162,10 @@ class _CartScreenState extends State<CartScreen> {
                           onPrimary: Colors.white,
                           textStyle: const TextStyle(
                               color: Colors.black,
-                              fontSize: 25,
+                              fontSize: 20,
                               fontStyle: FontStyle.italic),
                         ),
-                      )
+                      ),
                     ]),
               ]),
             );
@@ -169,6 +177,12 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void checkout() {
-    Navigator.pushNamed(context, '/checkout', arguments: currentCart);
+    CheckoutArgs args = CheckoutArgs(items: currentCart);
+    Navigator.pushNamed(context, '/checkout', arguments: args);
+  }
+
+  void reserveNow() {
+    CheckoutArgs args = CheckoutArgs(items: currentCart);
+    Navigator.pushNamed(context, '/reserve_screen', arguments: args);
   }
 }
