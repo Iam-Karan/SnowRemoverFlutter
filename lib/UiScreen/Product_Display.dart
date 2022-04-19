@@ -24,13 +24,12 @@ class productDisplay extends StatefulWidget {
   @override
   State<productDisplay> createState() => _productDisplayState();
 
-  productDisplay(
-      {required this.video_url,
-      required this.brand,
-      required this.description,
-      required this.price,
-      required this.image,
-      required this.ID});
+  productDisplay({required this.video_url,
+    required this.brand,
+    required this.description,
+    required this.price,
+    required this.image,
+    required this.ID});
 }
 
 bool tapped = true;
@@ -39,7 +38,6 @@ class _productDisplayState extends State<productDisplay> {
   String productPrice = "";
   late YoutubePlayerController _controller;
   int simpleIntInput = 1;
-  final _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -60,6 +58,25 @@ class _productDisplayState extends State<productDisplay> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? users = auth.currentUser;
+    String? uid = users?.uid;
+bool isliked = false;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('favorite')
+        .doc(widget.ID)
+        .get()
+        .then((DocumentSnapshot querySnapshot) async {
+      if (querySnapshot.exists) {
+        print("jhxbc");
+        isliked  = true;
+      } else {
+        isliked;
+      }
+    });
+
     productPrice = (widget.price).toString();
     return Scaffold(
       appBar: AppBar(
@@ -69,7 +86,7 @@ class _productDisplayState extends State<productDisplay> {
         title: Text("Details",
             style: GoogleFonts.roboto(
                 textStyle:
-                    TextStyle(fontWeight: FontWeight.w500, fontSize: 24))),
+                TextStyle(fontWeight: FontWeight.w500, fontSize: 24))),
       ),
       body: FutureBuilder<String>(
         builder: ((BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -92,24 +109,33 @@ class _productDisplayState extends State<productDisplay> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                          //color: Colors.blue,
-                          width: MediaQuery.of(context).size.width * 1,
-                          height: MediaQuery.of(context).size.height * 0.4,
+                        //color: Colors.blue,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 1,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.4,
                           child: Stack(
                             children: [
                               tapped
                                   ? Image(
-                                      image: NetworkImage(imageUrl!),
-                                      fit: BoxFit.contain,
-                                      height: 220,
-                                      alignment: Alignment.center,
-                                      width:
-                                          MediaQuery.of(context).size.width * 1,
-                                    )
+                                image: NetworkImage(imageUrl!),
+                                fit: BoxFit.contain,
+                                height: 220,
+                                alignment: Alignment.center,
+                                width:
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 1,
+                              )
                                   : YoutubePlayer(
-                                      controller: _controller,
-                                      showVideoProgressIndicator: true,
-                                    ),
+                                controller: _controller,
+                                showVideoProgressIndicator: true,
+                              ),
                               //videoPlayer(),
                               Positioned(
                                 child: GestureDetector(
@@ -124,8 +150,11 @@ class _productDisplayState extends State<productDisplay> {
                                   ),
                                 ),
                                 bottom: 20,
-                                left: ((MediaQuery.of(context).size.width * 1 -
-                                        50) /
+                                left: ((MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 1 -
+                                    50) /
                                     2),
                               ),
                               Positioned(
@@ -141,18 +170,24 @@ class _productDisplayState extends State<productDisplay> {
                                   ),
                                 ),
                                 bottom: 20,
-                                left: ((MediaQuery.of(context).size.width * 1) /
+                                left: ((MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 1) /
                                     2),
                               ),
                             ],
                           )),
                       Expanded(
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 1,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 1,
                           height: 600,
                           decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(90)),
+                            BorderRadius.only(topLeft: Radius.circular(90)),
                             color: Colors.white,
                           ),
                           margin: EdgeInsets.all(2),
@@ -170,11 +205,14 @@ class _productDisplayState extends State<productDisplay> {
                                               fontWeight: FontWeight.bold)),
                                     ),
                                     SizedBox(width: 50),
-                                    LikeButton(
+                                    uid == null
+                                        ? SizedBox(width: 5)
+                                        : LikeButton(
+                                      isLiked: isliked,
                                       onTap: onLikeButtonTapped,
                                       size: 60,
                                       animationDuration:
-                                          const Duration(seconds: 2),
+                                      const Duration(seconds: 2),
                                     ),
                                   ],
                                   verticalDirection: VerticalDirection.down,
@@ -182,7 +220,10 @@ class _productDisplayState extends State<productDisplay> {
                                 ),
                                 SizedBox(height: 8),
                                 Container(
-                                  width: MediaQuery.of(context).size.width * 1,
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 1,
                                   height: 120,
                                   child: Text(
                                     widget.description,
@@ -207,7 +248,7 @@ class _productDisplayState extends State<productDisplay> {
                                                     fontSize: 24,
                                                     color: Colors.blue,
                                                     fontWeight:
-                                                        FontWeight.w700))),
+                                                    FontWeight.w700))),
                                       ]),
                                       Row(children: [
                                         SizedBox(width: 15),
@@ -217,10 +258,11 @@ class _productDisplayState extends State<productDisplay> {
                                                     fontSize: 24,
                                                     color: Colors.blue,
                                                     fontWeight:
-                                                        FontWeight.w700))),
+                                                    FontWeight.w700))),
                                         QuantityInput(
                                           value: simpleIntInput,
-                                          onChanged: (value) => setState(() =>
+                                          onChanged: (value) =>
+                                              setState(() =>
                                               simpleIntInput = int.parse(
                                                   value.replaceAll(',', ''))),
                                           elevation: 2,
@@ -228,7 +270,7 @@ class _productDisplayState extends State<productDisplay> {
                                       ]),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           ElevatedButton.icon(
                                             onPressed: () {
@@ -241,7 +283,7 @@ class _productDisplayState extends State<productDisplay> {
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
+                                                BorderRadius.circular(20),
                                               ),
                                             ),
                                           ),
@@ -289,7 +331,7 @@ class _productDisplayState extends State<productDisplay> {
           .then((DocumentSnapshot docSnapshot) async {
         if (docSnapshot.exists) {
           Map<String, dynamic> data =
-              docSnapshot.data()! as Map<String, dynamic>;
+          docSnapshot.data()! as Map<String, dynamic>;
           if (simpleIntInput != 0) {
             await FirebaseFirestore.instance
                 .collection('users')
@@ -379,53 +421,49 @@ class _productDisplayState extends State<productDisplay> {
         .doc(widget.ID)
         .set({
       'id': widget.ID,
-      'value': true,
       'type': "products",
-      'hours': 1,
-      'price': widget.price,
     });
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {
     if (isLiked == false) {
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        String? uid = user?.uid;
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('favorite')
-            .get()
-            .then((QuerySnapshot querySnapshot) async {
-          if (querySnapshot.docs.isNotEmpty) {
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(uid)
-                .collection('favorite')
-                .doc(widget.ID)
-                .set({
-              'id': widget.ID,
-              'value': true,
-              'type': "products",
-              'hours': 1,
-              'price': widget.price,
-            });
-          } else {
-            addFavorite(uid!);
-          }
-        });
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? users = auth.currentUser;
+      String? uid = users?.uid;
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('favorite')
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        if (querySnapshot.docs.isNotEmpty) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .collection('favorite')
+              .doc(widget.ID)
+              .set({
+            'id': widget.ID,
+            'type': "products",
+          });
+        } else {
+          addFavorite(uid!);
+        }
       });
       return !isLiked;
     } else {
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        String? uid = user?.uid;
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('favorite')
-            .doc(widget.ID)
-            .delete();
-      });
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? users = auth.currentUser;
+      String? uid = users?.uid;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('favorite')
+          .doc(widget.ID)
+          .delete();
     }
     return !isLiked;
   }
+
 }

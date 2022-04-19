@@ -51,92 +51,90 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     String totalAfterTax = (tax + total).toStringAsFixed(2);
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(20),
-            child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                "Checkout",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-          )),
+        title: Text("Checkout",
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white)),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            "Confirm Order",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        "Confirm Order",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      CustomFormField(
-                        hintText: 'Address Line 1',
-                        onSaved: (String value) {
-                          address = value;
-                        },
-                        validator: (val) {
-                          if (val!.isEmpty) return 'Address cannot be empty';
-                        },
-                      ),
-                      CustomFormField(
-                        hintText: 'City',
-                        onSaved: (String value) {
-                          city = value;
-                        },
-                        validator: (val) {
-                          if (val!.isEmpty) return 'City cannot be empty';
-                        },
-                      ),
-                      CustomFormField(
-                        hintText: 'ZIP Code',
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(6),
-                        ],
-                        onSaved: (String value) {
-                          zip = value;
-                        },
-                        validator: (val) {
-                          if (val!.isEmpty) return 'ZIP CODE cannot be empty';
-                        },
-                      ),
-                      CustomFormField(
-                        hintText: 'Province',
-                        onSaved: (String value) {
-                          province = value;
-                        },
-                        validator: (val) {
-                          if (val!.isEmpty) return 'Province cannot be empty';
-                        },
-                      ),
-                      CustomFormField(
-                        hintText: 'Country',
-                        onSaved: (String value) {
-                          country = value;
-                        },
-                        validator: (val) {
-                          if (val!.isEmpty) return 'Country cannot be empty';
-                        },
-                      ),
-                    ],
+                    ),
                   ),
+                  CustomFormField(
+                    hintText: 'Address Line 1',
+                    onSaved: (String value) {
+                      address = value;
+                    },
+                    keypad: false,
+                    validator: (val) {
+                      if (val!.isEmpty) return 'Address cannot be empty';
+                    },
+                  ),
+                  CustomFormField(
+                    hintText: 'City',
+                    keypad: false,
+                    onSaved: (String value) {
+                      city = value;
+                    },
+                    validator: (val) {
+                      if (val!.isEmpty) return 'City cannot be empty';
+                    },
+                  ),
+                  CustomFormField(
+                    hintText: 'ZIP Code',
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(6),
+                    ],
+                    onSaved: (String value) {
+                      zip = value;
+                    },
+                    keypad: false,
+                    validator: (val) {
+                      if (val!.isEmpty) return 'ZIP CODE cannot be empty';
+                    },
+                  ),
+                  CustomFormField(
+                    hintText: 'Province',
+                    onSaved: (String value) {
+                      province = value;
+                    },
+                    keypad: false,
+                    validator: (val) {
+                      if (val!.isEmpty) return 'Province cannot be empty';
+                    },
+                  ),
+                  CustomFormField(
+                      hintText: 'Country',
+                      onSaved: (String value) {
+                        country = value;
+                      },
+                      keypad: false,
+                      validator: (val) {
+                        if (val!.isEmpty)
+                          return 'Country cannot be empty';
+                        else if (val != 'canada') {
+                          if (val != "united states") {
+                            return 'only canada and united stated accepted';
+                          }
+                        }
+                      }),
                 ],
               ),
             ),
