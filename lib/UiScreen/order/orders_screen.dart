@@ -108,7 +108,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-              if (snapshot.data!.docs.length != 0) {
+              if (snapshot.data?.docs.length != 0) {
                 return Container(
                   margin: EdgeInsets.only(top: 60),
                   child: ListView(
@@ -117,7 +117,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     padding: EdgeInsets.all(1),
                     children: snapshot.data!.docs.map((document) {
                       Map<String, dynamic> data =
-                          document.data()! as Map<String, dynamic>;
+                          document.data() as Map<String, dynamic>;
                       return orderHistoryCard(
                         data: data,
                         image: '',

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
@@ -221,8 +222,7 @@ class _personDisplayState extends State<personDisplay> {
                                         ),
                                       ]),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           ElevatedButton.icon(
                                             onPressed: () {
@@ -233,8 +233,10 @@ class _personDisplayState extends State<personDisplay> {
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
+                                                    BorderRadius.circular(15),
                                               ),
+                                              minimumSize: Size(200, 2),
+                                              padding: EdgeInsets.all(7)
                                             ),
                                           ),
                                         ],
