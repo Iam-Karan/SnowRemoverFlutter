@@ -44,7 +44,6 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        automaticallyImplyLeading: true,
         elevation: 5,
         title: RichText(
           text: TextSpan(

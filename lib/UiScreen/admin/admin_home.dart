@@ -85,6 +85,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
           title: const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Text("Shop tools"),

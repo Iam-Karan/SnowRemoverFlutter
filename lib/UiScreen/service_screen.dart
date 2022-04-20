@@ -29,6 +29,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     double Width = (MediaQuery.of(context).size.width);
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           //leading: Image.asset('assets/images/113324765-close-up-of-small-snowman-in-winter-with-snow-background.jpg',fit: BoxFit.fill,),
           elevation: 5,
           title: const Text("Snow Removal"),
