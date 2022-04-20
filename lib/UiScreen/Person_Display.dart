@@ -199,7 +199,7 @@ class _personDisplayState extends State<personDisplay> {
                                             "Price:  \$" + productPrice + "/Hr",
                                             style: GoogleFonts.roboto(
                                                 textStyle: TextStyle(
-                                                    fontSize: 24,
+                                                    fontSize: MediaQuery.of(context).size.width > 380 ? 24 : 16,
                                                     color: Colors.blue,
                                                     fontWeight:
                                                         FontWeight.w700))),
@@ -209,7 +209,7 @@ class _personDisplayState extends State<personDisplay> {
                                         Text("Number of hours:  ",
                                             style: GoogleFonts.roboto(
                                                 textStyle: TextStyle(
-                                                    fontSize: 24,
+                                                    fontSize: MediaQuery.of(context).size.width > 380 ? 24 : 16,
                                                     color: Colors.blue,
                                                     fontWeight:
                                                         FontWeight.w700))),
