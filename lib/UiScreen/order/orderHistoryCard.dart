@@ -10,12 +10,7 @@ import 'package:snow_remover/utility.dart' as utility;
 import '../admin/Admin_feedback_dialog.dart';
 import 'Feedback/feedback.dart';
 
-
 class orderHistoryCard extends StatefulWidget {
-
-
-
-
   Map<String, dynamic> data;
   String image;
   String uid;
@@ -53,26 +48,25 @@ getTodayDate() {
   return trueTime;
 }
 
-
 bool admin = true;
+
 class _orderHistoryCardState extends State<orderHistoryCard> {
   @override
-
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     final uid = user?.uid;
-if(user != null){
-  if(user.email == 'admin@email.com'){
-    admin = true;
-  }else{
-    admin = false;
-  }
-}
+    if (user != null) {
+      if (user.email == 'admin@email.com') {
+        admin = true;
+      } else {
+        admin = false;
+      }
+    }
 
-    DateTime orderDAte = new DateFormat("yy-MM-dd   hh:mm  aaa")
+    DateTime orderDAte = DateFormat("yy-MM-dd   hh:mm  aaa")
         .parse(getDateFormated(widget.data, 'reservation_datetime'));
     DateTime localDate =
-        new DateFormat("yy-MM-dd   hh:mm  aaa").parse(getTodayDate());
+        DateFormat("yy-MM-dd   hh:mm  aaa").parse(getTodayDate());
     bool orderTiming = orderDAte.isBefore(localDate);
     int iteamCounter = widget.data['items'].length;
     var total = widget.data['total'].toStringAsFixed(1);
@@ -193,8 +187,8 @@ if(user != null){
                                 ),
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width > 380
-                                      ? 120
-                                      : 100,
+                                      ? 90
+                                      : 30,
                                 ),
                                 Row(
                                   children: [
@@ -241,30 +235,41 @@ if(user != null){
                               ],
                             ),
                           ),
-                          SizedBox(height: 4,),
+                          SizedBox(
+                            height: 4,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               OutlinedButton.icon(
                                 onPressed: () {},
                                 label: Text(
-                                  orderTiming ? "Completed" : "Pending",style: TextStyle(
-                                  fontSize: 18,color: Colors.green,fontWeight: FontWeight.w600
-                                ),
+                                  orderTiming ? "Completed" : "Pending",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 style: OutlinedButton.styleFrom(
-                                  side:  BorderSide(width: 1, color: Colors.green),
-                                  padding: EdgeInsets.all(8),
-
+                                    side: BorderSide(
+                                        width: 1, color: Colors.green),
+                                    padding: EdgeInsets.all(8),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(13)
-                                    )
+                                        borderRadius:
+                                            BorderRadius.circular(13))),
+                                icon: Icon(
+                                  orderTiming
+                                      ? Icons.check
+                                      : Icons.pending_rounded,
+                                  size: 28,
+                                  color: Colors.green,
                                 ),
-                                icon: Icon(orderTiming ? Icons.check : Icons.pending_rounded,size: 28,color: Colors.green,),
                               )
                             ],
                           ),
-                          SizedBox(height: 8,),
+                          SizedBox(
+                            height: 8,
+                          ),
                         ],
                       ),
                     ),
@@ -344,7 +349,7 @@ if(user != null){
                           height: 10,
                         ),
                         Container(
-                         // margin: EdgeInsets.all(2),
+                          // margin: EdgeInsets.all(2),
                           child: Column(
                             children: [
                               Row(
@@ -376,13 +381,11 @@ if(user != null){
                                 ],
                               ),
                               Row(
-
                                 children: [
                                   Text(
                                     "Address =>",
                                     style: Title,
                                   ),
-
                                 ],
                               ),
                               Text(

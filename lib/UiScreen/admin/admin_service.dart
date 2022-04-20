@@ -44,6 +44,7 @@ class _AdminServiceScreenState extends State<AdminServiceScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Text("Book services"),

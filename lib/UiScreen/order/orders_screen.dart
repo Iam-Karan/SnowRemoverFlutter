@@ -156,7 +156,7 @@ class _OrderScreenState extends State<OrderScreen> {
           ]);
   }
 
-  Widget _buildBackground() => new Scaffold(
+  Widget _buildBackground() => Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(140.0),
           child: AppBar(
@@ -181,7 +181,8 @@ class _OrderScreenState extends State<OrderScreen> {
                         "Good afternoon,",
                         style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
-                          fontSize:  MediaQuery.of(context).size.width > 380 ? 22 : 14,
+                          fontSize:
+                              MediaQuery.of(context).size.width > 380 ? 22 : 14,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
                         )),
@@ -190,7 +191,8 @@ class _OrderScreenState extends State<OrderScreen> {
                         name,
                         style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
-                          fontSize:  MediaQuery.of(context).size.width > 380 ? 22 : 18,
+                          fontSize:
+                              MediaQuery.of(context).size.width > 380 ? 22 : 18,
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
                         )),

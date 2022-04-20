@@ -25,6 +25,7 @@ class _orderHistoryState extends State<orderHistory> {
     });
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Order History"),
       ),
       body: StreamBuilder(

@@ -222,7 +222,8 @@ class _personDisplayState extends State<personDisplay> {
                                         ),
                                       ]),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           ElevatedButton.icon(
                                             onPressed: () {
@@ -231,13 +232,12 @@ class _personDisplayState extends State<personDisplay> {
                                             icon: Icon(Icons.add_shopping_cart),
                                             label: Text("Cart"),
                                             style: ElevatedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              minimumSize: Size(200, 2),
-                                              padding: EdgeInsets.all(7)
-                                            ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                minimumSize: Size(200, 2),
+                                                padding: EdgeInsets.all(7)),
                                           ),
                                         ],
                                       ),
