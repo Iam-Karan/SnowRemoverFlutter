@@ -88,7 +88,6 @@ class _SignInState extends State<SignIn> {
     print(screenHeight);
     return screenHeight < 550
         ? Scaffold(
-
             body: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -305,10 +304,9 @@ class _SignInState extends State<SignIn> {
             ),
           )
         : Scaffold(
-      appBar: AppBar(
-automaticallyImplyLeading: true,
-        elevation: 0,
-      ),
+            appBar: AppBar(
+              elevation: 0,
+            ),
             body: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -318,7 +316,6 @@ automaticallyImplyLeading: true,
                   decoration: const BoxDecoration(color: Color(0xFF34A8DB)),
                   child: Column(
                     children: [
-
                       Stack(
                         clipBehavior: Clip.none,
                         children: [
@@ -574,7 +571,8 @@ automaticallyImplyLeading: true,
     DocumentSnapshot? userInfo = await utility.fetchUser();
     if (userInfo != null &&
         userInfo.get("type").toString().toLowerCase() == "admin") {
-      Navigator.pushReplacementNamed(context, '/admin_bottomnav');
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/admin_bottomnav', (Route<dynamic> route) => false);
       // signed in
     } else {
       await context.read<Counter>().init();

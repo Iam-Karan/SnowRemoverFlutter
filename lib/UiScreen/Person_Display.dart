@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
@@ -198,7 +199,7 @@ class _personDisplayState extends State<personDisplay> {
                                             "Price:  \$" + productPrice + "/Hr",
                                             style: GoogleFonts.roboto(
                                                 textStyle: TextStyle(
-                                                    fontSize: 24,
+                                                    fontSize: MediaQuery.of(context).size.width > 380 ? 24 : 16,
                                                     color: Colors.blue,
                                                     fontWeight:
                                                         FontWeight.w700))),
@@ -208,7 +209,7 @@ class _personDisplayState extends State<personDisplay> {
                                         Text("Number of hours:  ",
                                             style: GoogleFonts.roboto(
                                                 textStyle: TextStyle(
-                                                    fontSize: 24,
+                                                    fontSize: MediaQuery.of(context).size.width > 380 ? 24 : 16,
                                                     color: Colors.blue,
                                                     fontWeight:
                                                         FontWeight.w700))),
@@ -231,11 +232,12 @@ class _personDisplayState extends State<personDisplay> {
                                             icon: Icon(Icons.add_shopping_cart),
                                             label: Text("Cart"),
                                             style: ElevatedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                            ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                minimumSize: Size(200, 2),
+                                                padding: EdgeInsets.all(7)),
                                           ),
                                         ],
                                       ),

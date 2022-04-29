@@ -86,6 +86,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Text("Shop tools"),

@@ -108,7 +108,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-              if (snapshot.data!.docs.length != 0) {
+              if (snapshot.data?.docs.length != 0) {
                 return Container(
                   margin: EdgeInsets.only(top: 60),
                   child: ListView(
@@ -117,7 +117,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     padding: EdgeInsets.all(1),
                     children: snapshot.data!.docs.map((document) {
                       Map<String, dynamic> data =
-                          document.data()! as Map<String, dynamic>;
+                          document.data() as Map<String, dynamic>;
                       return orderHistoryCard(
                         data: data,
                         image: '',
@@ -156,7 +156,7 @@ class _OrderScreenState extends State<OrderScreen> {
           ]);
   }
 
-  Widget _buildBackground() => new Scaffold(
+  Widget _buildBackground() => Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(140.0),
           child: AppBar(
@@ -181,7 +181,8 @@ class _OrderScreenState extends State<OrderScreen> {
                         "Good afternoon,",
                         style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
-                          fontSize:  MediaQuery.of(context).size.width > 380 ? 22 : 14,
+                          fontSize:
+                              MediaQuery.of(context).size.width > 380 ? 22 : 14,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
                         )),
@@ -190,7 +191,8 @@ class _OrderScreenState extends State<OrderScreen> {
                         name,
                         style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
-                          fontSize:  MediaQuery.of(context).size.width > 380 ? 22 : 18,
+                          fontSize:
+                              MediaQuery.of(context).size.width > 380 ? 22 : 18,
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
                         )),

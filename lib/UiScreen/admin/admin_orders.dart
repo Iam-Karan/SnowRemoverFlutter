@@ -20,15 +20,18 @@ class _AdminOrdersState extends State<AdminOrders> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: InkWell(
-            onTap: () {
-              utility.SignOut(context);
-            },
-            child: Icon(
-              Icons.person,
-              size: 30,
-            ),
-          ),
+          automaticallyImplyLeading: false,
+          actions: [
+            ElevatedButton.icon(
+                onPressed: () {
+                  utility.SignOut(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                ),
+                icon: Icon(Icons.login),
+                label: Text("Log out"))
+          ],
           centerTitle: true,
           title: Text("Order details"),
         ),
@@ -50,7 +53,8 @@ class _AdminOrdersState extends State<AdminOrders> {
                   children: snapshot.data!.docs.map((document) {
                     Map<String, dynamic> data =
                         document.data() as Map<String, dynamic>;
-                    return orderHistoryCard(data: data, image: "", uid: '', orderId: document.id);
+                    return orderHistoryCard(
+                        data: data, image: "", uid: '', orderId: document.id);
                   }).toList(),
                 );
               }

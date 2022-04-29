@@ -272,10 +272,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             e.price, e.quantity.toString(), e.type))
         .toList();
     DateTime now = DateTime.now();
-    // print("this is the item array length" + listItems.length.toString());
-    OrderModel uploadObj =
-        OrderModel(listItems, now, true, reservationDtime, total);
     String completeAddress = '$address, $zip, $city ,$province, $country';
+    // print("this is the item array length" + listItems.length.toString());
+    OrderModel uploadObj = OrderModel(
+        listItems, now, true, reservationDtime, total, completeAddress);
+
     AdminOrderModel separateCollectionObj = AdminOrderModel(listItems, now,
         true, reservationDtime, total, uid, completeAddress, '');
     DocumentReference addedOrder = await firebaseFirestore

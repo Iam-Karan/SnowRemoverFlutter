@@ -44,7 +44,6 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        automaticallyImplyLeading: true,
         elevation: 5,
         title: RichText(
           text: TextSpan(
@@ -68,7 +67,7 @@ class _CartScreenState extends State<CartScreen> {
       body: StreamBuilder<QuerySnapshot>(
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          currentCart.clear();
+          // currentCart.clear();
 
           if (signIn == false || snapshot.data?.docs.length == 0) {
             return Column(children: [
@@ -134,14 +133,14 @@ class _CartScreenState extends State<CartScreen> {
                     }).toList(),
                   ),
                 ),
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
                         onPressed: reserveNow,
                         child: const Text("Reserve Now"),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(6),
                           elevation: 5,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
@@ -152,13 +151,15 @@ class _CartScreenState extends State<CartScreen> {
                               fontStyle: FontStyle.italic),
                         ),
                       ),
-                      SizedBox(
-                        height: 2,
-                      ),
+
                       ElevatedButton(
                         onPressed: checkout,
                         child: const Text("Checkout"),
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          elevation: 5,
+                          padding: EdgeInsets.all(10),
                           onPrimary: Colors.white,
                           textStyle: const TextStyle(
                               color: Colors.black,

@@ -1,13 +1,12 @@
-
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_storage/firebase_storage.dart' as fs;
 import 'package:snow_remover/UiScreen/order/order_screenDetail_listTile.dart';
-
+import 'package:snow_remover/utility.dart' as utility;
 import '../admin/Admin_feedback_dialog.dart';
 import 'Feedback/feedback.dart';
 
@@ -40,20 +39,35 @@ getDateFormated(Map<String, dynamic> data, String type) {
   return updatedDt;
 }
 
+getTodayDate() {
+  DateTime time = DateTime.now().toLocal();
+  var newFormat = DateFormat("yy-MM-dd   hh:mm  aaa");
+  var strToDateTime = DateTime.parse(time.toString());
+  final convertLocal = strToDateTime.toLocal();
+  String trueTime = newFormat.format(convertLocal);
+  return trueTime;
+}
+
+bool admin = true;
+
 class _orderHistoryCardState extends State<orderHistoryCard> {
- bool admin = false;
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.userChanges().listen((User? user) {
-      if (user?.email == "admin@email.com") {
-         admin = true;
+    User? user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
+    if (user != null) {
+      if (user.email == 'admin@email.com') {
+        admin = true;
       } else {
         admin = false;
       }
-    });
+    }
 
-
-
+    DateTime orderDAte = DateFormat("yy-MM-dd   hh:mm  aaa")
+        .parse(getDateFormated(widget.data, 'reservation_datetime'));
+    DateTime localDate =
+        DateFormat("yy-MM-dd   hh:mm  aaa").parse(getTodayDate());
+    bool orderTiming = orderDAte.isBefore(localDate);
     int iteamCounter = widget.data['items'].length;
     var total = widget.data['total'].toStringAsFixed(1);
     String id = widget.data['items'][0]['id'];
@@ -76,9 +90,7 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
               );
-            }
-
-            else {
+            } else {
               String? imageUrl = snapshot.data;
               return InkWell(
                 splashColor: Colors.yellow,
@@ -92,9 +104,7 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                       widget.orderId,
                       iteamCounter);
                 },
-
                 child: SingleChildScrollView(
-
                   child: Card(
                     elevation: 3,
                     margin: const EdgeInsets.all(7),
@@ -102,25 +112,31 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                         borderRadius: BorderRadius.circular(15)),
                     child: SingleChildScrollView(
                       child: Column(
-                          children: [
+                        children: [
                           ListTile(
                             contentPadding: const EdgeInsets.all(2),
                             title: Row(children: [
-                             Text(
+                              Text(
                                 "Order ",
-                               style: GoogleFonts.montserrat(
-                                   textStyle: TextStyle(
-                                     fontSize: MediaQuery.of(context).size.width > 400 ? 22 : 18,
-                                     fontWeight: FontWeight.w500,
-                                   )),
+                                style: GoogleFonts.montserrat(
+                                    textStyle: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width > 400
+                                          ? 22
+                                          : 18,
+                                  fontWeight: FontWeight.w500,
+                                )),
                               ),
                               Text(
                                 '#' + widget.orderId,
                                 style: GoogleFonts.openSans(
                                     textStyle: TextStyle(
-                                        fontSize: MediaQuery.of(context).size.width > 380 ? 16 : 10,
-                                        fontWeight: FontWeight.w500,
-                                       )),
+                                  fontSize:
+                                      MediaQuery.of(context).size.width > 380
+                                          ? 16
+                                          : 10,
+                                  fontWeight: FontWeight.w500,
+                                )),
                               ),
                             ]),
                             subtitle: Text(
@@ -150,7 +166,9 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                                   children: [
                                     Column(children: [
                                       Text(
-                                        "X" + iteamCounter.toString() + " iteams",
+                                        "X" +
+                                            iteamCounter.toString() +
+                                            " iteams",
                                         style: GoogleFonts.lato(
                                             textStyle: TextStyle(
                                                 fontSize: 16,
@@ -168,30 +186,30 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                                   ],
                                 ),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width > 380 ? 180 : 100,
+                                  width: MediaQuery.of(context).size.width > 380
+                                      ? 90
+                                      : 30,
                                 ),
-                               Row(
-
+                                Row(
                                   children: [
-
                                     ElevatedButton.icon(
                                       onPressed: () {
-                                        !admin  ?
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => FeedbackDialog(
-                                                  id: widget.orderId,
-                                                ))
-
-                                        : showDialog(
-                                            context: context,
-                                            builder: (context) => adminFeedbackDialog(
-                                              id: widget.orderId,
-                                            )) ;
+                                        !admin
+                                            ? showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    FeedbackDialog(
+                                                      id: widget.orderId,
+                                                    ))
+                                            : showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    adminFeedbackDialog(
+                                                      id: widget.orderId,
+                                                    ));
                                       },
                                       icon: Icon(
-                                        admin ?
-                                        Icons.add_alert:  Icons.reviews,
+                                        admin ? Icons.add_alert : Icons.reviews,
                                         color: Colors.green,
                                         size: 18,
                                       ),
@@ -216,7 +234,42 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                                 ),
                               ],
                             ),
-                          )
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              OutlinedButton.icon(
+                                onPressed: () {},
+                                label: Text(
+                                  orderTiming ? "Completed" : "Pending",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                        width: 1, color: Colors.green),
+                                    padding: EdgeInsets.all(8),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(13))),
+                                icon: Icon(
+                                  orderTiming
+                                      ? Icons.check
+                                      : Icons.pending_rounded,
+                                  size: 28,
+                                  color: Colors.green,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
                         ],
                       ),
                     ),
@@ -238,10 +291,14 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
       String reserveDate, String uid, String orderId, int iteamCounter) {
     var Title = GoogleFonts.pacifico(
         textStyle: TextStyle(
-            fontWeight: FontWeight.w100, fontSize:  MediaQuery.of(context).size.width > 380 ? 18 : 15, color: Colors.white));
+            fontWeight: FontWeight.w100,
+            fontSize: MediaQuery.of(context).size.width > 380 ? 19 : 15,
+            color: Colors.white));
     var Value = GoogleFonts.sora(
         textStyle: TextStyle(
-            fontWeight: FontWeight.w700, fontSize:  MediaQuery.of(context).size.width > 380 ? 13 : 10, color: Colors.white));
+            fontWeight: FontWeight.w700,
+            fontSize: MediaQuery.of(context).size.width > 380 ? 14 : 12,
+            color: Colors.white));
 
     return showDialog<void>(
         context: context,
@@ -262,8 +319,12 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                           ],
                         )),
                     padding: EdgeInsets.all(2),
-                    height:  MediaQuery.of(context).size.width > 380 ?  MediaQuery.of(context).size.height * 0.7 : MediaQuery.of(context).size.height * 1,
-                    width: MediaQuery.of(context).size.width > 380 ? MediaQuery.of(context).size.width * 0.95 : MediaQuery.of(context).size.width * 0.95,
+                    height: MediaQuery.of(context).size.width > 380
+                        ? MediaQuery.of(context).size.height * 0.7
+                        : MediaQuery.of(context).size.height * 1,
+                    width: MediaQuery.of(context).size.width > 380
+                        ? MediaQuery.of(context).size.width * 0.95
+                        : MediaQuery.of(context).size.width * 0.95,
                     child: Column(
                       children: [
                         Row(
@@ -273,7 +334,11 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                               "Order Detail",
                               style: GoogleFonts.pacifico(
                                   textStyle: TextStyle(
-                                      fontSize:  MediaQuery.of(context).size.width > 380 ? 22 : 16,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width >
+                                                  380
+                                              ? 22
+                                              : 16,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white)),
                               textAlign: TextAlign.center,
@@ -284,7 +349,7 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                           height: 10,
                         ),
                         Container(
-                          margin: EdgeInsets.all(2),
+                          // margin: EdgeInsets.all(2),
                           child: Column(
                             children: [
                               Row(
@@ -316,8 +381,6 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Address =>",
@@ -325,15 +388,11 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                                   ),
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    data['address'],
-                                    style: Value,
-                                  )
-                                ],
+                              Text(
+                                data['address'],
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                                style: Value,
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -366,12 +425,11 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                             ],
                           ),
                         ),
-                        SingleChildScrollView(
+                        Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(0.1),
-                            height: MediaQuery.of(context).size.height * 0.25,
+                            height: MediaQuery.of(context).size.height * 0.44,
                             child: ListView.builder(
-                             // padding: EdgeInsets.all(1),
+                              // padding: EdgeInsets.all(1),
                               itemCount: iteamCounter,
                               itemBuilder: (context, index) {
                                 return OrderScreenListTile(
@@ -388,21 +446,25 @@ class _orderHistoryCardState extends State<orderHistoryCard> {
                         // OrderScreenListTile(image: ""),
                         Align(
                           alignment: Alignment.bottomCenter,
-                          child: OutlinedButton(onPressed: () {
-                            Navigator.of(context).pop();
-                          },
+                          child: OutlinedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
                               style: OutlinedButton.styleFrom(
                                 //elevation: 5,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10))
-                                ),
-                                side: BorderSide(width: 2, color: Colors.yellow),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                side:
+                                    BorderSide(width: 2, color: Colors.yellow),
                               ),
-
-                              child: Text("Close",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800),)),
-
+                              child: Text(
+                                "Close",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800),
+                              )),
                         ),
-
                       ],
                     ),
                   )));
